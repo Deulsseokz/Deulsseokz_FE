@@ -1,7 +1,8 @@
-import { StyleSheet, View } from "react-native";
-import { PrimaryButton } from "../common/PrimaryButton";
-import { TopBar } from "../common/TopBar";
-import { Box } from "../test/Box";
+import { StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { PrimaryButton } from '../common/PrimaryButton';
+import { TopBar } from '../common/TopBar';
+import { Box } from '../test/Box';
 
 interface TestTemplateProps {
   onAction: () => void;
@@ -9,13 +10,9 @@ interface TestTemplateProps {
   btnTxt: string;
 }
 
-export default function TestTemplate({
-  onAction,
-  featureData,
-  btnTxt,
-}: TestTemplateProps) {
+export default function TestTemplate({ onAction, featureData, btnTxt }: TestTemplateProps) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <TopBar title="Test Screen" />
       <View style={styles.content}>
         <View style={styles.boxContainer}>
@@ -23,22 +20,25 @@ export default function TestTemplate({
             <Box key={idx} label={item.label} description={item.description} />
           ))}
         </View>
-        <PrimaryButton text={btnTxt} onPress={onAction} />
+        <PrimaryButton size="default" kind="status-enabled" text="hi" onPress={() => {}}></PrimaryButton>
+        <PrimaryButton size="default" kind="status-disabled" text="hi" onPress={() => {}}></PrimaryButton>
+        <PrimaryButton size="default" kind="normal-dismiss" text="hi" onPress={() => {}}></PrimaryButton>
+        <PrimaryButton size="default" kind="normal-selected" text="hi" onPress={() => {}}></PrimaryButton>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   content: {
     flex: 1,
     padding: 16,
   },
   boxContainer: {
-    flex: 1,
+    // flex: 1,
   },
 });
