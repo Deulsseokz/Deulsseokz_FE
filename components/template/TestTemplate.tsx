@@ -1,5 +1,4 @@
 import { StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { TopBar } from '../common/TopBar';
 import { Box } from '../test/Box';
 
@@ -11,7 +10,7 @@ interface TestTemplateProps {
 
 export default function TestTemplate({ onAction, featureData, btnTxt }: TestTemplateProps) {
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <TopBar title="Test Screen" />
       <View style={styles.content}>
         <View style={styles.boxContainer}>
@@ -20,7 +19,7 @@ export default function TestTemplate({ onAction, featureData, btnTxt }: TestTemp
           ))}
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -34,6 +33,6 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   boxContainer: {
-    // flex: 1,
+    flex: 1,
   },
 });
