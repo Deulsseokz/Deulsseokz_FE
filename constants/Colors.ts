@@ -3,10 +3,11 @@
  */
 export const MCOLORS = {
   brand: {
-    primary: '#F76F8E',
-    secondary: '#F5B1C1',
+    primary: '#000',
+    secondary: '#F76F8E',
   },
   grayscale: {
+    gray0: '#FFF',
     gray5: '#E9E9E9',
     gray10: '#DDDDDD',
     gray30: '#ACACAC',

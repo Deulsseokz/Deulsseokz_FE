@@ -1,7 +1,6 @@
-import { StyleSheet, View } from "react-native";
-import { PrimaryButton } from "../common/PrimaryButton";
-import { TopBar } from "../common/TopBar";
-import { Box } from "../test/Box";
+import { StyleSheet, View } from 'react-native';
+import { TopBar } from '../common/TopBar';
+import { Box } from '../test/Box';
 
 interface TestTemplateProps {
   onAction: () => void;
@@ -9,11 +8,7 @@ interface TestTemplateProps {
   btnTxt: string;
 }
 
-export default function TestTemplate({
-  onAction,
-  featureData,
-  btnTxt,
-}: TestTemplateProps) {
+export default function TestTemplate({ onAction, featureData, btnTxt }: TestTemplateProps) {
   return (
     <View style={styles.container}>
       <TopBar title="Test Screen" />
@@ -23,7 +18,6 @@ export default function TestTemplate({
             <Box key={idx} label={item.label} description={item.description} />
           ))}
         </View>
-        <PrimaryButton text={btnTxt} onPress={onAction} />
       </View>
     </View>
   );
@@ -32,7 +26,7 @@ export default function TestTemplate({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   content: {
     flex: 1,
