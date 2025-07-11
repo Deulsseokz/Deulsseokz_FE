@@ -1,6 +1,5 @@
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { PrimaryButton } from '../common/PrimaryButton';
 import { TopBar } from '../common/TopBar';
 import { Box } from '../test/Box';
 
@@ -20,10 +19,6 @@ export default function TestTemplate({ onAction, featureData, btnTxt }: TestTemp
             <Box key={idx} label={item.label} description={item.description} />
           ))}
         </View>
-        <PrimaryButton size="default" kind="status-enabled" text="hi" onPress={() => {}}></PrimaryButton>
-        <PrimaryButton size="default" kind="status-disabled" text="hi" onPress={() => {}}></PrimaryButton>
-        <PrimaryButton size="default" kind="normal-dismiss" text="hi" onPress={() => {}}></PrimaryButton>
-        <PrimaryButton size="default" kind="normal-selected" text="hi" onPress={() => {}}></PrimaryButton>
       </View>
     </SafeAreaView>
   );
