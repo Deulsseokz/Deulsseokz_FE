@@ -75,6 +75,7 @@ export default function DefaultModal({
 const styles = StyleSheet.create({
   container: {
     width: 310,
+    minHeight: 320,
     backgroundColor: "#fff",
     borderRadius: 20,
     paddingVertical: 55,
