@@ -1,4 +1,4 @@
-import BackIcon from '@/assets/icons/icon-edit.svg';
+import BackIcon from '@/assets/icons/icon-back.svg';
 import { MCOLORS } from '@/constants/Colors';
 import { router } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
