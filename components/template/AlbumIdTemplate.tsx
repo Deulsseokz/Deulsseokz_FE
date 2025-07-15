@@ -3,15 +3,6 @@ import { TopBar } from "@/components/common/TopBar";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { PolaroidPhoto } from "../album/_type";
 
-/**
- * 앨범 상세 보기 템플릿
- * @param photos - 특정 앨범에 포함된 사진들
- * @param activeIndex - 캐러셀에서 현재 활성화된 사진 인덱스
- * @param setActiveIndex - 활성화된 사진 인덱스를 설정하는 함수
- * @param onEdit - 편집 버튼 클릭 시 호출되는 함수
- * @param onDownload - 다운로드 버튼 클릭 시 호출되는 함수
- * @param albumTitle - 앨범 제목
- */
 interface Props {
   photos: PolaroidPhoto[];
   activeIndex: number;
@@ -21,6 +12,15 @@ interface Props {
   albumTitle: string;
 }
 
+/**
+ * 앨범 상세 보기 템플릿
+ * @param photos - 특정 앨범에 포함된 사진들
+ * @param activeIndex - 캐러셀에서 현재 활성화된 사진 인덱스
+ * @param setActiveIndex - 활성화된 사진 인덱스를 설정하는 함수
+ * @param onEdit - 편집 버튼 클릭 시 호출되는 함수
+ * @param onDownload - 다운로드 버튼 클릭 시 호출되는 함수
+ * @param albumTitle - 앨범 제목
+ */
 export default function AlbumIdTemplate({
   photos,
   activeIndex,
