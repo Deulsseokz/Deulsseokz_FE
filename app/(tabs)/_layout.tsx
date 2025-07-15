@@ -10,7 +10,6 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  console.log('colorScheme', colorScheme);
 
   return (
     <Tabs
@@ -30,7 +29,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="map"
         options={{
           title: '지도',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="map.fill" color={color} />,
