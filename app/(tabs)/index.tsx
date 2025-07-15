@@ -1,42 +1,48 @@
-import { NaverMapView } from '@mj-studio/react-native-naver-map';
+import MapTemplate from '@/components/template/MapTemplate';
+import { CHALLENGE_LOCATIONS } from '@/constants/map/challengeLocations';
 import * as Location from 'expo-location';
 import React, { useEffect, useState } from 'react';
-import { Alert, View } from 'react-native';
+import { Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const INITIAL_CAMERA = {
-  latitude: 37.5666102,
-  longitude: 126.9783881,
-  zoom: 12,
-  latitudeDelta: 0.38,
-  longitudeDelta: 0.8,
-};
-
 const MountainMapScreen = () => {
-  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  // 위치 정보를 받아올 수 있는 권한 여부 확인 후 위치 설정
+  const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
 
   useEffect(() => {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
-      console.log('권한 상태', status);
 
       if (status !== 'granted') {
         Alert.alert('위치 권한이 필요합니다.');
-        setHasPermission(false);
-        return;
+        setLocation(null);
+        return <SafeAreaView className="flex-1 bg-white" />;
       }
-      setHasPermission(true);
+
+      const userLocation = await Location.getCurrentPositionAsync({});
+      setLocation({
+        latitude: userLocation.coords.latitude,
+        longitude: userLocation.coords.longitude,
+      });
     })();
   }, []);
 
-  if (hasPermission === false) {
-    return <SafeAreaView className="flex-1 bg-white" />;
-  }
+  // data fetch
+  const challengeLocationData = CHALLENGE_LOCATIONS;
+
+  // polygon click event
+  const handleClickPolygon = () => {
+    Alert.alert('click');
+    // data fetch (챌린지 정보)
+    // 바텀 시트 open
+  };
 
   return (
-    <View style={{ flex: 1 }}>
-      <NaverMapView style={{ flex: 1 }} initialCamera={INITIAL_CAMERA} />
-    </View>
+    <MapTemplate
+      challengeLocationData={challengeLocationData}
+      handleClickPolygon={handleClickPolygon}
+      userLocation={location}
+    />
   );
 };
 

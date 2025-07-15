@@ -30,6 +30,7 @@ interface PhotoSetCarouselProps {
  * 사진 세트를 가로로 스크롤 가능한 캐러셀 형태로 보여주는 컴포넌트
  * - 각 사진은 폴라로이드 스타일로 표시됨
  */
+
 export default function PhotoSetCarousel({
   photos,
   activeIndex,
