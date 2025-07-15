@@ -3,16 +3,16 @@ import PhotoSet from "@/components/album/Photoset";
 import { useRouter } from "expo-router";
 import { ScrollView, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 
-/**
- * 앨범 홈 템플릿 컴포넌트
- * @param title - 앨범 홈 제목
- * @param albums - 앨범 리스트
- */
 interface Props {
   title: string;
   albums: IAlbum[];
 }
 
+/**
+ * 앨범 홈 템플릿 컴포넌트
+ * @param title - 앨범 홈 제목
+ * @param albums - 앨범 리스트
+ */
 export default function AlbumHomeTemplate({ title, albums }: Props) {
   const router = useRouter();
   const { width } = useWindowDimensions();
