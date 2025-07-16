@@ -9,6 +9,7 @@ const CARD_WIDTH = 261;
 const CARD_HEIGHT = 514;
 
 interface PhotoSetCarouselProps {
+  /** 폴라로이드 사진 리스트 (additional - opt) */
   photos: {
     id: string;
     image: ImageSourcePropType;
@@ -19,9 +20,17 @@ interface PhotoSetCarouselProps {
     };
     date: string;
   }[];
+  /** 현재 활성화된 인덱스 */
   activeIndex: number;
+  /** 활성화된 인덱스를 설정하는 함수 */
   setActiveIndex: (index: number) => void;
 }
+
+/**
+ * 사진 세트를 가로로 스크롤 가능한 캐러셀 형태로 보여주는 컴포넌트
+ * - 각 사진은 폴라로이드 스타일로 표시됨
+ */
+
 export default function PhotoSetCarousel({
   photos,
   activeIndex,

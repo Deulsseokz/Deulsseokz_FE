@@ -1,5 +1,4 @@
 export const WEATHERS = {
-  SNOW: "❄️",
   SUNNY: "☀️",
   CLOUDY: "☁️",
   RAINY: "☔️",
@@ -10,7 +9,6 @@ export const WEATHERS = {
 
 export type WeatherType = (typeof WEATHERS)[keyof typeof WEATHERS];
 
-export const WEATHER_SNOW = WEATHERS.SNOW;
 export const WEATHER_SUNNY = WEATHERS.SUNNY;
 export const WEATHER_CLOUDY = WEATHERS.CLOUDY;
 export const WEATHER_RAINY = WEATHERS.RAINY;
