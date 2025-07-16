@@ -18,7 +18,6 @@ const MountainMapScreen = () => {
   // 바텀시트의 step과 param을 관리하는 state
   const [step, setStep] = useState<SheetStep>(SheetStep.INFO);
   const [stepPayloads, updateStepPayloads] = useState<Partial<StepParamMap>>({});
-  const [tempStepValue, setTempStepValue] = useState<any>(null); // step별 임시 값
 
   if (isLoadingLocation) {
     // 스피너 추가
@@ -45,28 +44,41 @@ const MountainMapScreen = () => {
     // data fetch (챌린지 정보)
   };
 
-  // 전달된 파라미터를 저장하고
-  // 다음 step으로 넘긴다
-  const nextStep = <S extends SheetStep>(step: S, value?: StepParamMap[S]) => {
-    // tempStepValue를 확정하고 저장
+  // 셀렉터에 의한 값 변경
+  const updateValue = <S extends SheetStep>(step: S, value?: StepParamMap[S]) => {
     if (value !== undefined) {
       updateStepPayloads(prev => ({
         ...prev,
         [step]: value,
       }));
     }
+  };
 
+  // step 뒤로가기
+  const backStep = () => {
+    // 해당 step의 데이터는 저장되지 않고 초기화됨
+    updateStepPayloads(prev => ({
+      ...prev,
+      [step]: undefined,
+    }));
+    setStep(prev => (prev - 1) as SheetStep);
+  };
+
+  // 다음 step으로 넘긴다
+  const nextStep = () => {
     if (step === SheetStep.SUBMIT) {
-      console.log('최종 데이터', stepPayloads);
+      // 촬영버튼 클릭
       return;
     }
 
-    setStep(prev => (prev + 1) as SheetStep);
-    setTempStepValue(null); // 다음 단계 가기 전 임시값 초기화
+    // 혼자 하는 경우 예외적으로 3단계를 건너뜀.
+    if (step === SheetStep.WITH_WHOM && stepPayloads[step] == 'ALONE') setStep(prev => (prev + 2) as SheetStep);
+    else setStep(prev => (prev + 1) as SheetStep);
   };
 
   // step 초기화
   const exitSheet = () => {
+    updateStepPayloads({}); // 선택된 값들을 초기화
     setOpen(false);
     setStep(0);
   };
@@ -84,6 +96,8 @@ const MountainMapScreen = () => {
       />
       <BottomSheetTemplate
         visible={open}
+        updateValue={updateValue}
+        backStep={backStep}
         nextStep={nextStep}
         exitSheet={exitSheet}
         step={step} // 실제 step

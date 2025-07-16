@@ -7,10 +7,10 @@ import FriendProfile from '../common/FriendProfile';
 interface FriendSelectorProps {
   friends: Friend[]; // 친구 목록 배열
   selected: Friend[]; // 선택된 친구 배열
-  onChange: (selected: Friend[]) => void;
+  updateValue: (selected: Friend[]) => void;
 }
 
-export default function FriendSelector({ friends, selected, onChange }: FriendSelectorProps) {
+export default function FriendSelector({ friends, selected, updateValue }: FriendSelectorProps) {
   const [selectedMap, setSelectedMap] = useState<Record<number, boolean>>(
     Object.fromEntries(selected.map(f => [f.userId, true])),
   );
@@ -28,7 +28,7 @@ export default function FriendSelector({ friends, selected, onChange }: FriendSe
     setSelectedMap(next);
 
     const updatedFriends = friends.filter(f => next[f.userId]);
-    onChange(updatedFriends);
+    updateValue(updatedFriends);
   };
 
   return (

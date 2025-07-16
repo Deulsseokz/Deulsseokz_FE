@@ -5,10 +5,10 @@ import { WITH_WHOM_OPTIONS } from './_util';
 
 interface WhomSelectorProps {
   selected: ChallengeWith | undefined; // 선택지: 혼자, 친구와 함께/ undefined: 아직 선택되지 않음.
-  onChange: (whom: ChallengeWith) => void;
+  updateValue: (whom: ChallengeWith) => void; // 선택지가 변경되면 부모에 전달
 }
 
-function WithWhomSelector({ selected, onChange }: WhomSelectorProps) {
+function WithWhomSelector({ selected, updateValue }: WhomSelectorProps) {
   const title = '누구와 함께 할까요?';
 
   return (
@@ -18,7 +18,7 @@ function WithWhomSelector({ selected, onChange }: WhomSelectorProps) {
         {WITH_WHOM_OPTIONS.map(({ whom, label, icon }) => {
           const isSelected = selected === whom;
           return (
-            <TouchableOpacity key={whom} onPress={() => onChange(whom)} style={style.item}>
+            <TouchableOpacity key={whom} onPress={() => updateValue(whom)} style={style.item}>
               <Image
                 source={isSelected ? icon.active : icon.inactive}
                 style={{ width: 34, height: 34, resizeMode: 'contain' }}

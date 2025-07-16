@@ -2,6 +2,7 @@ import { PrimaryButton } from '@/components/common/PrimaryButton';
 import { SheetStep, StepParamMap } from '@/components/map/_type';
 import { StepButtonMap } from '@/components/map/_util';
 import ChallengeCondition from '@/components/map/ChallengeCondition';
+import ChallengeFriends from '@/components/map/ChallengeFriends';
 import ChallengeInfo from '@/components/map/ChallengeInfo';
 import FriendSelector from '@/components/map/FriendSelector';
 import SheetHeader from '@/components/map/SheetHeader';
@@ -13,18 +14,24 @@ import { Animated, Dimensions, Platform, Pressable, StyleSheet, View } from 'rea
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface BottomSheetProps {
-  visible: boolean;
-  exitSheet: () => void;
-  step: SheetStep;
-  challengeInfo: ChallengeInformation;
-  stepPayloads: Partial<StepParamMap>; // 기존의 stepPayloads 유지
-  nextStep: <S extends SheetStep>(step: S, value?: StepParamMap[S]) => void;
+  visible: boolean; // 시트가 열려있는지
+  /** 선택된 값 변경 감지 */
+  updateValue: <S extends SheetStep>(step: S, value?: StepParamMap[S]) => void;
+  backStep: () => void; // 모달 내 뒤로가기 처리
+  exitSheet: () => void; // 모달 나가기 처리
+  /* 모달 내 버튼 클릭시 다음 스텝으로 넘어감 처리 */
+  nextStep: () => void;
+  step: SheetStep; // 모달의 step 관리
+  challengeInfo: ChallengeInformation; // 챌린지 정보 객체
+  stepPayloads: Partial<StepParamMap>; // 부모가 관리하는 파라미터 값
 }
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export default function BottomSheetTemplate({
   visible,
+  updateValue,
+  backStep,
   exitSheet,
   step,
   stepPayloads,
@@ -35,6 +42,7 @@ export default function BottomSheetTemplate({
   const insets = useSafeAreaInsets();
   const sheetHeight = SCREEN_HEIGHT * 0.5;
 
+  // 바텀시트 올라오기 애니메이션
   useEffect(() => {
     Animated.timing(translateY, {
       toValue: visible ? 0 : SCREEN_HEIGHT,
@@ -43,21 +51,20 @@ export default function BottomSheetTemplate({
     }).start();
   }, [visible]);
 
-  if (!visible) return null;
-
   const MOCK_FRIENDS: Friend[] = [
     { userId: 1, userName: '김철수' },
     { userId: 2, userName: '이영희' },
     { userId: 3, userName: '박민수' },
     { userId: 4, userName: '최지우' },
     { userId: 5, userName: '장하늘' },
-    { userId: 1, userName: '김철수' },
-    { userId: 2, userName: '이영희' },
-    { userId: 3, userName: '박민수' },
-    { userId: 4, userName: '최지우' },
-    { userId: 5, userName: '장하늘' },
+    { userId: 6, userName: '김철수' },
+    { userId: 7, userName: '이영희' },
+    { userId: 8, userName: '박민수' },
+    { userId: 9, userName: '최지우' },
+    { userId: 10, userName: '장하늘' },
   ];
 
+  // 각 스텝별 중심 콘텐츠를 렌더합니다.
   const renderStepContent = () => {
     switch (step) {
       case SheetStep.INFO:
@@ -71,7 +78,7 @@ export default function BottomSheetTemplate({
         return (
           <WithWhomSelector
             selected={stepPayloads[SheetStep.WITH_WHOM] ?? undefined}
-            onChange={v => nextStep(SheetStep.WITH_WHOM, v)}
+            updateValue={v => updateValue(SheetStep.WITH_WHOM, v)}
           />
         );
       case SheetStep.SELECT_FRIEND:
@@ -79,26 +86,31 @@ export default function BottomSheetTemplate({
           <FriendSelector
             friends={MOCK_FRIENDS}
             selected={stepPayloads[SheetStep.SELECT_FRIEND] ?? []}
-            onChange={v => nextStep(SheetStep.SELECT_FRIEND, v)}
+            updateValue={v => updateValue(SheetStep.SELECT_FRIEND, v)}
           />
         );
       case SheetStep.SUBMIT:
         return (
-          <>
+          <View style={{ ...styles.contentContainer, gap: 6 }}>
             <ChallengeInfo {...challengeInfo} />
             <ChallengeCondition {...challengeInfo} />
-            {/* <ChallengeFriends friends={stepPayloads[SheetStep.SELECT_FRIEND] ?? []} /> */}
-          </>
+            <ChallengeFriends friends={stepPayloads[SheetStep.SELECT_FRIEND] ?? []} />
+          </View>
         );
     }
   };
 
+  // getKind 함수를 통해 버튼의 status를 동적으로 결정할 수 있도록 합니다.
   const { text, getKind } = StepButtonMap[step];
 
-  console.log(getKind(stepPayloads));
+  if (!visible) return null;
+
   return (
     <View style={styles.container}>
+      {/* 모달 오버레이 */}
       <Pressable style={styles.overlay} onPress={exitSheet} />
+
+      {/* 바텀 모달뷰 */}
       <Animated.View
         style={[
           styles.sheet,
@@ -109,18 +121,22 @@ export default function BottomSheetTemplate({
           },
         ]}
       >
+        {/* 상단 영역 */}
         <View style={styles.contentContainer}>
+          {/* step에 따른 헤더*/}
           <SheetHeader
             place={challengeInfo.place}
             isFavorite={challengeInfo.isFavorite}
+            backStep={backStep}
             exitSheet={exitSheet}
             step={step}
           />
           {renderStepContent()}
         </View>
 
+        {/* 하단 버튼 영역 */}
         <View style={styles.btnContainer}>
-          <PrimaryButton kind={getKind(stepPayloads)} text={text} onPress={() => nextStep(step)} />
+          <PrimaryButton kind={getKind(stepPayloads)} text={text} onPress={() => nextStep()} />
         </View>
       </Animated.View>
     </View>
@@ -146,7 +162,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'white',
+    backgroundColor: '#ffffff',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     paddingTop: 43,

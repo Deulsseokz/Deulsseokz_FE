@@ -10,7 +10,7 @@ export enum SheetStep {
   SUBMIT = 3,
 }
 
-// 각 단계별 입력 데이터 타입 정의
+// 바텀 시트의 각 단계별 입력 데이터 타입 정의
 export type StepParamMap = {
   [SheetStep.INFO]: void;
   [SheetStep.WITH_WHOM]: ChallengeWith;
@@ -18,20 +18,20 @@ export type StepParamMap = {
   [SheetStep.SUBMIT]: void;
 };
 
-// 헤더 렌더링 설정 타입
+// header 렌더링 설정 타입
 export interface SheetHeaderConfig {
   showPlace: boolean;
   showFavorite: boolean;
   showBackButton: boolean;
 }
 
-// 버튼 렌더링 설정 타입
+// 바텀시트 버튼 렌더링 설정 타입
 export type StepButtonProps = {
   text: string;
   getKind: (payloads: Partial<StepParamMap>) => BtnKind;
 };
 
-// 챌린지를 혼자 할지 친구와 할지 여부
+// 2단계(WITHWHOM) 챌린지를 혼자 할지 친구와 할지 결정 타입
 export const CHALLENGE_WITH = {
   ALONE: 'alone',
   FRIEND: 'friend',
