@@ -5,8 +5,8 @@ import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
 import FriendProfile from '../common/FriendProfile';
 
 interface FriendSelectorProps {
-  friends: Friend[];
-  selected: Friend[];
+  friends: Friend[]; // 친구 목록 배열
+  selected: Friend[]; // 선택된 친구 배열
   onChange: (selected: Friend[]) => void;
 }
 
@@ -32,8 +32,8 @@ export default function FriendSelector({ friends, selected, onChange }: FriendSe
   };
 
   return (
-    <View>
-      <View style={style.TopContainer}>
+    <View style={style.container}>
+      <View style={style.topContainer}>
         <View style={style.titleContainer}>
           <Text style={style.title}>함께할 친구를 선택해주세요</Text>
           <Text style={style.counter}>{Object.values(selectedMap).filter(Boolean).length}</Text>
@@ -54,7 +54,11 @@ export default function FriendSelector({ friends, selected, onChange }: FriendSe
 }
 
 const style = StyleSheet.create({
-  TopContainer: {
+  container: {
+    width: '100%',
+  },
+  topContainer: {
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -82,8 +86,10 @@ const style = StyleSheet.create({
     fontWeight: '500',
   },
   list: {
+    marginTop: 20,
+    marginLeft: 41,
     gap: 16,
     rowGap: 20,
-    flexGrow: 1,
+    height: 70,
   },
 });

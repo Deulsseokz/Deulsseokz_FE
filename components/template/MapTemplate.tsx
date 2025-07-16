@@ -37,7 +37,8 @@ export default function MapTemplate({ challengeLocationData, handleClickPolygon,
         TRANSIT: false,
       }}
       camera={
-        userLocation !== null ? { ...userLocation, zoom: 14 } : { latitude: 37.5665, longitude: 126.978, zoom: 10 }
+        // userLocation !== null ? { ...userLocation, zoom: 14 } :
+        { latitude: 37.5665, longitude: 126.978, zoom: 10 }
       }
       isExtentBoundedInKorea={true}
     >

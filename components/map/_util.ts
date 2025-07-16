@@ -12,7 +12,7 @@ export const StepHeaderMap: Record<SheetStep, SheetHeaderConfig> = {
 // 버튼 상태 및 텍스트 매핑
 export const StepButtonMap: Record<SheetStep, StepButtonProps> = {
   [SheetStep.INFO]: {
-    text: '다음',
+    text: '점령하기',
     getKind: (_: Partial<StepParamMap>): BtnKind => 'status-enabled',
   },
   [SheetStep.WITH_WHOM]: {
@@ -30,7 +30,7 @@ export const StepButtonMap: Record<SheetStep, StepButtonProps> = {
     },
   },
   [SheetStep.SUBMIT]: {
-    text: '제출하기',
+    text: '촬영하기',
     getKind: (_: Partial<StepParamMap>): BtnKind => 'status-enabled',
   },
 };
@@ -40,11 +40,17 @@ export const WITH_WHOM_OPTIONS: WithWhom[] = [
   {
     whom: 'ALONE',
     label: '혼자',
-    img: require('@/assets/images/map/options/alone.png'),
+    icon: {
+      active: require('@/assets/images/map/options/alone-active.png'),
+      inactive: require('@/assets/images/map/options/alone-inactive.png'),
+    },
   },
   {
     whom: 'FRIEND',
     label: '친구와 함께',
-    img: require('@/assets/images/map/options/friends.png'),
+    icon: {
+      active: require('@/assets/images/map/options/friends-active.png'),
+      inactive: require('@/assets/images/map/options/friends-inactive.png'),
+    },
   },
 ];

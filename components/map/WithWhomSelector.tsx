@@ -4,7 +4,7 @@ import { ChallengeWith } from './_type';
 import { WITH_WHOM_OPTIONS } from './_util';
 
 interface WhomSelectorProps {
-  selected: ChallengeWith | null;
+  selected: ChallengeWith | undefined; // 선택지: 혼자, 친구와 함께/ undefined: 아직 선택되지 않음.
   onChange: (whom: ChallengeWith) => void;
 }
 
@@ -15,20 +15,15 @@ function WithWhomSelector({ selected, onChange }: WhomSelectorProps) {
     <View style={style.container}>
       <Text style={style.text}>{title}</Text>
       <View style={style.itemContainer}>
-        {WITH_WHOM_OPTIONS.map(({ whom, label, img }) => {
+        {WITH_WHOM_OPTIONS.map(({ whom, label, icon }) => {
           const isSelected = selected === whom;
-
           return (
             <TouchableOpacity key={whom} onPress={() => onChange(whom)} style={style.item}>
               <Image
-                source={img}
-                style={{
-                  width: 34,
-                  height: 34,
-                  tintColor: isSelected ? MCOLORS.brand.secondary : MCOLORS.grayscale.gray30,
-                }}
+                source={isSelected ? icon.active : icon.inactive}
+                style={{ width: 34, height: 34, resizeMode: 'contain' }}
               />
-              <Text>{label}</Text>
+              <Text style={{ ...style.label, color: !isSelected ? '#acacac' : MCOLORS.grayscale.gray80 }}>{label}</Text>
             </TouchableOpacity>
           );
         })}
@@ -51,12 +46,17 @@ const style = StyleSheet.create({
     lineHeight: 20,
     marginLeft: 41,
   },
+  label: {
+    color: MCOLORS.grayscale.gray30,
+    fontSize: 15,
+    fontWeight: 500,
+  },
   itemContainer: {
     width: '100%',
     paddingHorizontal: 70,
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 3,
+    gap: 60,
   },
   item: {
     width: 96,

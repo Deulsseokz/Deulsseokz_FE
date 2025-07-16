@@ -27,7 +27,6 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 5,
-    backgroundColor: 'yellow',
     // svg 정상화 이후 삭제,
     width: 40,
     height: 65,

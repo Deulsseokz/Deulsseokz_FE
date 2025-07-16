@@ -43,5 +43,8 @@ export type ChallengeWith = keyof typeof CHALLENGE_WITH;
 export type WithWhom = {
   whom: ChallengeWith;
   label: string;
-  img: ImageSourcePropType;
+  icon: {
+    active: ImageSourcePropType;
+    inactive: ImageSourcePropType;
+  };
 };
