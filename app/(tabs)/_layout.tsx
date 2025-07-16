@@ -29,7 +29,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="map"
+        name="index"
         options={{
           title: '지도',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="map.fill" color={color} />,
