@@ -1,3 +1,11 @@
+---
+name: Bug report
+about: 버그 해결 시 사용하는 이슈 템플릿입니다
+title: ''
+labels: ''
+assignees: ''
+
+---
 
 ## 어떤 버그인가요?
 

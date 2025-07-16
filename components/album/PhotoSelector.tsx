@@ -37,12 +37,13 @@ export default function PhotoSelector({
         }
 
         return (
-          <PhotoItem
-            key={index}
-            image={photo}
-            type={type}
-            onPress={() => onSelectPhoto(photo)}
-          />
+          <View key={index} style={styles.itemWrapper}>
+            <PhotoItem
+              image={photo}
+              type={type}
+              onPress={() => onSelectPhoto(photo)}
+            />
+          </View>
         );
       })}
     </View>
@@ -53,7 +54,11 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "center",
-    marginTop: 16,
+    justifyContent: "space-between",
+    width: "100%",
+  },
+  itemWrapper: {
+    width: "31%",        
+    marginBottom: 10,     
   },
 });

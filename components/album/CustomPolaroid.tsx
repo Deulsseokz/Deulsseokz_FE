@@ -1,4 +1,4 @@
-import { FrameType } from "@/types/shareType";
+import { BadgeType, FrameType } from "@/types/shareType";
 import {
   Image,
   StyleSheet,
@@ -6,13 +6,15 @@ import {
   View,
 } from "react-native";
 import { PolaroidProps } from "./_type";
-import { frameImageMap } from "./_utli";
+import { badgeImageMap, frameImageMap } from "./_utli";
 
 interface CustomPolaroidProps {
   /** 폴라로이드에 표시할 사진 정보 */
   photo: PolaroidProps["photo"];
   /** 선택된 프레임 타입 */
   frame: FrameType;
+  /** 선택된 뱃지 타입 */
+  badge?: BadgeType | null;
 }
 
 /**
@@ -22,6 +24,7 @@ interface CustomPolaroidProps {
 export default function CustomPolaroid({
   photo,
   frame,
+  badge,
 }: PolaroidProps & CustomPolaroidProps) {
   const { image, additional, date } = photo;
 
@@ -33,8 +36,13 @@ export default function CustomPolaroid({
       ]}
     >
       <Image source={image} style={styles.image} />
+
       {frameImageMap[frame] && (
         <Image source={frameImageMap[frame]} style={styles.overlay} />
+      )}
+
+      {badge && badgeImageMap[badge] && (
+        <Image source={badgeImageMap[badge]} style={styles.badge} />
       )}
 
       <View>
@@ -85,6 +93,14 @@ const styles = StyleSheet.create({
     left: 0,
     width: 145,
     height: "100%",
+    resizeMode: "contain",
+  },
+  badge: {
+    position: "absolute",
+    top: -10,
+    left: -40,
+    width: 70,
+    height: 70,
     resizeMode: "contain",
   },
   emoji: {
