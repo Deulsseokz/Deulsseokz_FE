@@ -24,7 +24,7 @@ function ChallengeFriends({ friends }: ChallengeFriendsProps) {
       <View style={style.friendsContainer}>
         {!alone &&
           friends.map((item, index) => {
-            return <IcnFriend style={{ ...style.relativeImg, left: index * -10 }} />;
+            return <IcnFriend key={index} style={{ ...style.relativeImg, left: index * -10 }} />;
           })}
       </View>
     </View>
