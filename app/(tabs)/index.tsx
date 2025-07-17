@@ -1,6 +1,9 @@
 import { SheetStep, StepParamMap } from '@/components/map/_type';
 import SearchLocationBtn from '@/components/map/SearchLocationBtn';
 import BottomSheetTemplate from '@/components/template/map/BottomSheetTemplate';
+import { SheetStep, StepParamMap } from '@/components/map/_type';
+import SearchLocationBtn from '@/components/map/SearchLocationBtn';
+import BottomSheetTemplate from '@/components/template/map/BottomSheetTemplate';
 import MapTemplate from '@/components/template/MapTemplate';
 import { CHALLENGE_LOCATIONS } from '@/constants/map/challengeLocations';
 import { useUserLocation } from '@/hooks/useUserLocation';
@@ -13,6 +16,18 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const MountainMapScreen = () => {
   // 위치 정보를 받아올 수 있는 권한 여부 확인 후 위치 설정
+  const [location, isLoadingLocation] = useUserLocation();
+
+  // 모달 시트 오픈 설정
+  const [open, setOpen] = useState(false);
+
+  // 바텀시트의 step과 param을 관리하는 state
+  const [step, setStep] = useState<SheetStep>(SheetStep.INFO);
+  const [stepPayloads, updateStepPayloads] = useState<Partial<StepParamMap>>({});
+
+  if (isLoadingLocation) {
+    // 스피너 추가
+  }
   const [location, isLoadingLocation] = useUserLocation();
 
   // 모달 시트 오픈 설정
@@ -45,7 +60,26 @@ const MountainMapScreen = () => {
     router.push('/test');
   };
 
+  // 챌린지 목데이터
+  const CHALLENGE_DATA = {
+    place: 'N서울타워',
+    content: '야경 보기',
+    point: 300,
+    condition1: '팔짱 끼고 사진 찍기',
+    condition2: '팔짱 끼고 사진 찍기',
+    condition3: '팔짱 끼고 사진 찍기',
+    isFavorite: false,
+  } as ChallengeInformation;
+
+  // open SerachScreen
+  const openSearchScreen = () => {
+    router.push('/test');
+  };
+
   // polygon click event
+  const handleClickPolygon = (place: string) => {
+    // place 변경시마다 챌린지 정보가 바뀌어야 함.
+    setOpen(true);
   const handleClickPolygon = (place: string) => {
     // place 변경시마다 챌린지 정보가 바뀌어야 함.
     setOpen(true);
@@ -116,6 +150,13 @@ const MountainMapScreen = () => {
 };
 
 export default MountainMapScreen;
+
+const styles = StyleSheet.create({
+  contianer: {
+    flex: 1,
+    position: 'relative',
+  },
+});
 
 const styles = StyleSheet.create({
   contianer: {

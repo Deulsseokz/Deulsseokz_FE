@@ -1,10 +1,10 @@
-import EmojiSelector from "@/components/album/EmojiSelector";
-import { PrimaryButton } from "@/components/common/PrimaryButton";
-import { TopBar } from "@/components/common/TopBar";
-import { FeelingType } from "@/types/feeling";
-import { WeatherType } from "@/types/weather";
-import React from "react";
-import { Image, StyleSheet, TextInput, View } from "react-native";
+import EmojiSelector from '@/components/album/EmojiSelector';
+import { PrimaryButton } from '@/components/common/PrimaryButton';
+import { TopBar } from '@/components/common/TopBar';
+import { FeelingType } from '@/types/feeling';
+import { WeatherType } from '@/types/weather';
+import React from 'react';
+import { Image, StyleSheet, TextInput, View } from 'react-native';
 
 interface AlbumEditTemplateProps {
   imageSource: any;
@@ -46,10 +46,9 @@ export default function AlbumEditTemplate({
   onSave,
   onCancel,
 }: AlbumEditTemplateProps) {
-
   return (
     <View style={styles.page}>
-      <TopBar />
+      <TopBar title="" />
       <View style={styles.container}>
         <Image source={imageSource} style={styles.mainImage} />
         <View style={styles.input_container}>
@@ -85,24 +84,22 @@ export default function AlbumEditTemplate({
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    flexDirection: "column",
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-    alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   container: {
     flex: 1,
-    flexDirection: "column",
+    flexDirection: 'column',
+    paddingHorizontal: 20,
+    paddingBottom: 20,
     gap: 30,
-    width: "100%",
-    alignItems: "center",
-    backgroundColor: "#fff",
+    width: '100%',
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
   input_container: {
     flex: 1,
-    flexDirection: "column",
-    width: "100%",
+    flexDirection: 'column',
+    width: '100%',
     gap: 15,
   },
   mainImage: {
@@ -110,18 +107,18 @@ const styles = StyleSheet.create({
     height: 147,
   },
   input: {
-    width: "100%",
-    backgroundColor: "#F9F9F9",
+    width: '100%',
+    backgroundColor: '#F9F9F9',
     borderRadius: 20,
     height: 200,
     padding: 20,
     fontSize: 15,
     lineHeight: 20,
-    color: "#333",
+    color: '#333',
   },
   buttonContainer: {
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
     gap: 18,
   },
 });
