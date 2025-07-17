@@ -20,7 +20,6 @@ interface ListItemProps {
 export default function LocationListItem({ success, title, listItems, onPress }: ListItemProps) {
   const titleColor = !success ? MCOLORS.brand.secondary : MCOLORS.grayscale.gray70;
 
-  console.log(listItems);
   return (
     <ScrollView style={style.container} contentContainerStyle={{ paddingBottom: 40 }}>
       <Text style={{ ...style.title, color: titleColor }}>{title}</Text>
