@@ -23,7 +23,7 @@ export default function LocationTemplate({ onPressPlace, locationList }: Locatio
 
   return (
     <SafeAreaView style={style.container}>
-      <LocationHeader title="지역" onClose={() => router.back()} onSearch={() => router.push('/test')} />
+      <LocationHeader title="지역" onClose={() => router.back()} onSearch={() => router.push('/map/searchArea')} />
       <LocationSelector onPress={setSelectedArea} locationList={LOCATION_DATA} selected={selectedArea} />
       <LocationList locationList={LOCATION_DATA} selectedArea={selectedArea} />
     </SafeAreaView>

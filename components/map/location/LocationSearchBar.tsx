@@ -26,7 +26,13 @@ export default function LocationSearchBar({ onSearchBtn }: LocationSearchBarProp
           clearButtonMode="while-editing"
           placeholderTextColor={'#FFBACA'}
         />
-        <TouchableOpacity onPress={() => onSearchBtn(input)} style={{ flex: 0 }}>
+        <TouchableOpacity
+          onPress={() => {
+            // onSearchBtn(input);
+            router.push('/map/searchAreaResult');
+          }}
+          style={{ flex: 0 }}
+        >
           <IcnSearch />
         </TouchableOpacity>
       </View>

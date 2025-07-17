@@ -39,9 +39,9 @@ const MountainMapScreen = () => {
     isFavorite: false,
   } as ChallengeInformation;
 
-  // open SerachScreen
+  // open SearchScreen
   const openSearchScreen = () => {
-    router.push('/test');
+    router.push('/map/location');
   };
 
   // polygon click event
