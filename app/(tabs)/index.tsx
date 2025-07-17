@@ -8,7 +8,6 @@ import { ChallengeInformation } from '@/types/challenge';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const MountainMapScreen = () => {
   // 위치 정보를 받아올 수 있는 권한 여부 확인 후 위치 설정
