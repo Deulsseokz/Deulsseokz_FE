@@ -3,11 +3,14 @@ import { ChallengeLocation } from '@/types/challenge';
 import { convertRawChallengeData, RawChallengeLocation } from '@/utils/convertRawChallengeData';
 import { create } from 'zustand';
 
+/**
+ * 챌린지 정보를 저장한다.
+ */
 interface ChallengeStore {
-  data: ChallengeLocation[] | null;
-  loading: boolean;
-  error: string | null;
-  fetchOnce: () => Promise<void>;
+  data: ChallengeLocation[] | null; // 데이터
+  loading: boolean; // 로딩 여부
+  error: string | null; // 에러 여부
+  fetchOnce: () => Promise<void>; // fetch 함수
 }
 
 export const useChallengeListStore = create<ChallengeStore>((set, get) => ({

@@ -9,6 +9,11 @@ interface LocationSearchBarProps {
   onSearchBtn: (input: string) => void;
 }
 
+/**
+ *
+ * @param param0 검색을 눌렀을 때 스크린 이동을 지원하는 함수
+ * @returns 지역/장소 검색바 컴포넌트
+ */
 export default function LocationSearchBar({ onSearchBtn }: LocationSearchBarProps) {
   const [input, setInput] = useState('');
 

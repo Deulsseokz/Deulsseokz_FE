@@ -7,7 +7,7 @@ interface MapSearchAreaTemplate {
   onSearchBtn: (input: string) => void;
 }
 
-// 지역에 대한 검색을 하고, 그 결과로 지역과 랜드마크 리스트 아이템을 리턴하는 화면
+// 지역에 대한 검색을 하고, 그 결과로 지역과 랜드마크 리스트 아이템을 리턴하는 스크린
 export default function MapSearchAreaTemplate({ onSearchBtn }: MapSearchAreaTemplate) {
   return (
     <SafeAreaView style={style.container}>

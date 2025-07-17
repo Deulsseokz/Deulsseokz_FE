@@ -87,7 +87,7 @@ export default function BottomSheetTemplate({
     }
   };
 
-  // getKind 함수를 통해 버튼의 status를 동적으로 결정할 수 있도록 합니다.
+  // getKind 함수를 통해 버튼의 status를 동적으로 결정할 수 있도록 한다.
   const { text, getKind } = StepButtonMap[step];
 
   if (!visible || !challengeInfo) return null;

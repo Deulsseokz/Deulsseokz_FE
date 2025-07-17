@@ -26,6 +26,7 @@ export default function MapTemplate({
 }: MapTemplateProps) {
   const mapRef = useRef<NaverMapView>(null);
 
+  // 초기 위치로 이동해야 하는 경우 이동
   useEffect(() => {
     if (initialCoord) {
       mapRef.current?.animateCameraTo({
@@ -35,6 +36,8 @@ export default function MapTemplate({
       });
     }
   }, [initialCoord]);
+
+  // TODO: 달성한 챌린지는 사진 마커 렌더링
 
   return (
     <NaverMapView

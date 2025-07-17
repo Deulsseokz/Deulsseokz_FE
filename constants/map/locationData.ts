@@ -1,5 +1,6 @@
 import { Location } from '@/types/location';
 
+// TODO: 실제 데이터로 채우기
 export const LOCATION_DATA: Location[] = [
   {
     area: '서울',

@@ -37,7 +37,9 @@ export const useStepManager = () => {
    * TODO : 마지막 스텝인 경우 데이터를 params로 넘기며 screen으로 이동
    */
   const nextStep = () => {
-    if (step === SheetStep.SUBMIT) return;
+    if (step === SheetStep.SUBMIT) {
+      return;
+    }
 
     if (step === SheetStep.WITH_WHOM && stepPayloads[step] === 'ALONE') {
       setStep(prev => (prev + 2) as SheetStep);

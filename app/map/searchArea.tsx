@@ -3,9 +3,11 @@ import MapSearchAreaTemplate from '@/components/template/map/MapSearchAreaTempla
 import { router } from 'expo-router';
 import { Alert } from 'react-native';
 
+/**
+ *
+ * @returns 지역을 검색할 수 있는 화면
+ */
 export default function SearchArea() {
-  // 검색 버튼이 눌렸을 때 핸들러
-  // params를 구성하여 result 화면으로 연결
   const handleSearch = async (input: string) => {
     const response = await fetchSearchArea(input);
 

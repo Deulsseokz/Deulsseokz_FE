@@ -14,6 +14,7 @@ interface LocationSelectorProps {
 export default function LocationSelector({ onPress, locationList, selected }: LocationSelectorProps) {
   const { width } = Dimensions.get('window');
 
+  // 동적인 아이템 너비 결정
   const CONTAINER_PADDING_HORIZONTAL = 20;
   const NUM_COLUMNS = 4;
   const ITEM_WIDTH = (width - CONTAINER_PADDING_HORIZONTAL * (NUM_COLUMNS + 1)) / NUM_COLUMNS;
