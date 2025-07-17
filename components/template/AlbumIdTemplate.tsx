@@ -1,7 +1,7 @@
-import PhotoSetCarousel from "@/components/album/PhotoSetCarousel";
-import { TopBar } from "@/components/common/TopBar";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
-import { PolaroidPhoto } from "../album/_type";
+import PhotoSetCarousel from '@/components/album/PhotoSetCarousel';
+import { TopBar } from '@/components/common/TopBar';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { PolaroidPhoto } from '../album/_type';
 
 interface Props {
   photos: PolaroidPhoto[];
@@ -35,17 +35,13 @@ export default function AlbumIdTemplate({
       <View style={styles.container}>
         <View style={styles.icon_container}>
           <TouchableOpacity onPress={onEdit} style={styles.icon_button}>
-            <Image source={require("@/assets/images/icon/icon-edit.png")} />
+            <Image source={require('@/assets/images/icon/icon-edit.png')} />
           </TouchableOpacity>
           <TouchableOpacity onPress={onDownload} style={styles.icon_button}>
-            <Image source={require("@/assets/images/icon/icon-download.png")} />
+            <Image source={require('@/assets/images/icon/icon-download.png')} />
           </TouchableOpacity>
         </View>
-        <PhotoSetCarousel
-          photos={photos}
-          activeIndex={activeIndex}
-          setActiveIndex={setActiveIndex}
-        />
+        <PhotoSetCarousel photos={photos} activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
       </View>
     </View>
   );
@@ -54,27 +50,25 @@ export default function AlbumIdTemplate({
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    flexDirection: "column",
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-    alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   container: {
     flex: 1,
-    flexDirection: "column",
-    width: "100%",
-    alignItems: "center",
-    backgroundColor: "#fff",
+    flexDirection: 'column',
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    width: '100%',
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
   icon_container: {
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
     gap: 20,
-    justifyContent: "center",
+    justifyContent: 'center',
     paddingHorizontal: 20,
     paddingVertical: 11,
-    backgroundColor: "#F8F8F8",
+    backgroundColor: '#F8F8F8',
     borderRadius: 10,
   },
   icon_button: {

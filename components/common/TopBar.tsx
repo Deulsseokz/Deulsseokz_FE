@@ -4,7 +4,7 @@ import { router } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 interface TopBarProps {
-  title: string;
+  title: string | null;
   rightButton?: React.ReactNode;
   onRightPress?: () => void;
 }
