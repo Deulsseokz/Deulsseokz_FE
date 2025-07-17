@@ -4,14 +4,15 @@ import BottomSheetTemplate from '@/components/template/map/BottomSheetTemplate';
 import MapTemplate from '@/components/template/MapTemplate';
 import { CHALLENGE_LOCATIONS } from '@/constants/map/challengeLocations';
 import { useUserLocation } from '@/hooks/useUserLocation';
-import { ChallengeInformation } from '@/types/challenge';
+import { ChallengeInformation, Coord } from '@/types/challenge';
 import { convertRawChallengeData, RawChallengeLocation } from '@/utils/convertRawChallengeData';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const MountainMapScreen = () => {
+  // 유저의 위치 관리
   const [location, isLoadingLocation] = useUserLocation();
 
   // 모달 시트 오픈 설정
@@ -20,6 +21,15 @@ const MountainMapScreen = () => {
   // 바텀시트의 step과 param을 관리하는 state
   const [step, setStep] = useState<SheetStep>(SheetStep.INFO);
   const [stepPayloads, updateStepPayloads] = useState<Partial<StepParamMap>>({});
+
+  // 지역 검색 화면에서 이동한 경우, 카메라 위치 이동
+  const { latitude, longitude } = useLocalSearchParams();
+
+  const parsedLat = typeof latitude === 'string' ? parseFloat(latitude) : NaN;
+  const parsedLng = typeof longitude === 'string' ? parseFloat(longitude) : NaN;
+
+  const initialCoord: Coord | undefined =
+    !isNaN(parsedLat) && !isNaN(parsedLng) ? { latitude: parsedLat, longitude: parsedLng } : undefined;
 
   if (isLoadingLocation) {
     // 스피너 추가
@@ -38,11 +48,6 @@ const MountainMapScreen = () => {
     condition3: '팔짱 끼고 사진 찍기',
     isFavorite: false,
   } as ChallengeInformation;
-
-  // open SearchScreen
-  const openSearchScreen = () => {
-    router.push('/map/location');
-  };
 
   // polygon click event
   const handleClickPolygon = (place: string) => {
@@ -98,8 +103,13 @@ const MountainMapScreen = () => {
 
   return (
     <View style={styles.contianer}>
-      <SearchLocationBtn onPress={openSearchScreen} />
-      <MapTemplate challengeLocationData={parsedData} handleClickPolygon={handleClickPolygon} userLocation={location} />
+      <SearchLocationBtn onPress={() => router.push('/map/location')} />
+      <MapTemplate
+        challengeLocationData={parsedData}
+        handleClickPolygon={handleClickPolygon}
+        userLocation={location}
+        initialCoord={initialCoord}
+      />
       <BottomSheetTemplate
         visible={open}
         updateValue={updateValue}

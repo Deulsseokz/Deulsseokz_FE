@@ -4,6 +4,7 @@
  */
 
 import { MCOLORS } from '@/constants/Colors';
+import navigateToCenterCoord from '@/utils/navigateToCenterCoord';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface ListItemProps {
@@ -13,19 +14,19 @@ interface ListItemProps {
   title: string;
   // 리스트 아이템
   listItems: string[];
-  // 리스트 아이템을 눌렀을 때 핸들러 함수
-  onPress: (item: string) => void;
 }
 
-export default function LocationListItem({ success, title, listItems, onPress }: ListItemProps) {
+export default function LocationListItem({ success, title, listItems }: ListItemProps) {
+  // TODO : 추천 검색어 API 연동
   const titleColor = !success ? MCOLORS.brand.secondary : MCOLORS.grayscale.gray70;
+  listItems = ['남산타워', '홍대', '경복궁', '인사동', '국립현대미술관', '코엑스'];
 
   return (
     <ScrollView style={style.container} contentContainerStyle={{ paddingBottom: 40 }}>
       <Text style={{ ...style.title, color: titleColor }}>{title}</Text>
       <View style={style.itemContainer}>
         {listItems.map(item => (
-          <TouchableOpacity key={item} onPress={() => onPress(item)}>
+          <TouchableOpacity key={item} onPress={() => navigateToCenterCoord(item)}>
             <Text style={{ ...style.item }}>{item}</Text>
           </TouchableOpacity>
         ))}

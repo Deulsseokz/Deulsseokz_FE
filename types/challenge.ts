@@ -25,6 +25,8 @@ export type ChallengeLocation = {
   center: Coord;
   // polygon을 그리기 위한 위도/경도 배열
   location: Coord[];
+  // 챌린지 도전 여부
+  isChallenged: boolean;
   // 이미 성공한 챌린지일 경우 이미지 제공
   challengePhoto?: string;
   // 챌린지 성공시 부여받는 포인트

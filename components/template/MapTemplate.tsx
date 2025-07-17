@@ -1,6 +1,7 @@
 import { MCOLORS } from '@/constants/Colors';
 import { ChallengeLocation, Coord } from '@/types/challenge';
 import { NaverMapMarkerOverlay, NaverMapPolygonOverlay, NaverMapView } from '@mj-studio/react-native-naver-map';
+import { useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 interface MapTemplateProps {
@@ -10,11 +11,31 @@ interface MapTemplateProps {
   handleClickPolygon: (place: string) => void;
   // 현재 유저의 위치
   userLocation: Coord | null;
+  // 초기 위치가 정해져 있는 경우 해당 위치 (검색 클릭한 경우)
+  initialCoord?: Coord;
 }
 
-export default function MapTemplate({ challengeLocationData, handleClickPolygon, userLocation }: MapTemplateProps) {
+export default function MapTemplate({
+  challengeLocationData,
+  handleClickPolygon,
+  userLocation,
+  initialCoord,
+}: MapTemplateProps) {
+  const mapRef = useRef<NaverMapView>(null);
+
+  useEffect(() => {
+    if (initialCoord) {
+      mapRef.current?.animateCameraTo({
+        ...initialCoord,
+        zoom: 14, // 필요시 줌 설정
+        animation: 'easeIn',
+      });
+    }
+  }, [initialCoord]);
+
   return (
     <NaverMapView
+      ref={mapRef}
       style={styles.container}
       layerGroups={{
         BUILDING: true,
@@ -25,8 +46,9 @@ export default function MapTemplate({ challengeLocationData, handleClickPolygon,
         TRANSIT: false,
       }}
       camera={
-        // userLocation !== null ? { ...userLocation, zoom: 14 } :
-        { latitude: 37.5665, longitude: 126.978, zoom: 10 }
+        initialCoord
+          ? undefined // animate로 이동 예정
+          : { latitude: 37.5665, longitude: 126.978, zoom: 12 }
       }
       isExtentBoundedInKorea={true}
     >

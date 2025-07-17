@@ -11,7 +11,7 @@ import { MOCK_FRIENDS } from '@/constants/map/friends';
 import { ChallengeInformation } from '@/types/challenge';
 import React, { useEffect, useRef } from 'react';
 import { Animated, Dimensions, Platform, Pressable, StyleSheet, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface BottomSheetProps {
   visible: boolean; // 시트가 열려있는지
@@ -93,7 +93,7 @@ export default function BottomSheetTemplate({
   if (!visible) return null;
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* 모달 오버레이 */}
       <Pressable style={styles.overlay} onPress={exitSheet} />
 
@@ -103,7 +103,7 @@ export default function BottomSheetTemplate({
           styles.sheet,
           {
             height: sheetHeight + (Platform.OS === 'ios' ? insets.bottom : 0), // iOS에서 safe area 보정
-            paddingBottom: 30 + (Platform.OS === 'ios' ? insets.bottom : 0),
+            paddingBottom: 60 + (Platform.OS === 'ios' ? insets.bottom : 0),
             transform: [{ translateY }],
           },
         ]}
@@ -126,7 +126,7 @@ export default function BottomSheetTemplate({
           <PrimaryButton kind={getKind(stepPayloads)} text={text} onPress={() => nextStep()} />
         </View>
       </Animated.View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -153,7 +153,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     paddingTop: 43,
-    paddingBottom: 30,
     paddingHorizontal: 24,
     justifyContent: 'space-between',
   },

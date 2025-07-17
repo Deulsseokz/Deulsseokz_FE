@@ -3,41 +3,40 @@ import { TopBar } from '@/components/common/TopBar';
 import LocationListItem from '@/components/map/location/LocationListItem';
 import { MCOLORS } from '@/constants/Colors';
 import { Location } from '@/types/location';
-import { router } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { router, useLocalSearchParams } from 'expo-router';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 // 검색 결과를 반환하는 스크린
 // 1) 검색 결과 있음 -> 해당 지역에 대한 LocationListItem을 반환
 // 2) 검색 결과 없음 -> 추천 검색어로 채운 LocationListItem 반환
 
-interface MapSearchResultTemplateProps {
-  // 성공/실패 관련 없이 입력된 input 값
-  input: string;
-  // 검색 성공/실패 구분
-  success: boolean;
-  // 검색 성공시 Location 객체 전달 (검색 결과 혹은 추천 검색어)
-  result: Location;
-  // 추천 검색어를 눌렀을 때 검색어를 전달하는 버튼
-  onSearchBtn: (input: string) => Location;
-}
+export default function MapSearchResultTemplate() {
+  const { input, success, result } = useLocalSearchParams();
 
-export default function MapSearchResultTemplate({ input, success, result, onSearchBtn }: MapSearchResultTemplateProps) {
-  return (
-    <SafeAreaView style={style.container}>
-      <TopBar title="" rightButton={<IcnClose />} onRightPress={() => router.navigate('/')} />
-      {success && result ? (
-        // 성공: 검색 결과
-        <LocationListItem success={success} title={result.area} listItems={result.places} onPress={onSearchBtn} />
-      ) : (
-        // 실패: 추천 검색어
-        <View style={style.contentContainer}>
-          <Text style={style.failText}>'{input}'에 대한 검색 결과가 없습니다</Text>
-          <LocationListItem success={success} title={'추천 검색어'} listItems={result.places} onPress={onSearchBtn} />
-        </View>
-      )}
-    </SafeAreaView>
-  );
+  console.log(input, success, result);
+  const parsedResult = result ? (JSON.parse(result as string) as Location) : undefined;
+  const isSuccess = success === 'true';
+
+  if (parsedResult == undefined) {
+    Alert.alert('검색 실패 오류');
+    return;
+  } else
+    return (
+      <SafeAreaView style={style.container}>
+        <TopBar title="" rightButton={<IcnClose />} onRightPress={() => router.navigate('/')} />
+        {isSuccess ? (
+          // 성공: 검색 결과
+          <LocationListItem success={isSuccess} title={parsedResult.area} listItems={parsedResult.places} />
+        ) : (
+          // 실패: 추천 검색어
+          <View style={style.contentContainer}>
+            <Text style={style.failText}>'{input}'에 대한 검색 결과가 없습니다</Text>
+            <LocationListItem success={isSuccess} title={'추천 검색어'} listItems={parsedResult.places} />
+          </View>
+        )}
+      </SafeAreaView>
+    );
 }
 
 const style = StyleSheet.create({

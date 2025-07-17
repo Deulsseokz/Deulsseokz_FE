@@ -13,7 +13,7 @@ import { StyleSheet, Text, View } from 'react-native';
 interface ChallengeConditionProps {
   condition1: string;
   condition2: string;
-  condition3: string;
+  condition3?: string;
 }
 
 export default function ChallengeCondition({ condition1, condition2, condition3 }: ChallengeConditionProps) {
@@ -28,10 +28,12 @@ export default function ChallengeCondition({ condition1, condition2, condition3 
         <Text style={style.plainText}>{condition2}</Text>
       </View>
 
-      <View style={style.textContainer}>
-        <DotIcon width={20} height={20} fill={MCOLORS.brand.secondary} />
-        <Text style={style.emphText}>{condition3}</Text>
-      </View>
+      {condition3 && (
+        <View style={style.textContainer}>
+          <DotIcon width={20} height={20} fill={MCOLORS.brand.secondary} />
+          <Text style={style.emphText}>{condition3}</Text>
+        </View>
+      )}
     </View>
   );
 }

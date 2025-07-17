@@ -1,13 +1,12 @@
 import IcnSearch from '@/assets/icons/icon-search.svg';
 import BackBtn from '@/components/common/BackBtn';
-import { Location } from '@/types/location';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 
 interface LocationSearchBarProps {
-  // 검색을 눌렀을 때 Location 객체를 반환
-  onSearchBtn: (input: string) => Location;
+  // 검색을 눌렀을 때 fetch 이후 이동
+  onSearchBtn: (input: string) => void;
 }
 
 export default function LocationSearchBar({ onSearchBtn }: LocationSearchBarProps) {
@@ -28,8 +27,7 @@ export default function LocationSearchBar({ onSearchBtn }: LocationSearchBarProp
         />
         <TouchableOpacity
           onPress={() => {
-            // onSearchBtn(input);
-            router.push('/map/searchAreaResult');
+            onSearchBtn(input);
           }}
           style={{ flex: 0 }}
         >
