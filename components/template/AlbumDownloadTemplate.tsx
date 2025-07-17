@@ -1,12 +1,12 @@
-import { PolaroidPhoto } from "@/components/album/_type";
-import Polaroid from "@/components/album/Polaroid";
-import ModalManager from "@/components/common/Modal/ModalManager";
-import { PrimaryButton } from "@/components/common/PrimaryButton";
-import { TopBar } from "@/components/common/TopBar";
-import { ModalType } from "@/enums/modalTypes";
-import useModal from "@/hooks/useModal";
-import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { PolaroidPhoto } from '@/components/album/_type';
+import Polaroid from '@/components/album/Polaroid';
+import ModalManager from '@/components/common/Modal/ModalManager';
+import { PrimaryButton } from '@/components/common/PrimaryButton';
+import { TopBar } from '@/components/common/TopBar';
+import { ModalType } from '@/enums/modalTypes';
+import useModal from '@/hooks/useModal';
+import React from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 interface AlbumDownloadTemplateProps {
   photo: PolaroidPhoto;
@@ -27,15 +27,10 @@ export default function AlbumDownloadTemplate({ photo, albumTitle, cnt }: AlbumD
 
   const handleDownload = () => {
     show(ModalType.DEFAULT, {
-      title: "사진을 갤러리에 저장했어요",
-      children: (
-        <Image
-          source={require("@/assets/images/modal/icon-picture.png")}
-          style={{ width: 80, height: 82 }}
-        />
-      ),
+      title: '사진을 갤러리에 저장했어요',
+      children: <Image source={require('@/assets/images/modal/icon-picture.png')} style={{ width: 80, height: 82 }} />,
       buttons: {
-        text: "닫기",
+        text: '닫기',
         onPress: hide,
       },
     });
@@ -47,15 +42,12 @@ export default function AlbumDownloadTemplate({ photo, albumTitle, cnt }: AlbumD
       <View style={styles.container}>
         <Polaroid photo={photo} />
         <View>
-          <Text style={styles.label}>남은 횟수 ( {cnt.curr} / {cnt.tot} )</Text>
+          <Text style={styles.label}>
+            남은 횟수 ( {cnt.curr} / {cnt.tot} )
+          </Text>
           <PrimaryButton text="다운로드" onPress={handleDownload} kind="status-enabled" />
         </View>
-        <ModalManager
-          isShowing={isShowing}
-          modalType={modalType}
-          modalProps={modalProps}
-          onClose={hide}
-        />
+        <ModalManager isShowing={isShowing} modalType={modalType} modalProps={modalProps} onClose={hide} />
       </View>
     </View>
   );
@@ -64,25 +56,23 @@ export default function AlbumDownloadTemplate({ photo, albumTitle, cnt }: AlbumD
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    flexDirection: "column",
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-    alignItems: "center",
-    backgroundColor: "#fff",
+
+    backgroundColor: '#fff',
   },
   container: {
     flex: 1,
-    justifyContent: "space-evenly",
-    flexDirection: "column",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    width: "100%",
+    justifyContent: 'space-evenly',
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    width: '100%',
   },
   label: {
     fontSize: 13,
-    fontWeight: "500",
-    color: "#7A7A7A",
+    fontWeight: '500',
+    color: '#7A7A7A',
     marginVertical: 20,
-    textAlign: "center",
+    textAlign: 'center',
   },
 });
