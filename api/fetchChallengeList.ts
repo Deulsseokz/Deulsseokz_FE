@@ -1,8 +1,9 @@
+import { BASE_URL } from '@env';
 import axios from 'axios';
 
 export const fetchChallengeList = async () => {
   try {
-    const { data } = await axios.get(`https://melog.store/challenge/list/`);
+    const { data } = await axios.get(`${BASE_URL}/challenge/list/`);
 
     if (data.isSuccess) {
       return data.result;
