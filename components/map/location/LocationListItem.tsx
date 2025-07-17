@@ -19,7 +19,7 @@ interface ListItemProps {
 export default function LocationListItem({ success, title, listItems }: ListItemProps) {
   // TODO : 추천 검색어 API 연동
   const titleColor = !success ? MCOLORS.brand.secondary : MCOLORS.grayscale.gray70;
-  listItems = ['남산타워', '홍대', '경복궁', '인사동', '국립현대미술관', '코엑스'];
+  listItems = ['한강공원', '홍대', '경복궁', '광화문', '북촌한옥마을', '해방촌'];
 
   return (
     <ScrollView style={style.container} contentContainerStyle={{ paddingBottom: 40 }}>

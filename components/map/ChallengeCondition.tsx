@@ -52,8 +52,9 @@ const style = StyleSheet.create({
   textContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     gap: 2.71,
+    paddingHorizontal: 5,
   },
   plainText: {
     fontSize: 13,

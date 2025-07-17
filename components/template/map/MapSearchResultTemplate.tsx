@@ -14,7 +14,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function MapSearchResultTemplate() {
   const { input, success, result } = useLocalSearchParams();
 
-  console.log(input, success, result);
   const parsedResult = result ? (JSON.parse(result as string) as Location) : undefined;
   const isSuccess = success === 'true';
 

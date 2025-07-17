@@ -3,14 +3,19 @@
 // center Coord를 찾은 후,
 // 지도 화면에서 해당 위치로 이동하는 함수
 
+import { useChallengeListStore } from '@/store/useChallengeListStore';
 import { router } from 'expo-router';
 
 export default function navigateToCenterCoord(place: string) {
-  // TODO: 실제 전역 데이터에 접근하는 과정 필요.
+  const challengeLocations = useChallengeListStore.getState().data;
+  const locationData = challengeLocations?.find(item => item.place === place);
+  if (!locationData) return;
+
   const centerCoord = {
-    latitude: 37.58341408,
-    longitude: 126.99026382,
+    latitude: locationData.center.latitude,
+    longitude: locationData.center.longitude,
   };
+
   router.replace({
     pathname: '/',
     params: {

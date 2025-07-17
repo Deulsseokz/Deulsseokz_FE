@@ -8,11 +8,13 @@ interface MapTemplateProps {
   // 맵의 폴리곤을 띄우기 위해 필요한 지역별 챌린지 데이터 배열
   challengeLocationData: ChallengeLocation[];
   // 폴리곤 클릭시 -> place 이름을 전달하며 바텀시트 open trigger
-  handleClickPolygon: (place: string) => void;
+  handleClickPolygon: (challengeId: number) => void;
   // 현재 유저의 위치
   userLocation: Coord | null;
   // 초기 위치가 정해져 있는 경우 해당 위치 (검색 클릭한 경우)
   initialCoord?: Coord;
+  // 모달이 열려있는 경우 터치 이벤트 제한하기 위함
+  modalOpen: boolean;
 }
 
 export default function MapTemplate({
@@ -20,6 +22,7 @@ export default function MapTemplate({
   handleClickPolygon,
   userLocation,
   initialCoord,
+  modalOpen,
 }: MapTemplateProps) {
   const mapRef = useRef<NaverMapView>(null);
 
@@ -27,7 +30,7 @@ export default function MapTemplate({
     if (initialCoord) {
       mapRef.current?.animateCameraTo({
         ...initialCoord,
-        zoom: 14, // 필요시 줌 설정
+        zoom: 16,
         animation: 'easeIn',
       });
     }
@@ -35,6 +38,7 @@ export default function MapTemplate({
 
   return (
     <NaverMapView
+      pointerEvents={modalOpen ? 'none' : 'auto'}
       ref={mapRef}
       style={styles.container}
       layerGroups={{
@@ -60,7 +64,7 @@ export default function MapTemplate({
               key={`${item.place}-polygon`}
               coords={item.location} // 위도, 경도값 전달
               onTap={() => {
-                handleClickPolygon(item.place);
+                handleClickPolygon(item.challengeId);
               }}
               outlineWidth={3}
               outlineColor={MCOLORS.brand.secondary}

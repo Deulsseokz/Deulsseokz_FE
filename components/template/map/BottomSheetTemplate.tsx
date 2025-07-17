@@ -10,7 +10,7 @@ import WithWhomSelector from '@/components/map/WithWhomSelector';
 import { MOCK_FRIENDS } from '@/constants/map/friends';
 import { ChallengeInformation } from '@/types/challenge';
 import React, { useEffect, useRef } from 'react';
-import { Animated, Dimensions, Platform, Pressable, StyleSheet, View } from 'react-native';
+import { Animated, Dimensions, Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface BottomSheetProps {
@@ -90,13 +90,9 @@ export default function BottomSheetTemplate({
   // getKind 함수를 통해 버튼의 status를 동적으로 결정할 수 있도록 합니다.
   const { text, getKind } = StepButtonMap[step];
 
-  if (!visible) return null;
-
+  if (!visible || !challengeInfo) return null;
   return (
     <SafeAreaView style={styles.container}>
-      {/* 모달 오버레이 */}
-      <Pressable style={styles.overlay} onPress={exitSheet} />
-
       {/* 바텀 모달뷰 */}
       <Animated.View
         style={[
@@ -139,10 +135,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     gap: 28,
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'transparent',
   },
   sheet: {
     position: 'absolute',
