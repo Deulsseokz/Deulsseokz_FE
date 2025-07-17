@@ -1,12 +1,7 @@
 import { MCOLORS } from '@/constants/Colors';
+import { Coord } from '@/types/challenge';
 import { NaverMapMarkerOverlay, NaverMapPolygonOverlay, NaverMapView } from '@mj-studio/react-native-naver-map';
 import { StyleSheet, View } from 'react-native';
-
-// 위도 경도 데이터
-interface Coord {
-  latitude: number;
-  longitude: number;
-}
 
 // 위치 객체 데이터
 interface PlaceProps {
