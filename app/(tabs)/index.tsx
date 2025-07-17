@@ -5,6 +5,7 @@ import MapTemplate from '@/components/template/MapTemplate';
 import { CHALLENGE_LOCATIONS } from '@/constants/map/challengeLocations';
 import { useUserLocation } from '@/hooks/useUserLocation';
 import { ChallengeInformation } from '@/types/challenge';
+import { convertRawChallengeData, RawChallengeLocation } from '@/utils/convertRawChallengeData';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -90,6 +91,8 @@ const MountainMapScreen = () => {
     setStep(0);
   };
 
+  const parsedData = challengeLocationData.map(item => convertRawChallengeData(item as RawChallengeLocation));
+
   if (!location) {
     return <SafeAreaView className="flex-1 bg-white" />;
   }
@@ -97,11 +100,7 @@ const MountainMapScreen = () => {
   return (
     <View style={styles.contianer}>
       <SearchLocationBtn onPress={openSearchScreen} />
-      <MapTemplate
-        challengeLocationData={challengeLocationData}
-        handleClickPolygon={handleClickPolygon}
-        userLocation={location}
-      />
+      <MapTemplate challengeLocationData={parsedData} handleClickPolygon={handleClickPolygon} userLocation={location} />
       <BottomSheetTemplate
         visible={open}
         updateValue={updateValue}
