@@ -18,7 +18,9 @@ export default function LocationList({ locationList, selectedArea }: Props) {
     <FlatList
       data={filtered}
       keyExtractor={item => item.area.toString()}
-      renderItem={({ item, index }) => <LocationListItem location={item} onPress={() => {}} />}
+      renderItem={({ item, index }) => (
+        <LocationListItem recommend={false} title={item.area} listItems={item.places} onPress={() => {}} />
+      )}
       ItemSeparatorComponent={() => (
         <View style={{ width: '100%', height: 1, backgroundColor: 'rgba(230, 230, 230, 0.61)' }} />
       )}

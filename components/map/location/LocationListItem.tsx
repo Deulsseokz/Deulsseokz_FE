@@ -4,38 +4,45 @@
  */
 
 import { MCOLORS } from '@/constants/Colors';
-import { Location } from '@/types/location';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-interface ListItemInterface {
-  location: Location;
-  onPress: (item: Location) => void;
+interface ListItemProps {
+  // 성공화면인지 실패화면인지 확인
+  success: boolean;
+  // 리스트 제목
+  title: string;
+  // 리스트 아이템
+  listItems: string[];
+  // 리스트 아이템을 눌렀을 때 핸들러 함수
+  onPress: (item: string) => void;
 }
 
-export default function LocationListItem({ location, onPress }: ListItemInterface) {
+export default function LocationListItem({ success, title, listItems, onPress }: ListItemProps) {
+  const titleColor = !success ? MCOLORS.brand.secondary : MCOLORS.grayscale.gray70;
+
+  console.log(listItems);
   return (
-    <View style={style.container}>
-      <Text style={style.title}>{location.area}</Text>
+    <ScrollView style={style.container} contentContainerStyle={{ paddingBottom: 40 }}>
+      <Text style={{ ...style.title, color: titleColor }}>{title}</Text>
       <View style={style.itemContainer}>
-        {location.places.map(item => (
-          <TouchableOpacity key={item}>
+        {listItems.map(item => (
+          <TouchableOpacity key={item} onPress={() => onPress(item)}>
             <Text style={{ ...style.item }}>{item}</Text>
           </TouchableOpacity>
         ))}
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const style = StyleSheet.create({
   container: {
-    flex: 0,
+    flex: 1,
     width: '100%',
     paddingHorizontal: 10,
-    paddingVertical: 20,
+    paddingTop: 20,
   },
   title: {
-    color: MCOLORS.grayscale.gray70,
     fontFamily: 'Pretendard-Bold',
     fontSize: 17,
     fontWeight: '700',
