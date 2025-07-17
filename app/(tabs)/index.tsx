@@ -1,11 +1,13 @@
 import { SheetStep, StepParamMap } from '@/components/map/_type';
+import SearchLocationBtn from '@/components/map/SearchLocationBtn';
 import BottomSheetTemplate from '@/components/template/map/BottomSheetTemplate';
 import MapTemplate from '@/components/template/MapTemplate';
 import { CHALLENGE_LOCATIONS } from '@/constants/map/challengeLocations';
 import { useUserLocation } from '@/hooks/useUserLocation';
 import { ChallengeInformation } from '@/types/challenge';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const MountainMapScreen = () => {
@@ -36,6 +38,11 @@ const MountainMapScreen = () => {
     condition3: '팔짱 끼고 사진 찍기',
     isFavorite: false,
   } as ChallengeInformation;
+
+  // open SerachScreen
+  const openSearchScreen = () => {
+    router.push('/test');
+  };
 
   // polygon click event
   const handleClickPolygon = (place: string) => {
@@ -88,7 +95,8 @@ const MountainMapScreen = () => {
   }
 
   return (
-    <SafeAreaView style={styles.contianer}>
+    <View style={styles.contianer}>
+      <SearchLocationBtn onPress={openSearchScreen} />
       <MapTemplate
         challengeLocationData={challengeLocationData}
         handleClickPolygon={handleClickPolygon}
@@ -104,7 +112,7 @@ const MountainMapScreen = () => {
         challengeInfo={CHALLENGE_DATA}
         stepPayloads={stepPayloads}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -113,5 +121,6 @@ export default MountainMapScreen;
 const styles = StyleSheet.create({
   contianer: {
     flex: 1,
+    position: 'relative',
   },
 });

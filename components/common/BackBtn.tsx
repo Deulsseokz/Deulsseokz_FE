@@ -1,4 +1,4 @@
-import BackIcn from '@/assets/icons/icon-back.svg';
+import BackIcn from '@/assets/icons/icon-arrowback.svg';
 import { TouchableOpacity } from 'react-native';
 
 interface BackBtnProps {
