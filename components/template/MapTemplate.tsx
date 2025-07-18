@@ -8,7 +8,7 @@ interface MapTemplateProps {
   // 맵의 폴리곤을 띄우기 위해 필요한 지역별 챌린지 데이터 배열
   challengeLocationData: ChallengeLocation[];
   // 폴리곤 클릭시 -> place 이름을 전달하며 바텀시트 open trigger
-  handleClickPolygon: (challengeId: number) => void;
+  handleClickPolygon: (challengeId: number, isChallenged:boolean) => void;
   // 현재 유저의 위치
   userLocation: Coord | null;
   // 초기 위치가 정해져 있는 경우 해당 위치 (검색 클릭한 경우)
@@ -31,16 +31,18 @@ export default function MapTemplate({
     if (initialCoord) {
       mapRef.current?.animateCameraTo({
         ...initialCoord,
-        zoom: 16,
+        zoom: 13,
         animation: 'easeIn',
       });
     }
   }, [initialCoord]);
 
-  // TODO: 달성한 챌린지는 사진 마커 렌더링
+  const doneChallenge= challengeLocationData.filter((item)=>item.isChallenged);
+  const notDoneChallenge = challengeLocationData.filter((item)=>!item.isChallenged)
 
   return (
     <NaverMapView
+
       pointerEvents={modalOpen ? 'none' : 'auto'}
       ref={mapRef}
       style={styles.container}
@@ -59,7 +61,7 @@ export default function MapTemplate({
       }
       isExtentBoundedInKorea={true}
     >
-      {challengeLocationData.map(item => {
+      {notDoneChallenge.map(item => {
         return (
           <View key={item.place}>
             {/* Polygon 그리기*/}
@@ -67,7 +69,7 @@ export default function MapTemplate({
               key={`${item.place}-polygon`}
               coords={item.location} // 위도, 경도값 전달
               onTap={() => {
-                handleClickPolygon(item.challengeId);
+                handleClickPolygon(item.challengeId, item.isChallenged);
               }}
               outlineWidth={3}
               outlineColor={MCOLORS.brand.secondary}
@@ -91,6 +93,13 @@ export default function MapTemplate({
             />
           </View>
         );
+      })}
+      {doneChallenge.map((item)=>{
+        return (
+        <NaverMapMarkerOverlay onTap={() => {
+                handleClickPolygon(item.challengeId, item.isChallenged);
+              }} image={{httpUri: item.challengePhoto}} key={item.challengeId} width={100} height={100} latitude={item.center.latitude} longitude={item.center.longitude}>
+</NaverMapMarkerOverlay>)
       })}
     </NaverMapView>
   );

@@ -45,7 +45,7 @@ const MountainMapScreen = () => {
   }, []);
 
   // 폴리곤 클릭 이벤트 처리 핸들러
-  const handleClickPolygon = async (challengeId: number) => {
+  const handleClickPolygon = async (challengeId: number, isChallenged:boolean) => {
     try {
       const data = await fetchChallengeInfo(challengeId);
 
@@ -56,10 +56,11 @@ const MountainMapScreen = () => {
       const parsedData: ChallengeInformation = {
         challengeId: challengeId,
         ...data[0],
-        place: data.placeName,
+        place: data[0].placeName,
         condition1: stripBracket(data[0].condition1),
         condition2: stripBracket(data[0].condition2),
         condition3: stripBracket(data[0].condition3),
+        isChallenged: isChallenged,
       };
 
       setSelectedChallengeInfo(parsedData as ChallengeInformation);

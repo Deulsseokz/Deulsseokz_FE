@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function LocationList({ locationList, selectedArea }: Props) {
-  // 선택된 지역이 있다면 해당 지역의 랜드마크 리스트만 보여ㅜ줌
+  // 선택된 지역이 있다면 해당 지역의 랜드마크 리스트만 보여줌
   const filtered = selectedArea ? locationList.filter(loc => loc.area === selectedArea) : locationList;
 
   return (

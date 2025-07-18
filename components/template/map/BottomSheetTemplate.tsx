@@ -11,7 +11,7 @@ import { MOCK_FRIENDS } from '@/constants/map/friends';
 import { ChallengeInformation } from '@/types/challenge';
 import React, { useEffect, useRef } from 'react';
 import { Animated, Dimensions, Platform, StyleSheet, View } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface BottomSheetProps {
   visible: boolean; // 시트가 열려있는지
@@ -94,7 +94,7 @@ export default function BottomSheetTemplate({
 
   if (!visible || !challengeInfo) return null;
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       {/* 바텀 모달뷰 */}
       <Animated.View
         style={[
@@ -120,15 +120,16 @@ export default function BottomSheetTemplate({
         </View>
 
         {/* 하단 버튼 영역 */}
-        <View style={styles.btnContainer}>
-          <PrimaryButton
+         <View style={styles.btnContainer}>
+          {challengeInfo.isChallenged ? <PrimaryButton kind={'normal-dismiss'} text={"점령 완료"} onPress={() => {}} /> : <PrimaryButton
             kind={getKind(stepPayloads)}
             text={text}
             onPress={() => nextStep(challengeInfo, stepPayloads)}
-          />
+          />}
         </View>
+       
       </Animated.View>
-    </SafeAreaView>
+    </View>
   );
 }
 
