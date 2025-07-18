@@ -45,21 +45,18 @@ export default function AlbumIdScreen() {
       console.error("API 호출 실패", e);
     }
   };
-
-  /** query */
-  const getSelectedPhotoParams = () => ({
-    place: placeParam,
-    photoId: selectedPhoto?.id,
-    url: typeof selectedPhoto?.image === "object" && "uri" in selectedPhoto.image
-      ? selectedPhoto.image.uri
-      : "",
-  });
-
+  
   /** handler function (related router) */
   const handleEdit = () => {
+    if (!selectedPhoto) return;
+
+    const photoString = encodeURIComponent(JSON.stringify(selectedPhoto));
     router.push({
       pathname: "/album/[place]/edit",
-      params: getSelectedPhotoParams(),
+      params: {
+        place: placeParam,
+        photo: photoString,
+      },
     });
   };
 

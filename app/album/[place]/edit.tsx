@@ -1,4 +1,5 @@
-import { postPhotoToAlbum } from "@/api/album";
+import { patchPhotoToAlbum } from "@/api/album";
+import { PolaroidPhoto } from "@/components/album/_type";
 import ModalManager from "@/components/common/Modal/ModalManager";
 import AlbumEditTemplate from "@/components/template/AlbumEditTemplate";
 import { ModalType } from "@/enums/modalTypes";
@@ -6,21 +7,39 @@ import useModal from "@/hooks/useModal";
 import { FeelingType } from "@/types/feeling";
 import { WeatherType } from "@/types/weather";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useState } from "react";
-import { Alert, Image, ImageSourcePropType } from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
+import { Alert, Image } from "react-native";
 
 const feelings: FeelingType[] = ["😁", "😭", "😎", "🥰", "😛", "🥳"];
 const weathers: WeatherType[] = ["☀️", "☁️", "☔️", "🌦️", "💨", "⛈️"];
 
 export default function AlbumEditScreen() {
   const router = useRouter();
-  const { url, place } = useLocalSearchParams<{ url: string; place: string }>();
-  const imageSource: ImageSourcePropType =
-    url && typeof url === "string" ? { uri: url } : require("@/assets/images/album/photo1.jpeg");
+  const { photo, place } = useLocalSearchParams();
+  const placeParam = useMemo(() => Array.isArray(place) ? place[0] : place, [place]);
+
+  let parsedPhoto: PolaroidPhoto | null = null;
+
+  try {
+    parsedPhoto =
+      photo && typeof photo === "string"
+        ? JSON.parse(decodeURIComponent(photo))
+        : null;
+  } catch (e) {
+    console.error("error", e);
+  }
 
   const [selectedFeeling, setSelectedFeeling] = useState<FeelingType>("😁");
   const [selectedWeather, setSelectedWeather] = useState<WeatherType>("☀️");
   const [desc, setDesc] = useState("");
+
+  useEffect(() => {
+    if (parsedPhoto?.additional.desc) {
+      setSelectedFeeling((parsedPhoto.additional.feeling as FeelingType) ?? "😁");
+      setSelectedWeather((parsedPhoto.additional.weather as WeatherType) ?? "☀️");
+      setDesc(parsedPhoto.additional.desc ?? "");
+    }
+  }, [photo]);
 
   const isSaveEnabled = desc.trim().length > 0;
 
@@ -42,8 +61,7 @@ export default function AlbumEditScreen() {
 
   const handleSave = async () => {
     const requestBody = {
-      photo: url,
-      place: place,
+      photoId: Number(parsedPhoto?.id),
       feelings: selectedFeeling,
       weather: selectedWeather,
       photoContent: desc,
@@ -51,7 +69,8 @@ export default function AlbumEditScreen() {
     };
 
     try {
-      const res = await postPhotoToAlbum(requestBody);
+      const res = await patchPhotoToAlbum(requestBody);
+
       if (res.isSuccess) {
         showSaveModal(ModalType.DEFAULT, {
           title: "오늘의 일기를 저장했어요",
@@ -68,7 +87,7 @@ export default function AlbumEditScreen() {
               hideSaveModal();
               router.push({
                 pathname: "/album/[place]",
-                params: { place },
+                params: { place: placeParam },
               });
             },
           },
@@ -112,7 +131,7 @@ export default function AlbumEditScreen() {
   return (
     <>
       <AlbumEditTemplate
-        imageSource={imageSource}
+        imageSource={parsedPhoto?.image}
         feelings={feelings}
         weathers={weathers}
         selectedFeeling={selectedFeeling}
@@ -123,7 +142,7 @@ export default function AlbumEditScreen() {
         onChangeDesc={setDesc}
         onSave={handleSave}
         onCancel={handleCancel}
-        isSaveEnabled={isSaveEnabled} 
+        isSaveEnabled={isSaveEnabled}
       />
       <ModalManager
         isShowing={isSaveModalVisible}
