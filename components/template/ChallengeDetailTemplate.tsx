@@ -1,6 +1,4 @@
 import { MCOLORS } from '@/constants/Colors';
-import { BASE_URL } from '@env';
-import axios from 'axios';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
@@ -26,6 +24,8 @@ export default function ChallengeDetailTemplate({
   condition2,
   condition3,
   friends,
+  handleSubmit,
+  isLoading,
 }: {
   id: number;
   image: string;
@@ -36,65 +36,10 @@ export default function ChallengeDetailTemplate({
   condition2: string;
   condition3: string;
   friends: string;
+  handleSubmit: () => void;
+  isLoading: boolean;
 }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const uriParts = image.split('.');
-  const fileType = uriParts[uriParts.length - 1];
-  const formData = new FormData();
-
-  formData.append('place', place);
-  if (friends) {
-    formData.append('friends', JSON.stringify(friends.split(',').map(Number)));
-  }
-  formData.append('attemptDate', dayjs().tz('Asia/Seoul').format('YYYY-MM-DD'));
-
-  formData.append('attemptImage', {
-    uri: image,
-    name: `photo.${fileType}`,
-    type: `image/jpeg`,
-  } as any); // 또는 as unknown as Blob
-
-  const handleSubmit = async () => {
-    setIsLoading(true);
-    try {
-      const res = await axios.post(`${BASE_URL}/challenge/`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      console.log('res', res.data);
-      if (res.status === 200) {
-        router.replace({
-          pathname: '/map/[id]/result',
-          params: {
-            id: id,
-            image: image,
-            condition1: condition1,
-            condition2: condition2,
-            condition3: condition3,
-            point: point,
-            isSuccess: String(res.data.result.attemptResult),
-            isSuccessCondition1: String(res.data.result.condition1),
-            isSuccessCondition2: String(res.data.result.condition2),
-            isSuccessCondition3: String(res.data.result.condition3),
-          },
-        });
-      }
-    } catch (error) {
-      console.log('error', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  console.log('formData', formData);
-  console.log('attemptImage', formData.get('attemptImage'));
-  console.log('place', place);
-  console.log('dayjs', dayjs().tz('Asia/Seoul').format('YYYY-MM-DD'));
-
-  console.log('isLoading', isLoading);
-
   return (
     <View style={styles.page}>
       <Modal transparent={true} animationType="fade" visible={isModalVisible}>
@@ -122,7 +67,13 @@ export default function ChallengeDetailTemplate({
         </View>
         <Text style={styles.text}>도전 횟수 (1/3)</Text>
         <View style={styles.buttonContainer}>
-          <PrimaryButton kind="normal-dismiss" text="다시 찍기" onPress={() => {}} />
+          <PrimaryButton
+            kind="normal-dismiss"
+            text="다시 찍기"
+            onPress={() => {
+              router.back();
+            }}
+          />
           <PrimaryButton kind="status-enabled" text="제출하기" onPress={handleSubmit} />
         </View>
       </View>
