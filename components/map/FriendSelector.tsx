@@ -47,6 +47,7 @@ export default function FriendSelector({ friends, selected, updateValue }: Frien
       </View>
       <FlatList
         horizontal
+        showsHorizontalScrollIndicator={false} // 스크롤바 숨김
         data={friends}
         keyExtractor={item => item.userId.toString()}
         contentContainerStyle={style.list}
