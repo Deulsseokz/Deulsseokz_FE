@@ -83,3 +83,45 @@ export async function postRequest<T, B = unknown>(
     throw error;
   }
 }
+
+/** 공통 PATCH 요청 함수
+ * @template T - 응답 데이터 타입
+ * @template B - 요청 바디 타입
+ * @param {string} endpoint - API 엔드포인트 경로
+ * @param {B} body - 요청 바디 데이터
+ * @param {string} [token] - Bearer 액세스 토큰 (opt)
+ * @returns {Promise<CommonResponse<T>>} API 응답을 포함하는 프로미스
+ */
+export async function patchRequest<T, B = unknown>(
+  endpoint: string,
+  body: B,
+  token?: string
+): Promise<CommonResponse<T>> {
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    "X-CSRFTOKEN": CSRF_TOKEN,
+  };
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  try {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const data: CommonResponse<T> = await response.json();
+    return data;
+  } catch (error) {
+    console.error("fail", error);
+    throw error;
+  }
+}
