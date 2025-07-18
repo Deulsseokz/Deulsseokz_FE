@@ -3,7 +3,6 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function RootLayout() {
@@ -22,9 +21,19 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(tabs)" />
           <Stack.Screen name="test" />
+          <Stack.Screen name="map/location" />
+          <Stack.Screen name="map/searchArea" />
+          <Stack.Screen name="map/searchAreaResult" />
+          <Stack.Screen name="map/challengeInput" />
+          <Stack.Screen name="map/[id]" />
+          <Stack.Screen name="album/share/index" />
+          <Stack.Screen name="album/share/[id]" />
+          <Stack.Screen name="album/[id]/index" />
+          <Stack.Screen name="album/[id]/edit" />
+          <Stack.Screen name="album/[id]/download" />
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />
