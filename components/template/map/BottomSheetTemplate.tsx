@@ -118,9 +118,12 @@ export default function BottomSheetTemplate({
         </View>
 
         {/* 하단 버튼 영역 */}
-        <View style={styles.btnContainer}>
-          <PrimaryButton kind={getKind(stepPayloads)} text={text} onPress={() => nextStep()} />
+         <View style={styles.btnContainer}>
+          {challengeInfo.isChallenged ? <PrimaryButton kind={'normal-dismiss'} text={"점령 완료"} onPress={() => {}} /> : <PrimaryButton kind={getKind(stepPayloads)} text={text} onPress={() => nextStep()} />}
+          
+             
         </View>
+       
       </Animated.View>
     </View>
   );
