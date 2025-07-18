@@ -4,12 +4,13 @@ import { PrimaryButton } from "@/components/common/PrimaryButton";
 import { TopBar } from "@/components/common/TopBar";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { PolaroidPhoto } from "../album/_type";
 
 interface AlbumShareTemplateProps {
   maxSelectCount: number;
-  selectedPhotos: any[];
-  photos: any[];
-  onSelectPhoto: (photo: any) => void;
+  selectedPhotos: PolaroidPhoto[];
+  photos: PolaroidPhoto[];
+  onSelectPhoto: (photo: PolaroidPhoto) => void;
   onPressNext: () => void;
 }
 
@@ -31,7 +32,7 @@ export default function AlbumShareTemplate({
 }: AlbumShareTemplateProps) {
   return (
     <View style={styles.page}>
-      <TopBar rightButton={<PriceTag price={800} />} />
+      <TopBar title="" rightButton={<PriceTag price={800} />} />
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>
@@ -42,9 +43,21 @@ export default function AlbumShareTemplate({
         </View>
         <View style={styles.wrapper}>
           <PhotoSelector
-            photos={photos}
-            selectedPhotos={selectedPhotos}
-            onSelectPhoto={onSelectPhoto}
+            photos={photos.map((p) => p.image)}
+            selectedPhotos={selectedPhotos.map((p) => p.image)}
+            onSelectPhoto={(selectedImage) => {
+              const matched = photos.find(
+                (p) =>
+                  typeof p.image === "object" &&
+                  p.image !== null &&
+                  "uri" in p.image &&
+                  "uri" in selectedImage &&
+                  p.image.uri === selectedImage.uri
+              );
+              if (matched) {
+                onSelectPhoto(matched);
+              }
+            }}
             maxSelectCnt={maxSelectCount}
           />
         </View>

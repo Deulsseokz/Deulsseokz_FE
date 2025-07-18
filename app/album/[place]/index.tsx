@@ -76,6 +76,25 @@ export default function AlbumIdScreen() {
     });
   };
 
+  const handleShare = () => {
+    if (!selectedPhoto) return;
+
+    router.push({
+      pathname: "/album/share",
+      params: {
+        place: placeParam,
+      },
+    });
+  };
+
+  const menu = [
+    { label: "사진 추가", onPress: () => ()=>{} },
+    { label: "사진 삭제", onPress: ()=>{} },
+    { label: "모아보기", onPress: ()=>{} },
+    { label: "공유하기", onPress: handleShare },
+    { label: "대표 사진 변경", onPress: ()=>{} },
+  ];
+
   /** useEffect */
   useEffect(() => {
     fetchPhotos();
@@ -89,6 +108,7 @@ export default function AlbumIdScreen() {
       onEdit={handleEdit}
       onDownload={handleDownload}
       albumTitle={placeParam || ""}
+      menu={menu}
     />
   );
 }
