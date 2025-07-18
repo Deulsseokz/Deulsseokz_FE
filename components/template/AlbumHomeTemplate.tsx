@@ -16,7 +16,7 @@ interface Props {
 export default function AlbumHomeTemplate({ title, albums }: Props) {
   const router = useRouter();
   const { width } = useWindowDimensions();
-  const isSmallScreen = width < 380;
+  const isSmallScreen = width < 400;
 
   const normalizeImages = (photo: string | string[] | null): ImageSourcePropType[] => {
     if (!photo) return [];
@@ -67,6 +67,6 @@ const styles = StyleSheet.create({
     width: "47%",
   },
   fullItem: {
-    width: "46%",
+    width: "45%",
   },
 });
