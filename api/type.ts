@@ -59,3 +59,19 @@ export interface PhotoAddRequest {
   date?: string;
 }
 
+/**
+ * @typedef PhotoFixRequest
+ * @description 앨범 내용을 수정할 때 사용하는 요청 형식
+ * @property {number} photoId - 수정할 사진의 고유 ID
+ * @property {string} [feelings] - 기분 이모지 (opt)
+ * @property {string} [weather] - 날씨 이모지 (opt)
+ * @property {string} [photoContent] - 사진에 대한 설명 텍스트 (opt)
+ * @property {string} [date] - 사진 촬영일 (YYYY-MM-DD, opt)
+ */
+export interface PhotoFixRequest {
+  photoId: number;
+  feelings?: string;
+  weather?: string;
+  photoContent?: string;
+  date?: string;
+}

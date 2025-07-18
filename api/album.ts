@@ -7,8 +7,8 @@
 
 /**************************************************************/
 
-import { CommonResponse, getRequest, postRequest } from "./common";
-import { AlbumItem, PhotoAddRequest, PhotoItem } from "./type";
+import { CommonResponse, getRequest, patchRequest, postRequest } from "./common";
+import { AlbumItem, PhotoAddRequest, PhotoFixRequest, PhotoItem } from "./type";
 
 /**
  * @function getAlbumList
@@ -43,6 +43,19 @@ export async function postPhotoToAlbum(
   return await postRequest<string, PhotoAddRequest>("/album/url", body, token);
 }
 
+/**
+ * @function patchPhotoToAlbum
+ * @description 앨범에 설명을 수정하는 API 호출
+ * @param {PhotoAddRequest} body - 사진 및 설명 정보
+ * @param {string} token - Bearer 액세스 토큰 (opt)
+ * @returns {Promise<CommonResponse<string>>} API 응답 메시지
+ */ 
+export async function patchPhotoToAlbum(
+  body: PhotoFixRequest,
+  token?: string
+): Promise<CommonResponse<string>> {
+  return await patchRequest<string, PhotoFixRequest>("/photo/", body, token);
+}
 
 
 
