@@ -1,6 +1,7 @@
 
 import { FeelingType } from "@/types/feeling";
 import { WeatherType } from "@/types/weather";
+import { formatDate } from "@/utils/formatDate";
 import React from "react";
 import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
@@ -68,7 +69,7 @@ export default function PhotoSetCarousel({
                 )}
               </View>
 
-              <Text style={styles.date}>{item.date}</Text>
+              <Text style={styles.date}>{formatDate(item.date)}</Text>
             </View>
           </View>
         )}
