@@ -40,7 +40,7 @@ export async function postPhotoToAlbum(
   body: PhotoAddRequest,
   token?: string
 ): Promise<CommonResponse<string>> {
-  return await postRequest<string, PhotoAddRequest>("/photo/", body, token);
+  return await postRequest<string, PhotoAddRequest>("/album/url", body, token);
 }
 
 
