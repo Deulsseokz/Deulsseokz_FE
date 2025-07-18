@@ -2,8 +2,8 @@ import { MCOLORS } from '@/constants/Colors';
 import { StyleSheet, Text, View } from 'react-native';
 
 /**
- * 챌린지 데이터를 props로 받아 띄운다.
- * @prop:place, content, point
+ * 챌린지 데이터에 대한 정보를 props로 받아 띄운다.
+ * @prop: place, content, point
  * @returns
  */
 

@@ -24,7 +24,11 @@ export default function RootLayout() {
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="test" />
+          <Stack.Screen name="map/location" />
+          <Stack.Screen name="map/searchArea" />
+          <Stack.Screen name="map/searchAreaResult" />
           <Stack.Screen name="map/challengeInput" />
+          <Stack.Screen name="map/[id]" />
           <Stack.Screen name="album/share/index" />
           <Stack.Screen name="album/share/[id]" />
           <Stack.Screen name="album/[id]/index" />

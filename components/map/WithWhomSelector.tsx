@@ -8,6 +8,11 @@ interface WhomSelectorProps {
   updateValue: (whom: ChallengeWith) => void; // 선택지가 변경되면 부모에 전달
 }
 
+/**
+ *
+ * @param param0 선택지 2가지(혼자/함께), 선택지 변경 핸들러
+ * @returns 혼자/함께 셀렉터
+ */
 function WithWhomSelector({ selected, updateValue }: WhomSelectorProps) {
   const title = '누구와 함께 할까요?';
 

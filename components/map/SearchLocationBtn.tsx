@@ -5,6 +5,11 @@ interface SearchLocationBtnProps {
   onPress: () => void;
 }
 
+/**
+ *
+ * @param param0 검색 버튼 눌렸을 때의 함수
+ * @returns 검색 버튼 컴포넌트
+ */
 export default function SearchLocationBtn({ onPress }: SearchLocationBtnProps) {
   return (
     <TouchableOpacity onPress={onPress} style={style.container}>

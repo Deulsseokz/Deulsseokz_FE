@@ -1,15 +1,19 @@
 import IcnSearch from '@/assets/icons/icon-search.svg';
 import BackBtn from '@/components/common/BackBtn';
-import { Location } from '@/types/location';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 
 interface LocationSearchBarProps {
-  // 검색을 눌렀을 때 Location 객체를 반환
-  onSearchBtn: (input: string) => Location;
+  // 검색을 눌렀을 때 fetch 이후 이동
+  onSearchBtn: (input: string) => void;
 }
 
+/**
+ *
+ * @param param0 검색을 눌렀을 때 스크린 이동을 지원하는 함수
+ * @returns 지역/장소 검색바 컴포넌트
+ */
 export default function LocationSearchBar({ onSearchBtn }: LocationSearchBarProps) {
   const [input, setInput] = useState('');
 
@@ -26,7 +30,12 @@ export default function LocationSearchBar({ onSearchBtn }: LocationSearchBarProp
           clearButtonMode="while-editing"
           placeholderTextColor={'#FFBACA'}
         />
-        <TouchableOpacity onPress={() => onSearchBtn(input)} style={{ flex: 0 }}>
+        <TouchableOpacity
+          onPress={() => {
+            onSearchBtn(input);
+          }}
+          style={{ flex: 0 }}
+        >
           <IcnSearch />
         </TouchableOpacity>
       </View>

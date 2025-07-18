@@ -10,6 +10,11 @@ interface FriendSelectorProps {
   updateValue: (selected: Friend[]) => void;
 }
 
+/**
+ * TODO: 친구 목록 불러오기
+ * @param 친구 목록, 선택된 친구 배열, 친구 선택시 핸들러 함수
+ * @returns 친구 목록 중 최대 3명 선택할 수 있는 컴포넌트
+ */
 export default function FriendSelector({ friends, selected, updateValue }: FriendSelectorProps) {
   const [selectedMap, setSelectedMap] = useState<Record<number, boolean>>(
     Object.fromEntries(selected.map(f => [f.userId, true])),

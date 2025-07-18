@@ -10,8 +10,8 @@ import WithWhomSelector from '@/components/map/WithWhomSelector';
 import { MOCK_FRIENDS } from '@/constants/map/friends';
 import { ChallengeInformation } from '@/types/challenge';
 import React, { useEffect, useRef } from 'react';
-import { Animated, Dimensions, Platform, Pressable, StyleSheet, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Animated, Dimensions, Platform, StyleSheet, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface BottomSheetProps {
   visible: boolean; // 시트가 열려있는지
@@ -87,23 +87,19 @@ export default function BottomSheetTemplate({
     }
   };
 
-  // getKind 함수를 통해 버튼의 status를 동적으로 결정할 수 있도록 합니다.
+  // getKind 함수를 통해 버튼의 status를 동적으로 결정할 수 있도록 한다.
   const { text, getKind } = StepButtonMap[step];
 
-  if (!visible) return null;
-
+  if (!visible || !challengeInfo) return null;
   return (
-    <View style={styles.container}>
-      {/* 모달 오버레이 */}
-      <Pressable style={styles.overlay} onPress={exitSheet} />
-
+    <SafeAreaView style={styles.container}>
       {/* 바텀 모달뷰 */}
       <Animated.View
         style={[
           styles.sheet,
           {
             height: sheetHeight + (Platform.OS === 'ios' ? insets.bottom : 0), // iOS에서 safe area 보정
-            paddingBottom: 30 + (Platform.OS === 'ios' ? insets.bottom : 0),
+            paddingBottom: 60 + (Platform.OS === 'ios' ? insets.bottom : 0),
             transform: [{ translateY }],
           },
         ]}
@@ -126,7 +122,7 @@ export default function BottomSheetTemplate({
           <PrimaryButton kind={getKind(stepPayloads)} text={text} onPress={() => nextStep()} />
         </View>
       </Animated.View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -140,10 +136,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     gap: 28,
   },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'transparent',
-  },
   sheet: {
     position: 'absolute',
     bottom: 0,
@@ -153,7 +145,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     paddingTop: 43,
-    paddingBottom: 30,
     paddingHorizontal: 24,
     justifyContent: 'space-between',
   },
