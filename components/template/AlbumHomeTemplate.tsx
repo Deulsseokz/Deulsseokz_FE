@@ -61,12 +61,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 20,
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
   },
   item: {
     width: "47%",
   },
   fullItem: {
-    width: "100%",
+    width: "46%",
   },
 });
