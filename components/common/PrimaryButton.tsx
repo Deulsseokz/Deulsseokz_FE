@@ -82,6 +82,20 @@ function getButtonStyle({ kind, size = 'default' }: { kind: BtnKind; size: BtnSi
 
   const selected = kindMap[kind];
 
+
+  if (!selected) {
+  console.warn(`[PrimaryButton] 잘못된 kind: ${kind}`);
+  return {
+    buttonStyle: {
+      ...baseStyle,
+      backgroundColor: '#ccc',
+    },
+    textStyle: {
+      color: '#000',
+    },
+  };
+}
+
   return {
     buttonStyle: {
       ...baseStyle,
