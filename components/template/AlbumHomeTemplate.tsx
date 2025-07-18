@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   item: {
-    width: "47%",
+    width: "45%",
   },
   fullItem: {
     width: "45%",
