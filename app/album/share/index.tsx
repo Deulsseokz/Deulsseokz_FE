@@ -66,7 +66,7 @@ export default function AlbumShareScreen() {
     const selectedPhoto = selectedPhotos[0];
     if (!selectedPhoto) return;
 
-    const photoString = encodeURIComponent(JSON.stringify(selectedPhoto)); // ✅ 전체 정보 직렬화
+    const photoString = encodeURIComponent(JSON.stringify(selectedPhoto)); 
     router.push({
       pathname: "/album/share/[id]",
       params: {
