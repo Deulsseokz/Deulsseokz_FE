@@ -4,6 +4,7 @@
  */
 
 import { MCOLORS } from '@/constants/Colors';
+import { TEMP_RECOMMEND_DATA } from '@/constants/map/locationData';
 import navigateToCenterCoord from '@/utils/navigateToCenterCoord';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -19,17 +20,18 @@ interface ListItemProps {
 export default function LocationListItem({ success, title, listItems }: ListItemProps) {
   // TODO : 추천 검색어 API 연동
   const titleColor = !success ? MCOLORS.brand.secondary : MCOLORS.grayscale.gray70;
-  listItems = ['한강공원', '홍대', '경복궁', '광화문', '북촌한옥마을', '해방촌'];
+  if (listItems.length == 0) listItems = TEMP_RECOMMEND_DATA;
 
   return (
     <ScrollView style={style.container} contentContainerStyle={{ paddingBottom: 40 }}>
       <Text style={{ ...style.title, color: titleColor }}>{title}</Text>
       <View style={style.itemContainer}>
-        {listItems.map(item => (
-          <TouchableOpacity key={item} onPress={() => navigateToCenterCoord(item)}>
-            <Text style={{ ...style.item }}>{item}</Text>
-          </TouchableOpacity>
-        ))}
+        {listItems.length != 0 &&
+          listItems.map(item => (
+            <TouchableOpacity key={item} onPress={() => navigateToCenterCoord(item)}>
+              <Text style={{ ...style.item }}>{item}</Text>
+            </TouchableOpacity>
+          ))}
       </View>
     </ScrollView>
   );
