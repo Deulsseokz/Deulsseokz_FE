@@ -3,8 +3,9 @@ import AlbumDownloadTemplate from "@/components/template/AlbumDownloadTemplate";
 import { useLocalSearchParams } from "expo-router";
 
 export default function AlbumDownloadScreen() {
+  /** router */
   const { photo, place } = useLocalSearchParams();
-
+  /** variable */
   let parsedPhoto: PolaroidPhoto | null = null;
 
   try {

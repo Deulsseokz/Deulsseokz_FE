@@ -4,8 +4,10 @@ import AlbumHomeTemplate from "@/components/template/AlbumHomeTemplate";
 import { useEffect, useState } from "react";
 
 export default function AlbumHomeScreen() {
+  /** state */
   const [albums, setAlbums] = useState<AlbumItem[]>([]);
 
+  /** API fetch */
   const fetchAlbums = async () => {
       try {
         const res = await getAlbumList();
@@ -19,6 +21,7 @@ export default function AlbumHomeScreen() {
       }
     };
 
+  /** lifecycle */
   useEffect(() => {
     fetchAlbums();
   }, []);

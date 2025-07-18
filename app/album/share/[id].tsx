@@ -4,6 +4,7 @@ import { BadgeType, FrameType } from "@/types/shareType";
 import { useLocalSearchParams } from "expo-router";
 import { useMemo, useState } from "react";
 
+/** config */
 const frameOptions = [
   { type: FrameType.WHITE, label: "흰색" },
   { type: FrameType.BLACK, label: "검정색" },
@@ -19,12 +20,13 @@ const badgeOptions = [
 ];
 
 export default function AlbumShareIdScreen() {
+  /** router */
+  const { photo } = useLocalSearchParams<{ photo: string }>();
+  /** state */
   const [step, setStep] = useState<1 | 2>(1);
   const [selectedFrame, setSelectedFrame] = useState<FrameType>(FrameType.WHITE);
   const [selectedBadge, setSelectedBadge] = useState<BadgeType | null>(null);
-
-  const { photo } = useLocalSearchParams<{ photo: string }>();
-
+  /** variable */
   const selectedPhoto = useMemo<PolaroidPhoto | null>(() => {
     try {
       return JSON.parse(decodeURIComponent(photo));
@@ -34,10 +36,9 @@ export default function AlbumShareIdScreen() {
     }
   }, [photo]);
 
+  /** handler function (related router) */
   const handleNext = () => setStep(2);
-  const handleShare = () => {
-    console.log("공유 완료");
-  };
+  const handleShare = () => {};
 
   return (
     <AlbumShareIdTemplate

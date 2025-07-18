@@ -10,15 +10,22 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import { Alert, Image } from "react-native";
 
+/** config */
 const feelings: FeelingType[] = ["😁", "😭", "😎", "🥰", "😛", "🥳"];
 const weathers: WeatherType[] = ["☀️", "☁️", "☔️", "🌦️", "💨", "⛈️"];
 
 export default function AlbumEditScreen() {
+  /** router */
   const router = useRouter();
   const { photo, place } = useLocalSearchParams();
   const placeParam = useMemo(() => Array.isArray(place) ? place[0] : place, [place]);
-
+  /** state */
+  const [selectedFeeling, setSelectedFeeling] = useState<FeelingType>("😁");
+  const [selectedWeather, setSelectedWeather] = useState<WeatherType>("☀️");
+  const [desc, setDesc] = useState("");
+  /** variable */
   let parsedPhoto: PolaroidPhoto | null = null;
+  const isSaveEnabled = desc.trim().length > 0;
 
   try {
     parsedPhoto =
@@ -29,20 +36,7 @@ export default function AlbumEditScreen() {
     console.error("error", e);
   }
 
-  const [selectedFeeling, setSelectedFeeling] = useState<FeelingType>("😁");
-  const [selectedWeather, setSelectedWeather] = useState<WeatherType>("☀️");
-  const [desc, setDesc] = useState("");
-
-  useEffect(() => {
-    if (parsedPhoto?.additional.desc) {
-      setSelectedFeeling((parsedPhoto.additional.feeling as FeelingType) ?? "😁");
-      setSelectedWeather((parsedPhoto.additional.weather as WeatherType) ?? "☀️");
-      setDesc(parsedPhoto.additional.desc ?? "");
-    }
-  }, [photo]);
-
-  const isSaveEnabled = desc.trim().length > 0;
-
+  /** hooks */
   const {
     isShowing: isSaveModalVisible,
     modalType: saveModalType,
@@ -59,6 +53,7 @@ export default function AlbumEditScreen() {
     hide: hideCancelModal,
   } = useModal();
 
+  /** handler function (related router) */
   const handleSave = async () => {
     const requestBody = {
       photoId: Number(parsedPhoto?.id),
@@ -96,7 +91,7 @@ export default function AlbumEditScreen() {
         Alert.alert("에러", res.message);
       }
     } catch (e) {
-      console.error("API 호출 실패", e);
+      console.error("error", e);
     }
   };
 
@@ -127,6 +122,15 @@ export default function AlbumEditScreen() {
       ],
     });
   };
+
+  /** lifecycle */
+  useEffect(() => {
+    if (parsedPhoto?.additional.desc) {
+      setSelectedFeeling((parsedPhoto.additional.feeling as FeelingType) ?? "😁");
+      setSelectedWeather((parsedPhoto.additional.weather as WeatherType) ?? "☀️");
+      setDesc(parsedPhoto.additional.desc ?? "");
+    }
+  }, [photo]);
 
   return (
     <>

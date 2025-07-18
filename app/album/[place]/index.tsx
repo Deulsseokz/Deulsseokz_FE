@@ -8,16 +8,16 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 
 export default function AlbumIdScreen() {
+  /** router */
   const router = useRouter();
   const { place } = useLocalSearchParams();
-  
   const placeParam = useMemo(() => Array.isArray(place) ? place[0] : place, [place]);
+  /** state */
   const [photos, setPhotos] = useState<PolaroidPhoto[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-
+  /** variable */
   const selectedPhoto = photos[activeIndex];
-
-  /** API 응답 utill */
+  /** API utill */
   const transformPhoto = (photo: PhotoItem): PolaroidPhoto => ({
     id: photo.id,
     image: { uri: photo.url },
@@ -39,7 +39,7 @@ export default function AlbumIdScreen() {
         const transformed = res.result.map(transformPhoto);
         setPhotos(transformed);
       } else {
-        console.error("에러", res.message);
+        console.error("API 오류:", res.message);
       }
     } catch (e) {
       console.error("API 호출 실패", e);
@@ -92,7 +92,7 @@ export default function AlbumIdScreen() {
     { label: "대표 사진 변경", onPress: ()=>{} },
   ];
 
-  /** useEffect */
+  /** lifecycle */
   useEffect(() => {
     fetchPhotos();
   }, [placeParam]);

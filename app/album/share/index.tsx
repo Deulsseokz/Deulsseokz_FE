@@ -10,15 +10,14 @@ import React, { useEffect, useMemo, useState } from "react";
 const MAX_SELECT_IMAGE = 1;
 
 export default function AlbumShareScreen() {
+  /** router */
   const router = useRouter();
   const { place } = useLocalSearchParams<{ place: string }>();
-
   const placeParam = useMemo(() => decodeURIComponent(Array.isArray(place) ? place[0] : place), [place]);
-
+  /** state */
   const [photos, setPhotos] = useState<PolaroidPhoto[]>([]);
   const [selectedPhotos, setSelectedPhotos] = useState<PolaroidPhoto[]>([]);
-
-  /** API 응답 가공 */
+  /** API utill */
   const transformPhoto = (photo: PhotoItem): PolaroidPhoto => ({
     id: photo.id,
     image: { uri: photo.url },
@@ -30,7 +29,7 @@ export default function AlbumShareScreen() {
     date: photo.date ?? "",
   });
 
-  /** API 요청 */
+  /** API fetch */
   const fetchPhotos = async () => {
     if (!placeParam) return;
 
@@ -40,18 +39,14 @@ export default function AlbumShareScreen() {
         const transformed = res.result.map(transformPhoto);
         setPhotos(transformed);
       } else {
-        console.error("API 실패:", res.message);
+        console.error("API 오류:", res.message);
       }
     } catch (e) {
-      console.error("API 호출 중 오류:", e);
+      console.error("API 호출 실패:", e);
     }
   };
   
-  useEffect(() => {
-    fetchPhotos();
-  }, [placeParam]);
-
-  /** 사진 선택 */
+  /** handler function */
   const handleSelect = (photo: PolaroidPhoto) => {
     const isSelected = selectedPhotos.includes(photo);
     if (isSelected) {
@@ -61,7 +56,6 @@ export default function AlbumShareScreen() {
     }
   };
 
-  
   const handleShare = () => {
     const selectedPhoto = selectedPhotos[0];
     if (!selectedPhoto) return;
@@ -77,6 +71,10 @@ export default function AlbumShareScreen() {
     });
   };
 
+  /** lifecycle */
+  useEffect(() => {
+    fetchPhotos();
+  }, [placeParam]);
 
   return (
     <AlbumShareTemplate
