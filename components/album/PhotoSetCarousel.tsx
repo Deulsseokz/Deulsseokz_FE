@@ -11,7 +11,7 @@ const CARD_HEIGHT = 514;
 interface PhotoSetCarouselProps {
   /** 폴라로이드 사진 리스트 (additional - opt) */
   photos: {
-    id: string;
+    id: number;
     image: ImageSourcePropType;
     additional?: {
       weather: WeatherType;

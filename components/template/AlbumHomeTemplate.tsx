@@ -1,11 +1,11 @@
-import { IAlbum } from "@/app/(tabs)/album";
+import { AlbumItem } from "@/api/type";
 import PhotoSet from "@/components/album/Photoset";
 import { useRouter } from "expo-router";
-import { ScrollView, StyleSheet, Text, View, useWindowDimensions } from "react-native";
+import { ImageSourcePropType, ScrollView, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 
 interface Props {
   title: string;
-  albums: IAlbum[];
+  albums: AlbumItem[];
 }
 
 /**
@@ -18,16 +18,24 @@ export default function AlbumHomeTemplate({ title, albums }: Props) {
   const { width } = useWindowDimensions();
   const isSmallScreen = width < 380;
 
+  const normalizeImages = (photo: string | string[] | null): ImageSourcePropType[] => {
+    if (!photo) return [];
+    if (Array.isArray(photo)) {
+      return photo.map((url) => ({ uri: url }));
+    }
+    return [{ uri: photo }];
+  };
+
   return (
     <View style={styles.page}>
       <Text style={styles.title}>{title}</Text>
       <ScrollView contentContainerStyle={styles.grid}>
-        {albums.map((album) => (
-          <View key={album.id} style={[styles.item, isSmallScreen && styles.fullItem]}>
+        {albums.map((album, index) => (
+          <View key={`${album.place}-${index}`} style={[styles.item, isSmallScreen && styles.fullItem]}>
             <PhotoSet
-              images={album.images}
-              label={album.label}
-              onPress={() => router.push(`/album/${album.id}`)}
+              images={normalizeImages(album.representPhoto)}
+              label={album.place}
+              onPress={() => router.push(`/album/${album.place}`)}
             />
           </View>
         ))}
