@@ -54,6 +54,7 @@ const MountainMapScreen = () => {
 
       // 데이터를 타입에 맞게 변환
       const parsedData: ChallengeInformation = {
+        challengeId: challengeId,
         ...data[0],
         place: data.placeName,
         condition1: stripBracket(data[0].condition1),

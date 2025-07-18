@@ -8,30 +8,55 @@ import ModalManager from '../common/Modal/ModalManager';
 import { PrimaryButton } from '../common/PrimaryButton';
 
 export default function ChallengeOutputTemplate() {
-  // const bgColorArray = isSuccess ? ['#FFF5F7', '#FBB4C4'] : ['#FDFEFF', '#89C2FF'];
-
+  const isSuccess = false;
+  const bgColorArray: [string, string] = isSuccess ? ['#FFF5F7', '#FBB4C4'] : ['#FDFEFF', '#89C2FF'];
+  const title = isSuccess ? '미션 성공' : '미션 실패';
+  const modalProps = isSuccess
+    ? {
+        title: '축하합니다!',
+        desc: '200 포인트를 획득했어요',
+        buttons: { text: '확인', onPress: () => {} },
+        children: (
+          <Image
+            source={require('@/assets/images/modal/icon-coins.png')}
+            style={{ width: 100, height: 100, marginBottom: 20 }}
+          />
+        ),
+      }
+    : {
+        title: '다시 도전해볼까요?',
+        desc: '그래도 여기까지 왔는데...',
+        children: (
+          <Image
+            source={require('@/assets/images/modal/icon-tryAgain.png')}
+            style={{ width: 100, height: 100, marginBottom: 20 }}
+          />
+        ),
+        options: [
+          {
+            text: '닫기',
+            onPress: () => {},
+            types: 'normal-dismiss',
+          },
+          {
+            text: '다시 도전',
+            onPress: () => {},
+            types: 'status-enabled',
+          },
+        ],
+      };
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   return (
-    <LinearGradient locations={[0, 1]} colors={['#FFF5F7', '#FBB4C4']} style={styles.page}>
+    <LinearGradient locations={[0, 1]} colors={bgColorArray} style={styles.page}>
       <ModalManager
         isShowing={isModalVisible}
         modalType={ModalType.DEFAULT}
-        modalProps={{
-          title: '축하합니다!',
-          desc: '200 포인트를 획득했어요',
-          buttons: { text: '확인', onPress: () => {} },
-          children: (
-            <Image
-              source={require('@/assets/images/modal/icon-coins.png')}
-              style={{ width: 100, height: 100, marginBottom: 20 }}
-            />
-          ),
-        }}
+        modalProps={modalProps}
         onClose={() => {}}
       />
       <View style={styles.container}>
-        <Text style={styles.title}>미션 성공</Text>
+        <Text style={styles.title}>{title}</Text>
         <ChallengeCondition
           condition1="오늘 챌린지를 완료했어요"
           condition2="오늘 챌린지를 완료했어요"

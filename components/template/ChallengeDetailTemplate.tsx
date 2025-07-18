@@ -1,24 +1,97 @@
 import { MCOLORS } from '@/constants/Colors';
+import { BASE_URL } from '@env';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+import { router } from 'expo-router';
 import { useState } from 'react';
-import { Modal, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Image, Modal, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import Loading from '../common/Loading';
 import { PrimaryButton } from '../common/PrimaryButton';
 import { TopBar } from '../common/TopBar';
 import ChallengeCondition from '../map/ChallengeCondition';
 import ChallengeInfo from '../map/ChallengeInfo';
 
-export default function ChallengeInputTemplate() {
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+export default function ChallengeDetailTemplate({
+  id,
+  image,
+  place,
+  content,
+  point,
+  condition1,
+  condition2,
+  condition3,
+  friends,
+}: {
+  id: number;
+  image: string;
+  place: string;
+  content: string;
+  point: string;
+  condition1: string;
+  condition2: string;
+  condition3: string;
+  friends: string;
+}) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const uriParts = image.split('.');
+  const fileType = uriParts[uriParts.length - 1];
+  const formData = new FormData();
 
-  const handleSubmit = () => {
+  formData.append('place', place);
+  formData.append('friends', JSON.stringify(friends.split(',').map(Number)));
+  formData.append('attemptDate', dayjs().tz('Asia/Seoul').format('YYYY-MM-DD'));
+
+  formData.append('attemptImage', {
+    uri: image,
+    name: `photo.${fileType}`,
+    type: `image/jpeg`,
+  } as any); // 또는 as unknown as Blob
+
+  const handleSubmit = async () => {
     setIsLoading(true);
-    setTimeout(() => {
+    try {
+      const res = await axios.post(`${BASE_URL}/challenge/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('res', res.data);
+      if (res.status === 200) {
+        router.push({
+          pathname: '/map/[id]/result',
+          params: {
+            id: id,
+            image: image,
+            condition1: condition1,
+            condition2: condition2,
+            condition3: condition3,
+            point: point,
+            isSuccess: res.data.isSuccess,
+            isSuccessCondition1: res.data.condition1,
+            isSuccessCondition2: res.data.condition2,
+            isSuccessCondition3: res.data.condition3,
+          },
+        });
+      }
+    } catch (error) {
+      console.log('error', error);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
-  console.log(isLoading);
+  console.log('formData', formData);
+  console.log('attemptImage', formData.get('attemptImage'));
+  console.log('place', place);
+  console.log('dayjs', dayjs().tz('Asia/Seoul').format('YYYY-MM-DD'));
+
+  console.log('isLoading', isLoading);
 
   return (
     <View style={styles.page}>
@@ -26,8 +99,8 @@ export default function ChallengeInputTemplate() {
         <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
-              <ChallengeInfo place="장소" content="미션 이름" point={100} />
-              <ChallengeCondition condition1="챌린지 조건 1" condition2="챌린지 조건 2" condition3="챌린지 조건 3" />
+              <ChallengeInfo place={place} content={content} point={Number(point)} />
+              <ChallengeCondition condition1={condition1} condition2={condition2} condition3={condition3} />
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -42,7 +115,9 @@ export default function ChallengeInputTemplate() {
       />
       <View style={styles.container}>
         <Text style={styles.title}>이 사진을 제출할까요?</Text>
-        <View style={styles.imageContainer}></View>
+        <View style={styles.imageContainer}>
+          <Image source={{ uri: image }} style={{ width: '100%', height: '100%' }} />
+        </View>
         <Text style={styles.text}>도전 횟수 (1/3)</Text>
         <View style={styles.buttonContainer}>
           <PrimaryButton kind="normal-dismiss" text="다시 찍기" onPress={() => {}} />

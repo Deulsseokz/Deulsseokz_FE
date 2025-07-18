@@ -1,4 +1,4 @@
-import ChallengeOutputTemplate from '@/components/template/ChallengeOutputTemplate';
+import TestTemplate from '@/components/template/TestTemplate';
 import { Alert } from 'react-native';
 
 export default function TestScreen() {
@@ -19,5 +19,5 @@ export default function TestScreen() {
     Alert.alert('click');
   };
 
-  return <ChallengeOutputTemplate />;
+  return <TestTemplate onAction={handleAction} featureData={featureData} btnTxt="test" />;
 }

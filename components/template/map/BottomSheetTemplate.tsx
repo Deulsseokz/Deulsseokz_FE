@@ -20,7 +20,7 @@ interface BottomSheetProps {
   backStep: () => void; // 모달 내 뒤로가기 처리
   exitSheet: () => void; // 모달 나가기 처리
   /* 모달 내 버튼 클릭시 다음 스텝으로 넘어감 처리 */
-  nextStep: () => void;
+  nextStep: (challengeInfo: ChallengeInformation, stepPayloads: Partial<StepParamMap>) => void;
   step: SheetStep; // 모달의 step 관리
   challengeInfo: ChallengeInformation; // 챌린지 정보 객체
   stepPayloads: Partial<StepParamMap>; // 부모가 관리하는 파라미터 값
@@ -87,6 +87,8 @@ export default function BottomSheetTemplate({
     }
   };
 
+  console.log('challengeInfo', challengeInfo);
+  console.log('stepPayloads', stepPayloads);
   // getKind 함수를 통해 버튼의 status를 동적으로 결정할 수 있도록 한다.
   const { text, getKind } = StepButtonMap[step];
 
@@ -119,7 +121,11 @@ export default function BottomSheetTemplate({
 
         {/* 하단 버튼 영역 */}
         <View style={styles.btnContainer}>
-          <PrimaryButton kind={getKind(stepPayloads)} text={text} onPress={() => nextStep()} />
+          <PrimaryButton
+            kind={getKind(stepPayloads)}
+            text={text}
+            onPress={() => nextStep(challengeInfo, stepPayloads)}
+          />
         </View>
       </Animated.View>
     </SafeAreaView>
