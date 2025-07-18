@@ -1,21 +1,46 @@
-import ChallengeCondition from '@/components/map/ChallengeCondition';
 import { MCOLORS } from '@/constants/Colors';
 import { ModalType } from '@/enums/modalTypes';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import ModalManager from '../common/Modal/ModalManager';
 import { PrimaryButton } from '../common/PrimaryButton';
+import ConditionCheckBox from '../map/ConditionCheckBox';
 
-export default function ChallengeOutputTemplate() {
-  const isSuccess = false;
+export default function ChallengeOutputTemplate({
+  isSuccess,
+  isSuccessCondition1,
+  isSuccessCondition2,
+  isSuccessCondition3,
+  condition1,
+  condition2,
+  condition3,
+  image,
+  id,
+}: {
+  id: number;
+  isSuccess: boolean;
+  isSuccessCondition1: boolean;
+  isSuccessCondition2: boolean;
+  isSuccessCondition3: boolean;
+  condition1: string;
+  condition2: string;
+  condition3: string;
+  image: string;
+}) {
   const bgColorArray: [string, string] = isSuccess ? ['#FFF5F7', '#FBB4C4'] : ['#FDFEFF', '#89C2FF'];
   const title = isSuccess ? '미션 성공' : '미션 실패';
   const modalProps = isSuccess
     ? {
         title: '축하합니다!',
-        desc: '200 포인트를 획득했어요',
-        buttons: { text: '확인', onPress: () => {} },
+        desc: '20 포인트를 획득했어요',
+        buttons: {
+          text: '확인',
+          onPress: () => {
+            router.replace('/album');
+          },
+        },
         children: (
           <Image
             source={require('@/assets/images/modal/icon-coins.png')}
@@ -35,7 +60,9 @@ export default function ChallengeOutputTemplate() {
         options: [
           {
             text: '닫기',
-            onPress: () => {},
+            onPress: () => {
+              router.replace('/(tabs)');
+            },
             types: 'normal-dismiss',
           },
           {
@@ -57,18 +84,30 @@ export default function ChallengeOutputTemplate() {
       />
       <View style={styles.container}>
         <Text style={styles.title}>{title}</Text>
-        <ChallengeCondition
-          condition1="오늘 챌린지를 완료했어요"
-          condition2="오늘 챌린지를 완료했어요"
-          condition3="오늘 챌린지를 완료했어요"
+        <ConditionCheckBox
+          condition1={condition1}
+          condition2={condition2}
+          condition3={condition3}
+          isSuccessCondition1={isSuccessCondition1}
+          isSuccessCondition2={isSuccessCondition2}
+          isSuccessCondition3={isSuccessCondition3}
         />
-        <View style={styles.imageContainer}></View>
+        <View style={styles.imageContainer}>
+          <Image source={{ uri: image }} style={{ width: '100%', height: '100%' }} />
+        </View>
         <View style={styles.buttonContainer}>
-          <PrimaryButton kind="normal-dismiss" size="default" text="닫기" onPress={() => {}} />
+          <PrimaryButton
+            kind="normal-dismiss"
+            size="default"
+            text={isSuccess ? '닫기' : '취소'}
+            onPress={() => {
+              router.replace('/(tabs)');
+            }}
+          />
           <PrimaryButton
             kind="normal-selected"
             size="default"
-            text="앨범으로"
+            text={isSuccess ? '앨범으로' : '다시 도전'}
             onPress={() => setIsModalVisible(true)}
           />
         </View>

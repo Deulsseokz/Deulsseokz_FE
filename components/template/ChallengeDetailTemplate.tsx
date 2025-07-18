@@ -44,7 +44,9 @@ export default function ChallengeDetailTemplate({
   const formData = new FormData();
 
   formData.append('place', place);
-  formData.append('friends', JSON.stringify(friends.split(',').map(Number)));
+  if (friends) {
+    formData.append('friends', JSON.stringify(friends.split(',').map(Number)));
+  }
   formData.append('attemptDate', dayjs().tz('Asia/Seoul').format('YYYY-MM-DD'));
 
   formData.append('attemptImage', {
@@ -63,7 +65,7 @@ export default function ChallengeDetailTemplate({
       });
       console.log('res', res.data);
       if (res.status === 200) {
-        router.push({
+        router.replace({
           pathname: '/map/[id]/result',
           params: {
             id: id,
@@ -72,10 +74,10 @@ export default function ChallengeDetailTemplate({
             condition2: condition2,
             condition3: condition3,
             point: point,
-            isSuccess: res.data.isSuccess,
-            isSuccessCondition1: res.data.condition1,
-            isSuccessCondition2: res.data.condition2,
-            isSuccessCondition3: res.data.condition3,
+            isSuccess: String(res.data.result.attemptResult),
+            isSuccessCondition1: String(res.data.result.condition1),
+            isSuccessCondition2: String(res.data.result.condition2),
+            isSuccessCondition3: String(res.data.result.condition3),
           },
         });
       }
