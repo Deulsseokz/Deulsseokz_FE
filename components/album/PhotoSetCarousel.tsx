@@ -47,8 +47,8 @@ export default function PhotoSetCarousel({
         onSnapToItem={setActiveIndex}
         mode="parallax"
         modeConfig={{
-          parallaxScrollingScale: 0.95,
-          parallaxScrollingOffset: 50,
+          parallaxScrollingScale: 0.85,      
+          parallaxScrollingOffset: 70,       
         }}
         renderItem={({ item }) => (
           <View style={styles.card}>
