@@ -1,4 +1,6 @@
 import { BtnKind } from '@/types/btnAttributes';
+import * as ImagePicker from 'expo-image-picker';
+import { Alert, Linking } from 'react-native';
 import { SheetHeaderConfig, SheetStep, StepButtonProps, StepParamMap, WithWhom } from './_type';
 
 // SheetHeader 설정 매핑 레코드
@@ -56,3 +58,41 @@ export const WITH_WHOM_OPTIONS: WithWhom[] = [
     },
   },
 ];
+
+export const pickImageFromLibrary = async (): Promise<string | undefined> => {
+  const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  if (status !== 'granted') {
+    Alert.alert('권한 필요', '사진을 사용하려면 설정에서 권한을 허용해주세요.', [
+      { text: '설정 열기', onPress: () => Linking.openSettings() },
+      { text: '취소', style: 'cancel' },
+    ]);
+    return;
+  }
+  const result = await ImagePicker.launchImageLibraryAsync({
+    allowsEditing: true,
+    aspect: [1, 1],
+    selectionLimit: 1,
+  });
+  if (!result.canceled) {
+    return result.assets[0].uri;
+  }
+};
+
+export const takePhoto = async (): Promise<string | undefined> => {
+  const { status } = await ImagePicker.requestCameraPermissionsAsync();
+  if (status !== 'granted') {
+    Alert.alert('권한 필요', '카메라를 사용하려면 설정에서 권한을 허용해주세요.', [
+      { text: '설정 열기', onPress: () => Linking.openSettings() },
+      { text: '취소', style: 'cancel' },
+    ]);
+    return;
+  }
+  const result = await ImagePicker.launchCameraAsync({
+    allowsEditing: true,
+    aspect: [1, 1],
+    selectionLimit: 1,
+  });
+  if (!result.canceled) {
+    return result.assets[0].uri;
+  }
+};

@@ -1,4 +1,5 @@
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
@@ -19,25 +20,27 @@ export default function RootLayout() {
   }
 
   return (
-    <SafeAreaProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="test" />
-          <Stack.Screen name="map/location" />
-          <Stack.Screen name="map/searchArea" />
-          <Stack.Screen name="map/searchAreaResult" />
-          <Stack.Screen name="map/challengeInput" />
-          <Stack.Screen name="map/[id]" />
-          <Stack.Screen name="album/share/index" />
-          <Stack.Screen name="album/share/[id]" />
-          <Stack.Screen name="album/[id]/index" />
-          <Stack.Screen name="album/[id]/edit" />
-          <Stack.Screen name="album/[id]/download" />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-      </ThemeProvider>
-    </SafeAreaProvider>
+    <ActionSheetProvider>
+      <SafeAreaProvider>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="test" />
+            <Stack.Screen name="map/location" />
+            <Stack.Screen name="map/searchArea" />
+            <Stack.Screen name="map/searchAreaResult" />
+            <Stack.Screen name="map/[id]/index" />
+            <Stack.Screen name="map/[id]/result" />
+            <Stack.Screen name="album/share/index" />
+            <Stack.Screen name="album/share/[id]" />
+            <Stack.Screen name="album/[id]/index" />
+            <Stack.Screen name="album/[id]/edit" />
+            <Stack.Screen name="album/[id]/download" />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+          <StatusBar style="auto" />
+        </ThemeProvider>
+      </SafeAreaProvider>
+    </ActionSheetProvider>
   );
 }

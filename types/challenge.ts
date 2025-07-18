@@ -6,7 +6,9 @@ export interface Coord {
 // 챌린지 정보 타입
 // place로 요청
 export type ChallengeInformation = {
-  place: string; // 장소명
+  challengeId: number;
+  place: string;
+  placeName: string; // 장소명
   content: string; // 챌린지명
   point: number; // 포인트
   condition1: string; // 조건 1

@@ -19,5 +19,5 @@ export default function TestScreen() {
     Alert.alert('click');
   };
 
-  return <TestTemplate onAction={handleAction} featureData={featureData} btnTxt="테스트 버튼" />;
+  return <TestTemplate onAction={handleAction} featureData={featureData} btnTxt="test" />;
 }
