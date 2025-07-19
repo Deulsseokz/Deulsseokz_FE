@@ -1,6 +1,7 @@
 
 import { FeelingType } from "@/types/feeling";
 import { WeatherType } from "@/types/weather";
+import { formatDate } from "@/utils/formatDate";
 import React from "react";
 import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
@@ -11,7 +12,7 @@ const CARD_HEIGHT = 514;
 interface PhotoSetCarouselProps {
   /** 폴라로이드 사진 리스트 (additional - opt) */
   photos: {
-    id: string;
+    id: number;
     image: ImageSourcePropType;
     additional?: {
       weather: WeatherType;
@@ -46,8 +47,8 @@ export default function PhotoSetCarousel({
         onSnapToItem={setActiveIndex}
         mode="parallax"
         modeConfig={{
-          parallaxScrollingScale: 0.95,
-          parallaxScrollingOffset: 50,
+          parallaxScrollingScale: 0.85,      
+          parallaxScrollingOffset: 70,       
         }}
         renderItem={({ item }) => (
           <View style={styles.card}>
@@ -68,7 +69,7 @@ export default function PhotoSetCarousel({
                 )}
               </View>
 
-              <Text style={styles.date}>{item.date}</Text>
+              <Text style={styles.date}>{formatDate(item.date)}</Text>
             </View>
           </View>
         )}

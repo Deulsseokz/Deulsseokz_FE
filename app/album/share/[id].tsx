@@ -1,8 +1,10 @@
-import { dummyPhoto } from "@/components/album/_type";
+import { PolaroidPhoto } from "@/components/album/_type";
 import AlbumShareIdTemplate from "@/components/template/AlbumShareIdTemplate";
 import { BadgeType, FrameType } from "@/types/shareType";
-import React, { useState } from "react";
+import { useLocalSearchParams } from "expo-router";
+import { useMemo, useState } from "react";
 
+/** config */
 const frameOptions = [
   { type: FrameType.WHITE, label: "흰색" },
   { type: FrameType.BLACK, label: "검정색" },
@@ -18,17 +20,30 @@ const badgeOptions = [
 ];
 
 export default function AlbumShareIdScreen() {
+  /** router */
+  const { photo } = useLocalSearchParams<{ photo: string }>();
+  /** state */
   const [step, setStep] = useState<1 | 2>(1);
   const [selectedFrame, setSelectedFrame] = useState<FrameType>(FrameType.WHITE);
   const [selectedBadge, setSelectedBadge] = useState<BadgeType | null>(null);
+  /** variable */
+  const selectedPhoto = useMemo<PolaroidPhoto | null>(() => {
+    try {
+      return JSON.parse(decodeURIComponent(photo));
+    } catch (e) {
+      console.error("사진 파싱 실패:", e);
+      return null;
+    }
+  }, [photo]);
 
+  /** handler function (related router) */
   const handleNext = () => setStep(2);
   const handleShare = () => {};
 
   return (
     <AlbumShareIdTemplate
       step={step}
-      photo={dummyPhoto}
+      photo={selectedPhoto as PolaroidPhoto}
       selectedFrame={selectedFrame}
       selectedBadge={selectedBadge}
       frameOptions={frameOptions}

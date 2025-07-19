@@ -5,7 +5,7 @@ import { ImageSourcePropType } from "react-native";
 /** 폴라로이드 한 장에 대한 공통 데이터 타입 */
 export interface PolaroidPhoto {
   /** 식별자  */
-  id: string;
+  id: number;
   /** 이미지 소스 (require 또는 { uri }) */
   image: ImageSourcePropType;
   /** 부가 정보: 날씨, 기분, 설명 */
@@ -29,7 +29,7 @@ export interface PolaroidProps {
 
 /** Polaroid 컴포넌트 임시 더미 데이터 */
 export const dummyPhoto: PolaroidPhoto = {
-  id: "1",
+  id: 1,
   image: require("@/assets/images/album/photo1.jpeg"),
   additional: {
     feeling: "😁",
@@ -41,7 +41,7 @@ export const dummyPhoto: PolaroidPhoto = {
 
 export const dummyPhotos: PolaroidPhoto[] = [
   {
-    id: "1",
+    id: 1,
     image: require("@/assets/images/album/photo1.jpeg"),
     additional: {
       feeling: FEELING_CRY,
@@ -51,7 +51,7 @@ export const dummyPhotos: PolaroidPhoto[] = [
     date: "2025.05.21",
   },
   {
-    id: "2",
+    id: 2,
     image: require("@/assets/images/album/photo2.jpeg"),
     additional: {
       feeling: FEELING_HAPPY,
@@ -61,7 +61,7 @@ export const dummyPhotos: PolaroidPhoto[] = [
     date: "2025.06.02",
   },
   {
-    id: "3",
+    id: 3,
     image: require("@/assets/images/album/photo3.jpeg"),
     additional: {
       feeling: FEELING_HAPPY,
