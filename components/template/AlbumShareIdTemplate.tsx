@@ -6,10 +6,11 @@ import { TopBar } from "@/components/common/TopBar";
 import { BadgeType, FrameType } from "@/types/shareType";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { PolaroidPhoto } from "../album/_type";
 
 interface AlbumShareIdTemplateProps {
   step: 1 | 2;
-  photo: any;
+  photo: PolaroidPhoto;
   selectedFrame: FrameType;
   selectedBadge: BadgeType | null;
   frameOptions?: {
@@ -55,7 +56,7 @@ export default function AlbumShareIdTemplate({
 }: AlbumShareIdTemplateProps) {
   return (
     <View style={styles.page}>
-      <TopBar rightButton={<PriceTag price={800} />} />
+      <TopBar title="" rightButton={<PriceTag price={800} />} />
       <View style={styles.container}>
         <CustomPolaroid photo={photo} frame={selectedFrame} badge={selectedBadge} />
 

@@ -1,3 +1,4 @@
+import { formatDate } from "@/utils/formatDate";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { PolaroidProps } from "./_type";
@@ -22,7 +23,7 @@ export default function Polaroid({ photo }: PolaroidProps) {
         </Text>
       </View>
 
-      <Text style={styles.date}>{date}</Text>
+      <Text style={styles.date}>{formatDate(date)}</Text>
     </View>
   );
 }

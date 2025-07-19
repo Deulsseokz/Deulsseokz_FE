@@ -7,6 +7,7 @@ import React from 'react';
 import { Image, StyleSheet, TextInput, View } from 'react-native';
 
 interface AlbumEditTemplateProps {
+  isSaveEnabled?: boolean;
   imageSource: any;
   feelings: FeelingType[];
   weathers: WeatherType[];
@@ -21,6 +22,7 @@ interface AlbumEditTemplateProps {
 }
 
 /** 앨범 편집 템플릿
+ * @param isSaveEnabled - 저장 버튼 활성화 여부
  * @param imageSource - 편집할 이미지 소스
  * @param feelings - 기분 이모지 리스트
  * @param weathers - 날씨 이모지 리스트
@@ -32,8 +34,10 @@ interface AlbumEditTemplateProps {
  * @param onChangeDesc - 인풋 텍스트 변경 핸들러
  * @param onSave - 저장 버튼 핸들러
  * @param onCancel - 취소 버튼 핸들러
+ * 
  */
 export default function AlbumEditTemplate({
+  isSaveEnabled,
   imageSource,
   feelings,
   weathers,
@@ -74,7 +78,7 @@ export default function AlbumEditTemplate({
         </View>
         <View style={styles.buttonContainer}>
           <PrimaryButton kind="normal-dismiss" text="취소" onPress={onCancel} />
-          <PrimaryButton kind="status-enabled" text="저장" onPress={onSave} />
+          <PrimaryButton kind={ isSaveEnabled ? "status-enabled" : "status-disabled"} text="저장" onPress={onSave} />
         </View>
       </View>
     </View>

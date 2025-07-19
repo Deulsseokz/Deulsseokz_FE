@@ -1,5 +1,8 @@
+import IcnMore from '@/assets/icons/icon-more.svg';
 import PhotoSetCarousel from '@/components/album/PhotoSetCarousel';
+import Dropdown from '@/components/common/Dropdown';
 import { TopBar } from '@/components/common/TopBar';
+import React, { useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { PolaroidPhoto } from '../album/_type';
 
@@ -10,16 +13,14 @@ interface Props {
   onEdit: () => void;
   onDownload: () => void;
   albumTitle: string;
+  menu: {
+    label: string;
+    onPress: () => void;
+  }[];
 }
 
 /**
  * 앨범 상세 보기 템플릿
- * @param photos - 특정 앨범에 포함된 사진들
- * @param activeIndex - 캐러셀에서 현재 활성화된 사진 인덱스
- * @param setActiveIndex - 활성화된 사진 인덱스를 설정하는 함수
- * @param onEdit - 편집 버튼 클릭 시 호출되는 함수
- * @param onDownload - 다운로드 버튼 클릭 시 호출되는 함수
- * @param albumTitle - 앨범 제목
  */
 export default function AlbumIdTemplate({
   photos,
@@ -28,22 +29,50 @@ export default function AlbumIdTemplate({
   onEdit,
   onDownload,
   albumTitle,
+  menu
 }: Props) {
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+
+  const openMenu = () => setDropdownVisible(true);
+  const closeMenu = () => setDropdownVisible(false);
+
+  const handleSelect = (action: () => void) => {
+    action();
+    closeMenu();
+  };
+
   return (
-    <View style={styles.page}>
-      <TopBar title={albumTitle} />
-      <View style={styles.container}>
-        <View style={styles.icon_container}>
-          <TouchableOpacity onPress={onEdit} style={styles.icon_button}>
-            <Image source={require('@/assets/images/icon/icon-edit.png')} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={onDownload} style={styles.icon_button}>
-            <Image source={require('@/assets/images/icon/icon-download.png')} />
-          </TouchableOpacity>
+    <>
+      <View style={styles.page}>
+        <TopBar title={albumTitle} rightButton={<IcnMore />} onRightPress={openMenu} />
+        <View style={styles.container}>
+          <View style={styles.icon_container}>
+            <TouchableOpacity onPress={onEdit} style={styles.icon_button}>
+              <Image source={require('@/assets/images/icon/icon-edit.png')} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onDownload} style={styles.icon_button}>
+              <Image source={require('@/assets/images/icon/icon-download.png')} />
+            </TouchableOpacity>
+          </View>
+          <PhotoSetCarousel
+            photos={photos}
+            activeIndex={activeIndex}
+            setActiveIndex={setActiveIndex}
+          />
         </View>
-        <PhotoSetCarousel photos={photos} activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
       </View>
-    </View>
+
+      {dropdownVisible && (
+        <Dropdown
+          visible={dropdownVisible}
+          onClose={closeMenu}
+          options={menu.map((item) => ({
+            label: item.label,
+            onPress: () => handleSelect(item.onPress),
+          }))}
+        />
+      )}
+    </>
   );
 }
 

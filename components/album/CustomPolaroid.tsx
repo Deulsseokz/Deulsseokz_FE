@@ -1,4 +1,5 @@
 import { BadgeType, FrameType } from "@/types/shareType";
+import { formatDate } from "@/utils/formatDate";
 import {
   Image,
   StyleSheet,
@@ -28,11 +29,14 @@ export default function CustomPolaroid({
 }: PolaroidProps & CustomPolaroidProps) {
   const { image, additional, date } = photo;
 
+  const isBlack = frame === FrameType.BLACK;
+  const textColor = { color: isBlack ? "#E9E9E9" : "#4A4A4A" };
+
   return (
     <View
       style={[
         styles.polaroid,
-        frame === FrameType.BLACK ? styles.blackFrame : styles.whiteFrame,
+        isBlack ? styles.blackFrame : styles.whiteFrame,
       ]}
     >
       <Image source={image} style={styles.image} />
@@ -46,15 +50,15 @@ export default function CustomPolaroid({
       )}
 
       <View>
-        <Text style={styles.emoji}>
+        <Text style={[styles.emoji, textColor]}>
           {additional.feeling} {additional.weather}
         </Text>
-        <Text style={styles.desc} numberOfLines={2}>
+        <Text style={[styles.desc, textColor]} numberOfLines={2}>
           {additional.desc}
         </Text>
       </View>
 
-      <Text style={styles.date}>{date}</Text>
+      <Text style={[styles.date, textColor]}>{formatDate(date)}</Text>
     </View>
   );
 }
