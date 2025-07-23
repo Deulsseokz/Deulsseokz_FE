@@ -1,11 +1,12 @@
+import { ButtonVariant } from "@/constants/buttonTypes";
 import { MCOLORS } from '@/constants/Colors';
 import { ModalType } from '@/enums/modalTypes';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
+import { PrimaryButton } from '../common/Button/PrimaryButton';
 import ModalManager from '../common/Modal/ModalManager';
-import { PrimaryButton } from '../common/PrimaryButton';
 import ConditionCheckBox from '../map/ConditionCheckBox';
 
 export default function ChallengeOutputTemplate({
@@ -63,12 +64,12 @@ export default function ChallengeOutputTemplate({
             onPress: () => {
               router.replace('/(tabs)');
             },
-            types: 'normal-dismiss',
+            types: ButtonVariant.Subtle,
           },
           {
             text: '다시 도전',
             onPress: () => {},
-            types: 'status-enabled',
+            types: ButtonVariant.Primary,
           },
         ],
       };
@@ -97,16 +98,14 @@ export default function ChallengeOutputTemplate({
         </View>
         <View style={styles.buttonContainer}>
           <PrimaryButton
-            kind="normal-dismiss"
-            size="default"
+            variant={ButtonVariant.Subtle}
             text={isSuccess ? '닫기' : '취소'}
             onPress={() => {
               router.replace('/(tabs)');
             }}
           />
           <PrimaryButton
-            kind="normal-selected"
-            size="default"
+            variant={ButtonVariant.Primary}
             text={isSuccess ? '앨범으로' : '다시 도전'}
             onPress={() => setIsModalVisible(true)}
           />

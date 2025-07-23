@@ -1,4 +1,4 @@
-import { PrimaryButton } from '@/components/common/PrimaryButton';
+import { PrimaryButton } from '@/components/common/Button/PrimaryButton';
 import { SheetStep, StepParamMap } from '@/components/map/_type';
 import { StepButtonMap } from '@/components/map/_util';
 import ChallengeCondition from '@/components/map/ChallengeCondition';
@@ -7,6 +7,7 @@ import ChallengeInfo from '@/components/map/ChallengeInfo';
 import FriendSelector from '@/components/map/FriendSelector';
 import SheetHeader from '@/components/map/SheetHeader';
 import WithWhomSelector from '@/components/map/WithWhomSelector';
+import { ButtonVariant } from "@/constants/buttonTypes";
 import { MOCK_FRIENDS } from '@/constants/map/friends';
 import { ChallengeInformation } from '@/types/challenge';
 import React, { useEffect, useRef } from 'react';
@@ -87,10 +88,8 @@ export default function BottomSheetTemplate({
     }
   };
 
-  console.log('challengeInfo', challengeInfo);
-  console.log('stepPayloads', stepPayloads);
   // getKind 함수를 통해 버튼의 status를 동적으로 결정할 수 있도록 한다.
-  const { text, getKind } = StepButtonMap[step];
+  const { text, getVariant } = StepButtonMap[step];
 
   if (!visible || !challengeInfo) return null;
   return (
@@ -121,8 +120,8 @@ export default function BottomSheetTemplate({
 
         {/* 하단 버튼 영역 */}
          <View style={styles.btnContainer}>
-          {challengeInfo.isChallenged ? <PrimaryButton kind={'normal-dismiss'} text={"점령 완료"} onPress={() => {}} /> : <PrimaryButton
-            kind={getKind(stepPayloads)}
+          {challengeInfo.isChallenged ? <PrimaryButton variant={ButtonVariant.Disable} text={"점령 완료"} onPress={() => {}} /> : <PrimaryButton
+           variant={getVariant(stepPayloads)}
             text={text}
             onPress={() => nextStep(challengeInfo, stepPayloads)}
           />}

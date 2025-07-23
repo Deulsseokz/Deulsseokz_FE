@@ -1,7 +1,8 @@
 import PhotoSelector from "@/components/album/PhotoSelector";
+import { PrimaryButton } from "@/components/common/Button/PrimaryButton";
 import PriceTag from "@/components/common/PriceTag";
-import { PrimaryButton } from "@/components/common/PrimaryButton";
 import { TopBar } from "@/components/common/TopBar";
+import { ButtonVariant } from "@/constants/buttonTypes";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { PolaroidPhoto } from "../album/_type";
@@ -61,7 +62,7 @@ export default function AlbumShareTemplate({
             maxSelectCnt={maxSelectCount}
           />
         </View>
-        <PrimaryButton text="다음" kind="status-enabled" onPress={onPressNext} />
+        <PrimaryButton text="다음" variant={ButtonVariant.Primary} onPress={onPressNext} />
       </View>
     </View>
   );
