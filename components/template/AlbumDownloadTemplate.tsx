@@ -1,8 +1,9 @@
 import { PolaroidPhoto } from '@/components/album/_type';
 import Polaroid from '@/components/album/Polaroid';
+import { PrimaryButton } from '@/components/common/Button/PrimaryButton';
 import ModalManager from '@/components/common/Modal/ModalManager';
-import { PrimaryButton } from '@/components/common/PrimaryButton';
 import { TopBar } from '@/components/common/TopBar';
+import { ButtonVariant } from "@/constants/buttonTypes";
 import { ModalType } from '@/enums/modalTypes';
 import useModal from '@/hooks/useModal';
 import React from 'react';
@@ -45,7 +46,7 @@ export default function AlbumDownloadTemplate({ photo, albumTitle, cnt }: AlbumD
           <Text style={styles.label}>
             남은 횟수 ( {cnt.curr} / {cnt.tot} )
           </Text>
-          <PrimaryButton text="다운로드" onPress={handleDownload} kind="status-enabled" />
+          <PrimaryButton text="다운로드" onPress={handleDownload} variant={ButtonVariant.Primary} />
         </View>
         <ModalManager isShowing={isShowing} modalType={modalType} modalProps={modalProps} onClose={hide} />
       </View>

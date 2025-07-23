@@ -1,6 +1,7 @@
 import EmojiSelector from '@/components/album/EmojiSelector';
-import { PrimaryButton } from '@/components/common/PrimaryButton';
+import { PrimaryButton } from '@/components/common/Button/PrimaryButton';
 import { TopBar } from '@/components/common/TopBar';
+import { ButtonVariant } from "@/constants/buttonTypes";
 import { FeelingType } from '@/types/feeling';
 import { WeatherType } from '@/types/weather';
 import React from 'react';
@@ -77,8 +78,8 @@ export default function AlbumEditTemplate({
           />
         </View>
         <View style={styles.buttonContainer}>
-          <PrimaryButton kind="normal-dismiss" text="취소" onPress={onCancel} />
-          <PrimaryButton kind={ isSaveEnabled ? "status-enabled" : "status-disabled"} text="저장" onPress={onSave} />
+          <PrimaryButton variant={ButtonVariant.Subtle} text="취소" onPress={onCancel} />
+          <PrimaryButton variant={ isSaveEnabled ? ButtonVariant.Primary : ButtonVariant.Disable} text="저장" onPress={onSave} />
         </View>
       </View>
     </View>
