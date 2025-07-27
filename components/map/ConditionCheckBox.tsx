@@ -1,6 +1,6 @@
 import IconCheck from '@/assets/icons/icon-check.svg';
 import IconCross from '@/assets/icons/icon-cross.svg';
-import { MCOLORS } from '@/constants/Colors';
+import { MCOLORS } from '@/constants/colors';
 import { StyleSheet, Text, View } from 'react-native';
 
 interface ConditionCheckBoxProps {

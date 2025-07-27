@@ -3,7 +3,7 @@
  * @returns 하나의 지역에 대한 랜드마크를 touchable하게 list형태로 반환
  */
 
-import { MCOLORS } from '@/constants/Colors';
+import { MCOLORS } from '@/constants/colors';
 import { TEMP_RECOMMEND_DATA } from '@/constants/map/locationData';
 import navigateToCenterCoord from '@/utils/navigateToCenterCoord';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';

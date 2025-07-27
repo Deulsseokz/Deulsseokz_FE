@@ -1,4 +1,4 @@
-import { MCOLORS } from '@/constants/Colors';
+import { MCOLORS } from '@/constants/colors';
 import { BtnKind, BtnSize } from '@/types/btnAttributes';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { TextStyle, ViewStyle } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';

@@ -1,6 +1,6 @@
 import IcnClose from '@/assets/icons/icon-close-black.svg';
 import IcnSearch from '@/assets/icons/icon-search.svg';
-import { MCOLORS } from '@/constants/Colors';
+import { MCOLORS } from '@/constants/colors';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface LocationHeaderProps {

@@ -1,4 +1,4 @@
-import { MCOLORS } from '@/constants/Colors';
+import { MCOLORS } from '@/constants/colors';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ChallengeWith } from './_type';
 import { WITH_WHOM_OPTIONS } from './_util';

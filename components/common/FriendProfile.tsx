@@ -1,6 +1,6 @@
 import IconPersonSelected from '@/assets/icons/icon-person-selected.svg';
 import IconPerson from '@/assets/icons/icon-person.svg';
-import { MCOLORS } from '@/constants/Colors';
+import { MCOLORS } from '@/constants/colors';
 import { Friend } from '@/types/friend';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 

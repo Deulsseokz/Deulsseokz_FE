@@ -1,4 +1,4 @@
-import { MCOLORS } from '@/constants/Colors';
+import { MCOLORS } from '@/constants/colors';
 import { ModalType } from '@/enums/modalTypes';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
