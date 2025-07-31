@@ -25,7 +25,7 @@
 		9705ACEB3FC11EFE783120A7 /* Pods-Mellog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mellog.debug.xcconfig"; path = "Target Support Files/Pods-Mellog/Pods-Mellog.debug.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = Mellog/SplashScreen.storyboard; sourceTree = "<group>"; };
 		B10E6D70FB1FE34DA07A327D /* Pods-Mellog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mellog.release.xcconfig"; path = "Target Support Files/Pods-Mellog/Pods-Mellog.release.xcconfig"; sourceTree = "<group>"; };
-		B767471A92E1A3EB1429040B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = Mellog/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		B767471A92E1A3EB1429040B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Mellog/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Mellog/AppDelegate.swift; sourceTree = "<group>"; };
@@ -73,7 +73,6 @@
 				9705ACEB3FC11EFE783120A7 /* Pods-Mellog.debug.xcconfig */,
 				B10E6D70FB1FE34DA07A327D /* Pods-Mellog.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -166,7 +165,6 @@
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = AY46PW2JGD;
 						LastSwiftMigration = 1250;
 						ProvisioningStyle = Automatic;
 					};
