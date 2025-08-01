@@ -1,4 +1,4 @@
-import { BtnKind } from '@/types/btnAttributes';
+import { ButtonVariant } from "@/constants/buttonTypes";
 import * as ImagePicker from 'expo-image-picker';
 import { Alert, Linking } from 'react-native';
 import { SheetHeaderConfig, SheetStep, StepButtonProps, StepParamMap, WithWhom } from './_type';
@@ -15,27 +15,27 @@ export const StepHeaderMap: Record<SheetStep, SheetHeaderConfig> = {
 export const StepButtonMap: Record<SheetStep, StepButtonProps> = {
   [SheetStep.INFO]: {
     text: '점령하기',
-    getKind: (_: Partial<StepParamMap>): BtnKind => 'status-enabled',
+    getVariant: (_: Partial<StepParamMap>): ButtonVariant => ButtonVariant.Primary,
   },
   [SheetStep.WITH_WHOM]: {
     text: '다음',
-    getKind: (payloads: Partial<StepParamMap>): BtnKind => {
+    getVariant: (payloads: Partial<StepParamMap>): ButtonVariant => {
       // 값이 존재하면 enable된 버튼을, 그렇지 않으면 disable된 버튼을 리턴
       const val = payloads[SheetStep.WITH_WHOM];
-      return val === 'ALONE' || val === 'FRIEND' ? 'status-enabled' : 'status-disabled';
+      return val === 'ALONE' || val === 'FRIEND' ? ButtonVariant.Primary : ButtonVariant.Disable
     },
   },
   [SheetStep.SELECT_FRIEND]: {
     text: '다음',
-    getKind: (payloads: Partial<StepParamMap>): BtnKind => {
+    getVariant: (payloads: Partial<StepParamMap>): ButtonVariant => {
       // 값이 존재하면 enable된 버튼을, 그렇지 않으면 disable된 버튼을 리턴
       const selectedFriends = payloads[SheetStep.SELECT_FRIEND];
-      return Array.isArray(selectedFriends) && selectedFriends.length > 0 ? 'status-enabled' : 'status-disabled';
+      return Array.isArray(selectedFriends) && selectedFriends.length > 0 ? ButtonVariant.Primary : ButtonVariant.Disable
     },
   },
   [SheetStep.SUBMIT]: {
     text: '촬영하기',
-    getKind: (_: Partial<StepParamMap>): BtnKind => 'status-enabled',
+    getVariant: (_: Partial<StepParamMap>): ButtonVariant => ButtonVariant.Primary,
   },
 };
 

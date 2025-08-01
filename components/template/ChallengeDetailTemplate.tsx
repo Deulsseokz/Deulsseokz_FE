@@ -1,3 +1,4 @@
+import { ButtonVariant } from "@/constants/buttonTypes";
 import { MCOLORS } from '@/constants/colors';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
@@ -5,8 +6,8 @@ import utc from 'dayjs/plugin/utc';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Image, Modal, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { PrimaryButton } from '../common/Button/PrimaryButton';
 import Loading from '../common/Loading';
-import { PrimaryButton } from '../common/PrimaryButton';
 import { TopBar } from '../common/TopBar';
 import ChallengeCondition from '../map/ChallengeCondition';
 import ChallengeInfo from '../map/ChallengeInfo';
@@ -68,13 +69,13 @@ export default function ChallengeDetailTemplate({
         <Text style={styles.text}>도전 횟수 (1/3)</Text>
         <View style={styles.buttonContainer}>
           <PrimaryButton
-            kind="normal-dismiss"
+            variant={ButtonVariant.Subtle}
             text="다시 찍기"
             onPress={() => {
               router.back();
             }}
           />
-          <PrimaryButton kind="status-enabled" text="제출하기" onPress={handleSubmit} />
+          <PrimaryButton variant={ButtonVariant.Primary} text="제출하기" onPress={handleSubmit} />
         </View>
       </View>
     </View>

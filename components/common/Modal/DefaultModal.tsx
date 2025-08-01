@@ -1,7 +1,7 @@
-import { BtnKind } from "@/types/btnAttributes";
+import { ButtonSize, ButtonVariant } from "@/constants/buttonTypes";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { PrimaryButton } from "../PrimaryButton";
+import { PrimaryButton } from "../Button/PrimaryButton";
 
 interface DefaultModalProps {
   /** 모달 제목 */
@@ -17,10 +17,10 @@ interface DefaultModalProps {
     /** 버튼 클릭 시 실행 함수 */
     onPress: () => void;
   };
-  /** 서브 옵션 버튼들 (btnKind 필요) */
+  /** 서브 옵션 버튼들 (btnVariant 필요) */
   options?: {
     /** 버튼 스타일 종류 */
-    types: BtnKind;
+    types: ButtonVariant;
     /** 버튼 텍스트 */
     text: string;
     /** 버튼 클릭 시 실행 함수 */
@@ -48,7 +48,7 @@ export default function DefaultModal({
 
       {buttons && (
         <PrimaryButton
-          kind="status-enabled"
+          variant={ButtonVariant.Primary}
           text={buttons.text}
           onPress={buttons.onPress}
         />
@@ -59,8 +59,8 @@ export default function DefaultModal({
           {options.map((option, idx) => (
             <PrimaryButton
               key={idx}
-              kind={option.types}
-              size="small"
+               variant={option.types}
+               size={ButtonSize.Small}
               text={option.text}
               onPress={option.onPress}
             />

@@ -2,6 +2,7 @@ import { patchPhotoToAlbum } from "@/api/album";
 import { PolaroidPhoto } from "@/components/album/_type";
 import ModalManager from "@/components/common/Modal/ModalManager";
 import AlbumEditTemplate from "@/components/template/AlbumEditTemplate";
+import { ButtonVariant } from "@/constants/buttonTypes";
 import { ModalType } from "@/enums/modalTypes";
 import useModal from "@/hooks/useModal";
 import { FeelingType } from "@/types/feeling";
@@ -108,12 +109,12 @@ export default function AlbumEditScreen() {
       options: [
         {
           text: "취소",
-          type: "normal-dismiss" as const,
+          variant: ButtonVariant.Subtle,
           onPress: hideCancelModal,
         },
         {
           text: "나가기",
-          type: "status-enabled" as const,
+          variant: ButtonVariant.Primary,
           onPress: () => {
             hideCancelModal();
             router.push("/album/");
