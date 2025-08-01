@@ -5,8 +5,8 @@
  */
 export enum ButtonVariant {
     Primary= 'PRIMARY',
-    Subtle= 'Subtle',
-    Disable= 'Disable'
+    Subtle= 'SUBTLE',
+    Disable= 'DISABLE'
 };
 
 export enum ButtonSize {
