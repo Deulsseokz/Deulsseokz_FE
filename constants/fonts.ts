@@ -3,36 +3,38 @@ import { StyleSheet } from 'react-native';
 /**
  * 멜로그 폰트 시스템
  */
+
+// semibold, bold, medium, 
 export const fontStyles = StyleSheet.create({
-  heading1: {
-    fontFamily: 'Pretendard-SemiBold',
-    fontSize: 24,
-    lineHeight: 28,
-  },
-  heading2: {
+  bold20: {
     fontFamily: 'Pretendard-Bold',
     fontSize: 20,
     lineHeight: 24,
   },
-  bodyLarge: {
+  bold17: {
+    fontFamily: 'Pretendard-Bold',
+    fontSize: 17,
+    lineHeight: 24,
+  },
+  medium17: {
     fontFamily: 'Pretendard-Medium',
     fontSize: 17,
-    lineHeight: 20,
-  },
-  bodyMedium: {
-    fontFamily: 'Pretendard-SemiBold',
-    fontSize: 15,
     lineHeight: 18,
   },
-  bodySmall: {
+  bold15: {
+    fontFamily: 'Pretendard-Bold',
+    fontSize: 15,
+    lineHeight: 20,
+  },
+  medium15: {
     fontFamily: 'Pretendard-Medium',
-    fontSize: 13,
-    lineHeight: 15,
+    fontSize: 15,
+    lineHeight: 18,
   },
   caption: {
     fontFamily: 'Pretendard-SemiBold',
     fontSize: 13,
-    lineHeight: 15,
+    lineHeight: 20,
   },
 });
 

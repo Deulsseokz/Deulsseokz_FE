@@ -1,5 +1,5 @@
 import { ButtonSize, ButtonVariant } from "@/constants/buttonTypes";
-import { MCOLORS } from "@/constants/Colors";
+import { MCOLORS } from "@/constants/colors";
 import { ButtonStyle } from "@/types/btnStyle";
 
 /**

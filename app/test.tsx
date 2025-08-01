@@ -1,5 +1,5 @@
 import { TopBar } from '@/components/common/TopBar';
-import { MCOLORS } from '@/constants/Colors';
+import { MCOLORS } from '@/constants/colors';
 import { useNavigation } from '@react-navigation/native';
 import { useLayoutEffect } from 'react';
 import { StyleSheet, Text } from 'react-native';

@@ -1,4 +1,4 @@
-import { MCOLORS } from '@/constants/Colors';
+import { MCOLORS } from '@/constants/colors';
 import { Location } from '@/types/location';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 

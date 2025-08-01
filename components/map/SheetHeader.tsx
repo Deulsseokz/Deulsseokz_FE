@@ -1,5 +1,5 @@
 import CloseIcn from '@/assets/icons/icon-close-black.svg';
-import { MCOLORS } from '@/constants/Colors';
+import { MCOLORS } from '@/constants/colors';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import BackBtn from '../../components/common/BackBtn';
 import FavoritePlace from '../common/FavoritePlace';

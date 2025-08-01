@@ -4,7 +4,7 @@
  */
 
 import IcnFriend from '@/assets/icons/icon-person.svg';
-import { MCOLORS } from '@/constants/Colors';
+import { MCOLORS } from '@/constants/colors';
 import { Friend } from '@/types/friend';
 import { StyleSheet, Text, View } from 'react-native';
 

@@ -1,7 +1,7 @@
 import IcnClose from '@/assets/icons/icon-close-black.svg';
 import { TopBar } from '@/components/common/TopBar';
 import LocationListItem from '@/components/map/location/LocationListItem';
-import { MCOLORS } from '@/constants/Colors';
+import { MCOLORS } from '@/constants/colors';
 import { Location } from '@/types/location';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Alert, StyleSheet, Text, View } from 'react-native';
