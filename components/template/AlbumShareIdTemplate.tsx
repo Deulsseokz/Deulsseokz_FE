@@ -1,8 +1,9 @@
 import CustomPolaroid from "@/components/album/CustomPolaroid";
 import OptionSelectionEl from "@/components/album/OptionSelectionEl";
+import { PrimaryButton } from "@/components/common/Button/PrimaryButton";
 import PriceTag from "@/components/common/PriceTag";
-import { PrimaryButton } from "@/components/common/PrimaryButton";
 import { TopBar } from "@/components/common/TopBar";
+import { ButtonVariant } from "@/constants/buttonTypes";
 import { BadgeType, FrameType } from "@/types/shareType";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -97,7 +98,7 @@ export default function AlbumShareIdTemplate({
 
         <PrimaryButton
           text={step === 1 ? "다음" : "공유하기"}
-          kind="status-enabled"
+          variant={ButtonVariant.Primary}
           onPress={step === 1 ? onNext : onShare}
         />
       </View>

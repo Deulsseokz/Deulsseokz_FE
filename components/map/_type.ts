@@ -1,4 +1,4 @@
-import { BtnKind } from '@/types/btnAttributes';
+import { ButtonVariant } from "@/constants/buttonTypes";
 import { Friend } from '@/types/friend';
 import { ImageSourcePropType } from 'react-native';
 
@@ -28,7 +28,7 @@ export interface SheetHeaderConfig {
 // 바텀시트 버튼 렌더링 설정 타입
 export type StepButtonProps = {
   text: string;
-  getKind: (payloads: Partial<StepParamMap>) => BtnKind;
+  getVariant: (payloads: Partial<StepParamMap>) =>ButtonVariant;
 };
 
 // 2단계(WITHWHOM) 챌린지를 혼자 할지 친구와 할지 결정 타입
