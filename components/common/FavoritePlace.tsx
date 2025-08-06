@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { BASE_URL } from "@env";
+import axios from "axios";
+import { useEffect, useState } from 'react';
+import { Alert, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 interface FavoritePlaceProps {
   place: string; // 장소 이름
@@ -18,14 +20,25 @@ export default function FavoritePlace({ place, isFavorite }: FavoritePlaceProps)
       setLoading(true);
       // 1. API 요청
 
+      const data = await axios.post(`${BASE_URL}/place/favorite`, {
+        "place": place,
+        isFavorite: !filled,
+      })
+
       // 2. 성공 시 상태 반영
-      setFilled(!filled);
+      if (data.data.isSuccess) setFilled(!filled);
+      else Alert.alert("관심 장소 등록에 실패하였습니다.")
     } catch (e) {
       console.error('토글 실패', e);
     } finally {
       setLoading(false);
     }
   };
+
+  // 부모에서 넘겨준 상태값과 동기화
+  useEffect(()=>{
+    setFilled(isFavorite);
+  }, [isFavorite]);
 
   const imageSource = filled
     ? require('@/assets/images/icon/icon-heart-filled.png')
