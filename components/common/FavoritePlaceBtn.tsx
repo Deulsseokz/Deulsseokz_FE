@@ -9,7 +9,7 @@ interface FavoritePlaceProps {
 }
 
 // 개별 관심 장소 등록/ 삭제를 관리하는 컴포넌트
-export default function FavoritePlace({ place, isFavorite }: FavoritePlaceProps) {
+export default function FavoritePlaceBtn({ place, isFavorite }: FavoritePlaceProps) {
   const [filled, setFilled] = useState(isFavorite);
   const [loading, setLoading] = useState(false);
 
@@ -18,7 +18,6 @@ export default function FavoritePlace({ place, isFavorite }: FavoritePlaceProps)
 
     try {
       setLoading(true);
-      // 1. API 요청
 
       const data = await axios.post(`${BASE_URL}/place/favorite`, {
         "place": place,

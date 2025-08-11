@@ -75,3 +75,22 @@ export interface PhotoFixRequest {
   photoContent?: string;
   date?: string;
 }
+
+/**************************************************************/
+
+/**
+ * @typedef FavoritePlace
+ * @description 관심 장소에 대한 정보
+ * @property {string} place - 장소 이름
+ * @property {string} placeImage - 장소 대표 이미지 URL
+ * @property {string} content - 장소에 대한 설명
+ * @property {number[]} [friends] - 함께한 친구들의 ID 목록 (선택 사항)
+ * @property {string[]} friendsProfileImage - 친구 프로필 이미지 URL 목록
+ */
+export interface FavoritePlace {
+  place: string;
+  placeImage: string;
+  content: string;
+  friends?: number[];
+  friendsProfileImage: string[];
+}

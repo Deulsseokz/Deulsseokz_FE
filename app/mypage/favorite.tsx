@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View } from "react-native";
+import MyPageFavoriteTemplate from "@/components/template/MyPageFavoriteTemplate";
+import { StyleSheet, View } from "react-native";
 
 export default function FavoriteScreen(){
     return (
     <View style={styles.container}>
-        <Text>Favorite 스크린입니다</Text>
+       <MyPageFavoriteTemplate/>
     </View>
     )
 }
