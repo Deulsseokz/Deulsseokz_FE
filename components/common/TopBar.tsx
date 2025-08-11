@@ -39,6 +39,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#000',
+    width: '40%',
+    textAlign: 'center',
     ...fontStyles.medium15,
   },
   backButton: {
