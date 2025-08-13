@@ -1,9 +1,18 @@
-import { StyleSheet, Text, View } from "react-native";
+import MyPageBadgeTemplate from "@/components/template/MyPageBadgeTemplate";
+import { router } from "expo-router";
+import { StyleSheet, View } from "react-native";
 
+// 배지 메인 스크린
 export default function BadgeScreen(){
+  const onEditRepresent =() => router.push('/mypage/badge/change');
+  
+  const onModalOpen = (badgeId: string) => {
+    console.log(badgeId);
+}
+
     return (
     <View style={styles.container}>
-        <Text>Badge 스크린입니다</Text>
+      <MyPageBadgeTemplate onEditRepresent={onEditRepresent} onModalOpen={onModalOpen}/>
     </View>
     )
 }
