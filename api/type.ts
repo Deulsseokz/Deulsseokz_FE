@@ -94,3 +94,43 @@ export interface FavoritePlace {
   friends?: number[];
   friendsProfileImage: string[];
 }
+
+/**************************************************************/
+
+/**
+ * @typedef UserBadge
+ * @description 사용자가 가진 배지에 대한 정보
+ * @property {string} badgeId - 뱃지 아이디
+ * @property {string} earnedAt - 뱃지 취득일
+ */
+export interface UserBadge {
+  /** 서버가 주는 사용자의 획득 배지 아이디 배열 */
+  badgeId: string;
+  /** 서버가 주는 취득일 */
+  earnedAt?: string;
+}
+
+/**************************************************************/
+
+/** 목록 응답 아이템 (서버 원본) */
+export type ChallengeListItem = {
+  challengeId: number;
+  place: string;
+  isChallenged: boolean;
+  challengePhoto: string | undefined;
+  location: number[][]; // [lat, lng][] 포맷
+  point: number;
+};
+
+/** 상세 응답 아이템 (서버 원본) */
+export type ChallengeInfoItem = {
+  placeName: string;
+  content: string;
+  point: number;
+  condition1: string;
+  condition2: string;
+  condition3?: string | null;
+  isFavorite: boolean;
+};
+
+export type ChallengeListResponse = ChallengeListItem[];
