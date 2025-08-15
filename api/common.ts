@@ -6,7 +6,7 @@
 
 /**************************************************************/
 
-import { BASE_URL, CSRF_TOKEN } from '@env';
+const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
 export interface CommonResponse<T> {
   isSuccess: boolean;
@@ -23,10 +23,9 @@ export interface CommonResponse<T> {
 export async function getRequest<T>(endpoint: string): Promise<CommonResponse<T>> {
   try {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
-        "X-CSRFTOKEN": CSRF_TOKEN,
+        'Content-Type': 'application/json',
       },
     });
 
@@ -37,7 +36,7 @@ export async function getRequest<T>(endpoint: string): Promise<CommonResponse<T>
     const data: CommonResponse<T> = await response.json();
     return data;
   } catch (error) {
-    console.error("fail", error);
+    console.error('fail', error);
     throw error;
   }
 }
@@ -48,26 +47,24 @@ export async function getRequest<T>(endpoint: string): Promise<CommonResponse<T>
  * @param {string} endpoint - API 엔드포인트 경로
  * @param {B} body - 요청 바디 데이터
  * @param {string} [token] - Bearer 액세스 토큰 (opt)
- * @returns {Promise<CommonResponse<T>>} API 응답을 포함하는 프로미스 
+ * @returns {Promise<CommonResponse<T>>} API 응답을 포함하는 프로미스
  */
 export async function postRequest<T, B = unknown>(
   endpoint: string,
   body: B,
-  token?: string
+  token?: string,
 ): Promise<CommonResponse<T>> {
-
   const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    "X-CSRFTOKEN": CSRF_TOKEN,
+    'Content-Type': 'application/json',
   };
 
   if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
+    headers['Authorization'] = `Bearer ${token}`;
   }
 
   try {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: "POST",
+      method: 'POST',
       headers,
       body: JSON.stringify(body),
     });
@@ -79,7 +76,7 @@ export async function postRequest<T, B = unknown>(
     const data: CommonResponse<T> = await response.json();
     return data;
   } catch (error) {
-    console.error("fail", error);
+    console.error('fail', error);
     throw error;
   }
 }
@@ -95,21 +92,19 @@ export async function postRequest<T, B = unknown>(
 export async function patchRequest<T, B = unknown>(
   endpoint: string,
   body: B,
-  token?: string
+  token?: string,
 ): Promise<CommonResponse<T>> {
-
   const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    "X-CSRFTOKEN": CSRF_TOKEN,
+    'Content-Type': 'application/json',
   };
 
   if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
+    headers['Authorization'] = `Bearer ${token}`;
   }
 
   try {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers,
       body: JSON.stringify(body),
     });
@@ -121,7 +116,7 @@ export async function patchRequest<T, B = unknown>(
     const data: CommonResponse<T> = await response.json();
     return data;
   } catch (error) {
-    console.error("fail", error);
+    console.error('fail', error);
     throw error;
   }
 }
