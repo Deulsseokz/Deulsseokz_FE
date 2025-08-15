@@ -9,7 +9,7 @@ export default function FavoritePlaceComponent({place, placeImage, content, frie
     return (
     <View style={styles.container}>
         <View style={styles.aboluteBtnContainer}>
-            <FavoritePlaceBtn place={place} isFavorite={true}/>
+            <FavoritePlaceBtn placeName={place} isFavorite={true}/>
         </View>
         <Image source={require('./imgEx.png')} style={styles.image} resizeMode="cover"/>
         {/* 이미지 컴포넌트 */}

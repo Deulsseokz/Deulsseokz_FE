@@ -80,7 +80,7 @@ export const useStepManager = () => {
             pathname: '/map/[id]',
             params: {
               id: challengeInfo.challengeId,
-              place: challengeInfo.placeName,
+              placeName: challengeInfo.placeName,
               content: challengeInfo.content,
               point: challengeInfo.point.toString(),
               condition1: challengeInfo.condition1,

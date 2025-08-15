@@ -79,25 +79,6 @@ export interface PhotoFixRequest {
 /**************************************************************/
 
 /**
- * @typedef FavoritePlace
- * @description 관심 장소에 대한 정보
- * @property {string} place - 장소 이름
- * @property {string} placeImage - 장소 대표 이미지 URL
- * @property {string} content - 장소에 대한 설명
- * @property {number[]} [friends] - 함께한 친구들의 ID 목록 (선택 사항)
- * @property {string[]} friendsProfileImage - 친구 프로필 이미지 URL 목록
- */
-export interface FavoritePlace {
-  place: string;
-  placeImage: string;
-  content: string;
-  friends?: number[];
-  friendsProfileImage: string[];
-}
-
-/**************************************************************/
-
-/**
  * @typedef UserBadge
  * @description 사용자가 가진 배지에 대한 정보
  * @property {string} badgeId - 뱃지 아이디
@@ -113,7 +94,7 @@ export interface UserBadge {
 /**************************************************************/
 
 /** 목록 응답 아이템 (서버 원본) */
-export type ChallengeListItem = {
+export interface ChallengeListItem {
   challengeId: number;
   place: string;
   isChallenged: boolean;
@@ -123,7 +104,7 @@ export type ChallengeListItem = {
 };
 
 /** 상세 응답 아이템 (서버 원본) */
-export type ChallengeInfoItem = {
+export interface ChallengeInfoItem {
   placeName: string;
   content: string;
   point: number;
@@ -134,3 +115,67 @@ export type ChallengeInfoItem = {
 };
 
 export type ChallengeListResponse = ChallengeListItem[];
+
+/**************************************************************/
+
+/**
+ * @typedef MyPageItem
+ * @description 마이페이지에 사용되는 마이페이지 정보
+ * @property {string} userName - 사용자명
+ * @property {string} profileImage - 사용자 프로필 이미지
+ * @property {string} badgeId - 대표 배지 아이디
+ */
+export interface MyPageItem {
+  userName: string;
+  profileImage: string | null;
+  badgeId: string;
+}
+
+/**
+ * @typedef MyPageFixRequest
+ * @description 마이페이지 정보 (프로필 사진, 이름) 변경시 사용하는 요청 형식
+ * @property {string} userName: 사용자 이름
+ * @property {string} profileImage: 사용자 프로필 이미지
+ */
+export interface MyPageFixRequest{
+  userName: string | null;
+  profileImage: string | null;
+}
+
+/**************************************************************/
+/**
+ * @typedef PlaceSearchArea
+ * @description 특정 지역에 대한 랜드마크를 받을 때 사용하는 데이터
+ * @place 장소명 배열
+ */
+export interface PlaceSearchArea{
+  place: string[];
+}
+
+/**
+ * @typedef FavoritePlace
+ * @description 관심 장소에 대한 정보
+ * @property {string} place - 장소 이름
+ * @property {string} placeImage - 장소 대표 이미지 URL
+ * @property {string} content - 장소에 대한 설명
+ * @property {number[]} [friends] - 함께한 친구들의 ID 목록 (선택 사항)
+ * @property {string[]} friendsProfileImage - 친구 프로필 이미지 URL 목록
+ */
+export interface FavoritePlace {
+  place: string;
+  placeImage?: string;
+  content: string;
+  friends?: number[] | null;
+  friendsProfileImage: string[] | null;
+}
+
+/**
+ * @typedef FavoritePlaceSubmitRequest
+ * @description 관심 장소 등록 / 등록 취소에 사용되는 요청 형식
+ * @property {string}[place] - 관심 장소로 등록하고자 하는 장소명
+ * @property {boolean} [isFavorite] - 등록: true, 등록 취소: false
+ */
+export interface FavoritePlaceSubmitRequest {
+  place: string;
+  isFavorite: boolean;
+}
