@@ -1,9 +1,10 @@
 import ChallengeDetailTemplate from '@/components/template/ChallengeDetailTemplate';
-import { BASE_URL } from '@env';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
+
+const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
 export default function ChallengeDetail() {
   const { id, image, place, content, point, condition1, condition2, condition3, friends } = useLocalSearchParams();

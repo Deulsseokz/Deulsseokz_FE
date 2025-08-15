@@ -1,7 +1,7 @@
 import { COMMUNICATION_CODE } from '@/constants/communicationCode';
-import { BASE_URL } from '@env';
 import axios from 'axios';
 
+const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
 /**
  *
  * @param place 검색된 지역을 string으로 받습니다.

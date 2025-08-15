@@ -1,6 +1,6 @@
-import { BASE_URL } from '@env';
 import axios from 'axios';
 
+const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
 /**
  *
  * @param challengeId 챌린지 구분 id : number
