@@ -1,46 +1,39 @@
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { ActionSheetProvider } from '@expo/react-native-action-sheet';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React, { useEffect } from 'react';
+import { SplashScreenController } from '../components/auth/splash';
+import { useAuthenticationStore } from '../store/useAuthenticationStore';
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    'Pretendard-Regular': require('../assets/fonts/Pretendard-Regular.ttf'),
-    'Pretendard-Bold': require('../assets/fonts/Pretendard-Bold.ttf'),
-    'Pretendard-SemiBold': require('../assets/fonts/Pretendard-SemiBold.ttf'),
-  });
+export default function Root() {
+  // Set up the auth context and render our layout inside of it.
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
+  useEffect(() => {
+    GoogleSignin.configure({
+      iosClientId: '711444441700-kvqpr2rvkmb0c80dfbrrer4tlto31j15.apps.googleusercontent.com',
+      webClientId: '711444441700-uce88ggmppo1t9f3e04a0jd02ueqh71a.apps.googleusercontent.com',
+    });
+  }, []);
 
   return (
-    <ActionSheetProvider>
-      <SafeAreaProvider>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="test" />
-            <Stack.Screen name="map/location" />
-            <Stack.Screen name="map/searchArea" />
-            <Stack.Screen name="map/searchAreaResult" />
-            <Stack.Screen name="map/[id]/index" />
-            <Stack.Screen name="map/[id]/result" />
-            <Stack.Screen name="album/share/index" />
-            <Stack.Screen name="album/share/[id]" />
-            <Stack.Screen name="album/[id]/index" />
-            <Stack.Screen name="album/[id]/edit" />
-            <Stack.Screen name="album/[id]/download" />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-          <StatusBar style="auto" />
-        </ThemeProvider>
-      </SafeAreaProvider>
-    </ActionSheetProvider>
+    <React.Fragment>
+      <SplashScreenController />
+      <RootNavigator />
+    </React.Fragment>
+  );
+}
+
+// Separate this into a new component so it can access the SessionProvider context later
+function RootNavigator() {
+  const { isAuthenticated } = useAuthenticationStore();
+
+  return (
+    <Stack>
+      <Stack.Protected guard={isAuthenticated}>
+        <Stack.Screen name="(app)" />
+      </Stack.Protected>
+      <Stack.Protected guard={!isAuthenticated}>
+        <Stack.Screen name="sign-in" />
+      </Stack.Protected>
+    </Stack>
   );
 }

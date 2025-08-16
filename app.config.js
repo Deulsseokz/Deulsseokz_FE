@@ -68,6 +68,12 @@ export default {
           },
         },
       ],
+      [
+        '@react-native-google-signin/google-signin',
+        {
+          iosUrlScheme: 'com.googleusercontent.apps.711444441700-kvqpr2rvkmb0c80dfbrrer4tlto31j15',
+        },
+      ],
     ],
     experiments: {
       typedRoutes: true,
