@@ -21,6 +21,10 @@ export default {
         NSCameraUsageDescription: '사진을 촬영하려면 카메라 접근이 필요합니다.',
         NSPhotoLibraryUsageDescription: '사진을 선택하려면 앨범 접근이 필요합니다.',
       },
+      useAppleSignIn: true,
+      config: {
+        usesNonExemptEncryption: false,
+      },
     },
     android: {
       package: 'com.mellog.deulseokzz',
@@ -38,6 +42,8 @@ export default {
     },
     plugins: [
       'expo-router',
+      'expo-secure-store',
+      'expo-apple-authentication',
       [
         '@mj-studio/react-native-naver-map',
         {

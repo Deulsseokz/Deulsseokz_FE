@@ -24,10 +24,14 @@ export default function Root() {
 
 // Separate this into a new component so it can access the SessionProvider context later
 function RootNavigator() {
-  const { isAuthenticated } = useAuthenticationStore();
+  const { isAuthenticated, checkAuthStatus } = useAuthenticationStore();
+
+  useEffect(() => {
+    checkAuthStatus();
+  }, [checkAuthStatus]);
 
   return (
-    <Stack>
+    <Stack screenOptions={{ headerShown: false }}>
       <Stack.Protected guard={isAuthenticated}>
         <Stack.Screen name="(app)" />
       </Stack.Protected>
