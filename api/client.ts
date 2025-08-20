@@ -24,18 +24,24 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   response => response,
   async error => {
-    const originalRequest = error.config;
+    let originalRequest = error.config;
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (
+      error.response.status === 401 &&
+      !originalRequest._retry &&
+      originalRequest.url !== `${BASE_URL}/auth/refresh`
+    ) {
       originalRequest._retry = true;
 
       const { refreshToken } = await getTokens();
+
       if (refreshToken) {
         try {
-          const response = await api.post('/auth/refresh', {
-            refreshToken,
+          const response = await axios.post(`${BASE_URL}/auth/refresh`, {
+            refresh: refreshToken,
           });
-          const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data;
+
+          const { access: newAccessToken, refresh: newRefreshToken } = response.data;
           await saveTokens(newAccessToken, newRefreshToken);
 
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
@@ -43,8 +49,8 @@ api.interceptors.response.use(
         } catch (refreshError) {
           console.error('리프레쉬 토큰이 만료되었습니다.', refreshError);
           // 재로그인할 수 있도록 처리
-          const { signOut } = useAuthenticationStore();
-          signOut();
+          useAuthenticationStore.getState().signOut();
+
           return Promise.reject(refreshError);
         }
       }

@@ -6,6 +6,9 @@
 
 /**************************************************************/
 
+import { getTokens } from '@/utils/tokenManager';
+import api from './client';
+
 const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
 export interface CommonResponse<T> {
@@ -22,18 +25,15 @@ export interface CommonResponse<T> {
  */
 export async function getRequest<T>(endpoint: string): Promise<CommonResponse<T>> {
   try {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const { accessToken } = await getTokens();
 
-    if (!response.ok) {
+    const response = await api.get<CommonResponse<T>>(`${endpoint}`);
+
+    if (response.status !== 200) {
       throw new Error(`HTTP ${response.status}`);
     }
 
-    const data: CommonResponse<T> = await response.json();
+    const data: CommonResponse<T> = response.data;
     return data;
   } catch (error) {
     console.error('fail', error);
@@ -92,7 +92,7 @@ export async function postRequest<T, B = unknown>(
 export async function patchRequest<T, B = unknown>(
   endpoint: string,
   body: B,
-  token?: string,
+  token: string | null,
 ): Promise<CommonResponse<T>> {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',

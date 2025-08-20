@@ -13,6 +13,7 @@ export default function SignIn() {
   const googleSignIn = async () => {
     try {
       const userInfo = await GoogleSignin.signIn();
+
       const res = await axios.post(`${process.env.EXPO_PUBLIC_BASE_URL}/auth/google`, {
         idToken: userInfo.data!.idToken,
       });
@@ -32,7 +33,6 @@ export default function SignIn() {
         ],
       });
 
-      console.log(credential.identityToken);
       const res = await axios.post(`${process.env.EXPO_PUBLIC_BASE_URL}/auth/apple`, {
         identityToken: credential.identityToken,
       });

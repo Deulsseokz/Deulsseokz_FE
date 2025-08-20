@@ -10,7 +10,7 @@ interface ChallengeStore {
   data: ChallengeLocation[] | null; // 데이터
   loading: boolean; // 로딩 여부
   error: string | null; // 에러 여부
-  fetchOnce: () => Promise<void>; // fetch 함수
+  fetchOnce: (accessToken: string | null) => Promise<void>; // fetch 함수
 }
 
 export const useChallengeListStore = create<ChallengeStore>((set, get) => ({
@@ -18,14 +18,14 @@ export const useChallengeListStore = create<ChallengeStore>((set, get) => ({
   loading: false,
   error: null,
 
-  fetchOnce: async () => {
+  fetchOnce: async (accessToken: string | null) => {
     const { data } = get();
     if (data) return; // 이미 있다면 재요청 안 함
 
     set({ loading: true, error: null });
 
     try {
-      const raw = await fetchChallengeList();
+      const raw = await fetchChallengeList(accessToken);
       const converted = raw.map((item: RawChallengeLocation) => convertRawChallengeData(item));
       set({ data: converted, loading: false });
     } catch (e) {

@@ -47,7 +47,7 @@ export default {
       [
         '@mj-studio/react-native-naver-map',
         {
-          client_id: process.env.NAVER_MAP_CLIENT_ID,
+          client_id: process.env.EXPO_PUBLIC_NAVER_MAP_CLIENT_ID,
           android: {
             ACCESS_FINE_LOCATION: true,
             ACCESS_COARSE_LOCATION: true,

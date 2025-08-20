@@ -1,4 +1,5 @@
 import ChallengeDetailTemplate from '@/components/template/ChallengeDetailTemplate';
+import { getTokens } from '@/utils/tokenManager';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -29,12 +30,14 @@ export default function ChallengeDetail() {
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
+      const { accessToken } = await getTokens();
       const res = await axios.post(`${BASE_URL}/challenge/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${accessToken}`,
         },
       });
-      console.log('res', res.data);
+
       if (res.status === 200) {
         router.replace({
           pathname: '/map/[id]/result',

@@ -23,7 +23,7 @@ export type ChallengeLocation = {
   // 챌린지 아이디
   challengeId: number;
   // 랜드마크 명칭
-  place: string;
+  placeName: string;
   // 위도/경도 배열을 사용하여 구한 중심 (위도,경도) 좌표
   center: Coord;
   // polygon을 그리기 위한 위도/경도 배열

@@ -29,11 +29,11 @@ export const useAuthenticationStore = create<AuthenticationStore>(set => ({
 
   signOut: async () => {
     await deleteTokens();
-    set({ isAuthenticated: false });
+    set(state => ({ ...state, isAuthenticated: false }));
   },
 
   checkAuthStatus: async () => {
     const { accessToken } = await getTokens();
-    set({ isAuthenticated: !!accessToken, isLoading: false });
+    set(state => ({ ...state, isAuthenticated: !!accessToken, isLoading: false }));
   },
 }));
