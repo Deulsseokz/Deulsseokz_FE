@@ -6,7 +6,6 @@ import { useStepManager } from '@/hooks/useStepManager';
 import { useUserLocation } from '@/hooks/useUserLocation';
 import { useChallengeListStore } from '@/store/useChallengeListStore';
 import { ChallengeInformation, Coord } from '@/types/challenge';
-import { getTokens } from '@/utils/tokenManager';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
@@ -43,8 +42,7 @@ const MountainMapScreen = () => {
   // 챌린지 리스트 데이터 fetch
   useEffect(() => {
     const fetchData = async () => {
-      const { accessToken } = await getTokens();
-      await fetchOnce(accessToken);
+      await fetchOnce();
     };
     fetchData();
   }, []);
@@ -52,9 +50,7 @@ const MountainMapScreen = () => {
   // 폴리곤 클릭 이벤트 처리 핸들러
   const handleClickPolygon = async (challengeId: number, isChallenged: boolean) => {
     try {
-      const { accessToken } = await getTokens();
-
-      const data = await fetchChallengeInfo(challengeId, accessToken);
+      const data = await fetchChallengeInfo(challengeId);
 
       // 괄호 제거
       const stripBracket = (text?: string) => (text ? text.replace(/^\[[^\]]+\]\s*/, '') : undefined);

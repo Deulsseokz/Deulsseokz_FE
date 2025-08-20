@@ -1,10 +1,8 @@
+import api from '@/api/client';
 import ChallengeDetailTemplate from '@/components/template/ChallengeDetailTemplate';
-import { getTokens } from '@/utils/tokenManager';
-import axios from 'axios';
 import dayjs from 'dayjs';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-
 const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
 export default function ChallengeDetail() {
@@ -30,11 +28,9 @@ export default function ChallengeDetail() {
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
-      const { accessToken } = await getTokens();
-      const res = await axios.post(`${BASE_URL}/challenge/`, formData, {
+      const res = await api.post(`${BASE_URL}/challenge/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${accessToken}`,
         },
       });
 
