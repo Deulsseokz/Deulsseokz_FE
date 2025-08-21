@@ -37,7 +37,7 @@ export async function getAlbumByPlace(place: string): Promise<CommonResponse<Pho
  * @returns {Promise<CommonResponse<string>>} API 응답 메시지
  */
 export async function postPhotoToAlbum(body: PhotoAddRequest, token?: string): Promise<CommonResponse<string>> {
-  return await postRequest<string, PhotoAddRequest>('/album/url', body, token);
+  return await postRequest<string, PhotoAddRequest>('/album/url', body);
 }
 
 /**
@@ -48,5 +48,5 @@ export async function postPhotoToAlbum(body: PhotoAddRequest, token?: string): P
  * @returns {Promise<CommonResponse<string>>} API 응답 메시지
  */
 export async function patchPhotoToAlbum(body: PhotoFixRequest, token: string | null): Promise<CommonResponse<string>> {
-  return await patchRequest<string, PhotoFixRequest>('/photo/', body, token);
+  return await patchRequest<string, PhotoFixRequest>('/photo/', body);
 }
