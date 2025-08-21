@@ -1,3 +1,9 @@
+/**
+ * @description 토큰 리프레시 처리를 담당하는 코드입니다.
+ * @param {AxiosError} error - 오류 객체
+ * @returns {Promise<AxiosError>} 오류 객체
+ */
+
 import axios from 'axios';
 import { useAuthenticationStore } from '../store/useAuthenticationStore';
 import { getTokens, saveTokens } from '../utils/tokenManager';

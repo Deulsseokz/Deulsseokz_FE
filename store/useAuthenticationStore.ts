@@ -16,8 +16,6 @@ interface AuthenticationStore {
   signOut: () => Promise<void>;
 }
 
-// result 타입 반드시 명시해야 함
-
 export const useAuthenticationStore = create<AuthenticationStore>(set => ({
   isAuthenticated: false,
   isLoading: true,
