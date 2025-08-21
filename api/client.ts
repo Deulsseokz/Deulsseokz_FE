@@ -26,11 +26,7 @@ api.interceptors.response.use(
   async error => {
     let originalRequest = error.config;
 
-    if (
-      error.response.status === 401 &&
-      !originalRequest._retry &&
-      originalRequest.url !== `${BASE_URL}/auth/refresh`
-    ) {
+    if (error.response.status === 402 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       const { refreshToken } = await getTokens();

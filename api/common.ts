@@ -6,7 +6,6 @@
 
 /**************************************************************/
 
-import { getTokens } from '@/utils/tokenManager';
 import api from './client';
 
 const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
@@ -25,8 +24,6 @@ export interface CommonResponse<T> {
  */
 export async function getRequest<T>(endpoint: string): Promise<CommonResponse<T>> {
   try {
-    const { accessToken } = await getTokens();
-
     const response = await api.get<CommonResponse<T>>(`${endpoint}`);
 
     if (response.status !== 200) {
