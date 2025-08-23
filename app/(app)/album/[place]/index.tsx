@@ -1,17 +1,17 @@
-import { getAlbumByPlace } from "@/api/album";
-import { PhotoItem } from "@/api/type";
-import { PolaroidPhoto } from "@/components/album/_type";
-import AlbumIdTemplate from "@/components/template/AlbumIdTemplate";
-import { FeelingType } from "@/types/feeling";
-import { WeatherType } from "@/types/weather";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { useEffect, useMemo, useState } from "react";
+import { getAlbumByPlace } from '@/api/album';
+import { PhotoItem } from '@/api/type';
+import { PolaroidPhoto } from '@/components/album/_type';
+import AlbumIdTemplate from '@/components/template/AlbumIdTemplate';
+import { FeelingType } from '@/types/feeling';
+import { WeatherType } from '@/types/weather';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useMemo, useState } from 'react';
 
 export default function AlbumIdScreen() {
   /** router */
   const router = useRouter();
   const { place } = useLocalSearchParams();
-  const placeParam = useMemo(() => Array.isArray(place) ? place[0] : place, [place]);
+  const placeParam = useMemo(() => (Array.isArray(place) ? place[0] : place), [place]);
   /** state */
   const [photos, setPhotos] = useState<PolaroidPhoto[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -22,11 +22,11 @@ export default function AlbumIdScreen() {
     id: photo.id,
     image: { uri: photo.url },
     additional: {
-      weather: (photo.weather ?? "") as WeatherType,
-      feeling: (photo.feelings ?? "") as FeelingType,
-      desc: photo.photoContent ?? "",
+      weather: (photo.weather ?? '') as WeatherType,
+      feeling: (photo.feelings ?? '') as FeelingType,
+      desc: photo.photoContent ?? '',
     },
-    date: photo.date ?? "",
+    date: photo.date ?? '',
   });
 
   /** API fetch */
@@ -39,20 +39,20 @@ export default function AlbumIdScreen() {
         const transformed = res.result.map(transformPhoto);
         setPhotos(transformed);
       } else {
-        console.error("API 오류:", res.message);
+        console.error('API 오류:', res.message);
       }
     } catch (e) {
-      console.error("API 호출 실패", e);
+      console.error('API 호출 실패', e);
     }
   };
-  
+
   /** handler function (related router) */
   const handleEdit = () => {
     if (!selectedPhoto) return;
 
     const photoString = encodeURIComponent(JSON.stringify(selectedPhoto));
     router.push({
-      pathname: "/album/[place]/edit",
+      pathname: '/album/[place]/edit',
       params: {
         place: placeParam,
         photo: photoString,
@@ -65,7 +65,7 @@ export default function AlbumIdScreen() {
 
     const photoString = encodeURIComponent(JSON.stringify(selectedPhoto));
     router.push({
-      pathname: "/album/[place]/download",
+      pathname: '/album/[place]/download',
       params: {
         place: placeParam,
         photo: photoString,
@@ -77,7 +77,7 @@ export default function AlbumIdScreen() {
     if (!selectedPhoto) return;
 
     router.push({
-      pathname: "/album/share",
+      pathname: '/album/share',
       params: {
         place: placeParam,
       },
@@ -85,11 +85,11 @@ export default function AlbumIdScreen() {
   };
 
   const menu = [
-    { label: "사진 추가", onPress: () => ()=>{} },
-    { label: "사진 삭제", onPress: ()=>{} },
-    { label: "모아보기", onPress: ()=>{} },
-    { label: "공유하기", onPress: handleShare },
-    { label: "대표 사진 변경", onPress: ()=>{} },
+    { label: '사진 추가', onPress: () => () => {} },
+    { label: '사진 삭제', onPress: () => {} },
+    { label: '모아보기', onPress: () => {} },
+    { label: '공유하기', onPress: handleShare },
+    { label: '대표 사진 변경', onPress: () => {} },
   ];
 
   /** lifecycle */
@@ -104,7 +104,7 @@ export default function AlbumIdScreen() {
       setActiveIndex={setActiveIndex}
       onEdit={handleEdit}
       onDownload={handleDownload}
-      albumTitle={placeParam || ""}
+      albumTitle={placeParam || ''}
       menu={menu}
     />
   );
