@@ -1,7 +1,7 @@
-import { AlbumItem } from "@/api/type";
-import PhotoSet from "@/components/album/Photoset";
-import { useRouter } from "expo-router";
-import { ImageSourcePropType, ScrollView, StyleSheet, Text, View, useWindowDimensions } from "react-native";
+import { AlbumItem } from '@/api/type';
+import PhotoSet from '@/components/album/Photoset';
+import { useRouter } from 'expo-router';
+import { ImageSourcePropType, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
 interface Props {
   title: string;
@@ -21,11 +21,19 @@ export default function AlbumHomeTemplate({ title, albums }: Props) {
   const normalizeImages = (photo: string | string[] | null): ImageSourcePropType[] => {
     if (!photo) return [];
     if (Array.isArray(photo)) {
-      return photo.map((url) => ({ uri: url }));
+      return photo.map(url => ({ uri: url }));
     }
     return [{ uri: photo }];
   };
 
+  // 앨범 리스트 아무것도 없을 때 창도 만들어주세요
+  if (!albums) {
+    return (
+      <View style={styles.page}>
+        <Text style={styles.title}>{title}</Text>
+      </View>
+    );
+  }
   return (
     <View style={styles.page}>
       <Text style={styles.title}>{title}</Text>
@@ -48,25 +56,25 @@ const styles = StyleSheet.create({
   page: {
     flex: 1,
     gap: 50,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     paddingTop: 50,
     paddingHorizontal: 40,
   },
   title: {
     fontSize: 20,
     lineHeight: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   grid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 20,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   item: {
-    width: "45%",
+    width: '45%',
   },
   fullItem: {
-    width: "45%",
+    width: '45%',
   },
 });

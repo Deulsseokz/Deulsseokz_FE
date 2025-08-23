@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from './client';
 
 const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
 /**
@@ -7,7 +7,7 @@ const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
  */
 export const fetchChallengeList = async () => {
   try {
-    const { data } = await axios.get(`${BASE_URL}/challenge/list/`);
+    const { data } = await api.get(`${BASE_URL}/challenge/list/`);
 
     if (data.isSuccess) {
       return data.result;

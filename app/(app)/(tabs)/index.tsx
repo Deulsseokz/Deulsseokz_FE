@@ -41,11 +41,14 @@ const MountainMapScreen = () => {
 
   // 챌린지 리스트 데이터 fetch
   useEffect(() => {
-    fetchOnce();
+    const fetchData = async () => {
+      await fetchOnce();
+    };
+    fetchData();
   }, []);
 
   // 폴리곤 클릭 이벤트 처리 핸들러
-  const handleClickPolygon = async (challengeId: number, isChallenged:boolean) => {
+  const handleClickPolygon = async (challengeId: number, isChallenged: boolean) => {
     try {
       const data = await fetchChallengeInfo(challengeId);
 
