@@ -7,7 +7,7 @@
 
 /**************************************************************/
 
-import { CommonResponse, getRequest, patchRequest, postRequest } from './common';
+import { CommonResponse, deleteRequest, getRequest, patchRequest, postRequest } from './common';
 import { AlbumItem, PhotoAddRequest, PhotoFixRequest, PhotoItem } from './type';
 
 /**
@@ -33,10 +33,9 @@ export async function getAlbumByPlace(place: string): Promise<CommonResponse<Pho
  * @function postPhotoToAlbum
  * @description 앨범에 사진 또는 사진/설명을 추가하는 API 호출
  * @param {PhotoAddRequest} body - 사진 및 설명 정보
- * @param {string} token - Bearer 액세스 토큰 (opt)
  * @returns {Promise<CommonResponse<string>>} API 응답 메시지
  */
-export async function postPhotoToAlbum(body: PhotoAddRequest, token?: string): Promise<CommonResponse<string>> {
+export async function postPhotoToAlbum(body: PhotoAddRequest): Promise<CommonResponse<string>> {
   return await postRequest<string, PhotoAddRequest>('/album/url', body);
 }
 
@@ -44,9 +43,28 @@ export async function postPhotoToAlbum(body: PhotoAddRequest, token?: string): P
  * @function patchPhotoToAlbum
  * @description 앨범에 설명을 수정하는 API 호출
  * @param {PhotoAddRequest} body - 사진 및 설명 정보
- * @param {string} token - Bearer 액세스 토큰 (opt)
  * @returns {Promise<CommonResponse<string>>} API 응답 메시지
  */
-export async function patchPhotoToAlbum(body: PhotoFixRequest, token: string | null): Promise<CommonResponse<string>> {
+export async function patchPhotoToAlbum(body: PhotoFixRequest): Promise<CommonResponse<string>> {
   return await patchRequest<string, PhotoFixRequest>('/photo/', body);
+}
+
+/**
+ * @function deletePhoto
+ * @description 앨범에서 사진을 삭제하는 API 호출
+ * @param photoId - 삭제할 사진 ID
+ * @returns {Promise<CommonResponse<string>>} API 응답 메시지
+ */
+export async function deletePhoto(photoId: number): Promise<CommonResponse<string>> {
+  return deleteRequest<string>(`/photo?photoId=${photoId}`, undefined);
+}
+
+/**
+ * @function patchRepresentativePhoto
+ * @description 앨범의 대표 사진 변경
+ * @param {number} photoId - 대표로 지정할 사진 ID
+ * @returns {Promise<CommonResponse<string>>} API 응답 메시지
+ */
+export async function patchRepresentativePhoto(photoId: number): Promise<CommonResponse<string>> {
+  return patchRequest<string, Record<string, never>>(`/photo/represent/?photoId=${photoId}`, {});
 }
