@@ -19,6 +19,8 @@ export interface PolaroidPhoto {
   };
   /** 촬영 날짜 */
   date: string;
+  /** 촬영 장소 */
+  loc: string;
 }
 
 /** Polaroid 컴포넌트에 전달되는 공용 props 타입 */
@@ -37,6 +39,7 @@ export const dummyPhoto: PolaroidPhoto = {
     desc: "오늘은 흐림, 기분도 다운!",
   },
   date: "2025.07.13",
+  loc: "서울타워",
 };
 
 export const dummyPhotos: PolaroidPhoto[] = [
@@ -49,6 +52,7 @@ export const dummyPhotos: PolaroidPhoto[] = [
       desc: "오늘의 하늘이 너무 예뻐서 기분이 좋아졌어요. 오늘의 하늘이 너무 예뻐서 기분이 좋아졌어요. 오늘의 하늘이 너무 예뻐서 기분이 좋아졌어요.",
     },
     date: "2025.05.21",
+    loc: "서울타워",
   },
   {
     id: 2,
@@ -59,6 +63,7 @@ export const dummyPhotos: PolaroidPhoto[] = [
       desc: "산책하기 좋은 날씨! 산책하기 좋은 날씨! 산책하기 좋은 날씨! 산책하기 좋은 날씨! 산책하기 좋은 날씨! 산책하기 좋은 날씨!",
     },
     date: "2025.06.02",
+    loc: "서울타워",
   },
   {
     id: 3,
@@ -69,6 +74,7 @@ export const dummyPhotos: PolaroidPhoto[] = [
       desc: "산책하기 좋은 날씨! 산책하기 좋은 날씨! 산책하기 좋은 날씨! 산책하기 좋은 날씨! 산책하기 좋은 날씨! 산책하기 좋은 날씨!",
     },
     date: "2025.06.10",
+    loc: "서울타워",
   },
 ];
 
