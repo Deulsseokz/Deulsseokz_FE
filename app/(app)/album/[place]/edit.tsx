@@ -7,14 +7,13 @@ import { ModalType } from '@/enums/modalTypes';
 import useModal from '@/hooks/useModal';
 import { FeelingType } from '@/types/feeling';
 import { WeatherType } from '@/types/weather';
-import { getTokens } from '@/utils/tokenManager';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Alert, Image } from 'react-native';
 
 /** config */
-const feelings: FeelingType[] = ['😁', '😭', '😎', '🥰', '😛', '🥳'];
-const weathers: WeatherType[] = ['☀️', '☁️', '☔️', '🌦️', '💨', '⛈️'];
+const feelings: FeelingType[] = ['없음', '😁', '😭', '😎', '🥰', '😛', '🥳'];
+const weathers: WeatherType[] = ['없음', '☀️', '☁️', '☔️', '🌦️', '💨', '⛈️'];
 
 export default function AlbumEditScreen() {
   /** router */
@@ -22,8 +21,8 @@ export default function AlbumEditScreen() {
   const { photo, place } = useLocalSearchParams();
   const placeParam = useMemo(() => (Array.isArray(place) ? place[0] : place), [place]);
   /** state */
-  const [selectedFeeling, setSelectedFeeling] = useState<FeelingType>('😁');
-  const [selectedWeather, setSelectedWeather] = useState<WeatherType>('☀️');
+  const [selectedFeeling, setSelectedFeeling] = useState<FeelingType>('없음');
+  const [selectedWeather, setSelectedWeather] = useState<WeatherType>('없음');
   const [desc, setDesc] = useState('');
   /** variable */
   let parsedPhoto: PolaroidPhoto | null = null;
@@ -63,15 +62,17 @@ export default function AlbumEditScreen() {
     };
 
     try {
-      const { accessToken } = await getTokens();
-      const res = await patchPhotoToAlbum(requestBody, accessToken);
+      const res = await patchPhotoToAlbum(requestBody);
 
       if (res.isSuccess) {
         showSaveModal(ModalType.DEFAULT, {
           title: '오늘의 일기를 저장했어요',
           desc: '오늘도 행복한 추억을 만들었네요',
           children: (
-            <Image source={require('@/assets/images/modal/icon-save-diary.png')} style={{ width: 80, height: 82 }} />
+            <Image
+              source={require('@/assets/images/modal/icon-save-diary.png')}
+              style={{ width: 80, height: 82 }}
+            />
           ),
           buttons: {
             text: '확인',
@@ -96,7 +97,12 @@ export default function AlbumEditScreen() {
     showCancelModal(ModalType.DEFAULT, {
       title: '저장하지 않고 나갈까요?',
       desc: '작성한 내용이 모두 사라져요',
-      children: <Image source={require('@/assets/images/modal/icon-warning.png')} style={{ width: 80, height: 82 }} />,
+      children: (
+        <Image
+          source={require('@/assets/images/modal/icon-warning.png')}
+          style={{ width: 80, height: 82 }}
+        />
+      ),
       options: [
         {
           text: '취소',
@@ -118,8 +124,8 @@ export default function AlbumEditScreen() {
   /** lifecycle */
   useEffect(() => {
     if (parsedPhoto?.additional.desc) {
-      setSelectedFeeling((parsedPhoto.additional.feeling as FeelingType) ?? '😁');
-      setSelectedWeather((parsedPhoto.additional.weather as WeatherType) ?? '☀️');
+      setSelectedFeeling((parsedPhoto.additional.feeling as FeelingType) ?? '없음');
+      setSelectedWeather((parsedPhoto.additional.weather as WeatherType) ?? '없음');
       setDesc(parsedPhoto.additional.desc ?? '');
     }
   }, [photo]);

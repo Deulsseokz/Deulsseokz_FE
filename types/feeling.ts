@@ -1,15 +1,17 @@
 export const FEELINGS = {
-  HAPPY: "😁",
-  CRY: "😭",
-  SURPRISE: "🫢",
-  LOVE: "🥰",
-  FUN: "😛",
-  CELEBRATE: "🥳",
-  COOL: "😎",
+  EMPTY: '없음',
+  HAPPY: '😁',
+  CRY: '😭',
+  SURPRISE: '🫢',
+  LOVE: '🥰',
+  FUN: '😛',
+  CELEBRATE: '🥳',
+  COOL: '😎',
 } as const;
 
 export type FeelingType = (typeof FEELINGS)[keyof typeof FEELINGS];
 
+export const FEELING_EMPTY = FEELINGS.EMPTY;
 export const FEELING_HAPPY = FEELINGS.HAPPY;
 export const FEELING_CRY = FEELINGS.CRY;
 export const FEELING_SURPRISE = FEELINGS.SURPRISE;
