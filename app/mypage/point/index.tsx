@@ -1,16 +1,7 @@
-import { StyleSheet, Text, View } from "react-native";
+import MyPagePointTemplate from "@/components/template/MyPagePointTemplate";
 
 export default function PointScreen(){
     return (
-    <View style={styles.container}>
-        <Text>Point 스크린입니다</Text>
-    </View>
+      <MyPagePointTemplate/>
     )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: 'relative',
-  },
-});
