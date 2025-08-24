@@ -7,7 +7,6 @@ export default function BadgeScreen(){
   const onEditRepresent =() => router.push('/mypage/badge/change');
   
   const onModalOpen = (badgeId: string) => {
-    console.log(badgeId);
 }
 
     return (

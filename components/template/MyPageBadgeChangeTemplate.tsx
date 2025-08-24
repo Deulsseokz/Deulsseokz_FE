@@ -1,6 +1,6 @@
 import { MCOLORS } from "@/constants/colors";
 import fontStyles from "@/constants/fonts";
-import { useBadges } from "@/hooks/useBadge";
+import { useBadges } from "@/store/useBadgeStore";
 import { StyleSheet, Text, View } from "react-native";
 import Badge from "../common/Badge";
 import { TopBar } from "../common/TopBar";

@@ -1,5 +1,6 @@
+import { UserBadge } from "@/api/type";
 import { BADGE_CATALOG } from '@/constants/badgesCatalog';
-import { Badge, RepresentativeInfo, UserBadge } from '@/types/badge';
+import { Badge, RepresentativeInfo } from '@/types/badge';
 import { mapServerToBadges, mergeRepresentative } from '@/utils/badgeUtil';
 import { create } from 'zustand';
 

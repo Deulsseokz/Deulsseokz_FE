@@ -12,14 +12,6 @@ export type BadgeMeta = {
   description: string;
 };
 
-// 사용자별 "동적" 상태(서버가 주는 값)
-export type UserBadge = {
-  /** 서버가 주는 사용자의 획득 배지 아이디 배열 */
-  badgeId: string;
-  /** 서버가 주는 취득일 */
-  earnedAt?: string;
-};
-
 /** 마이페이지에서 별도로 가져오는 대표 배지 정보(동적) */
 export type RepresentativeInfo = {
   representativeId?: string; // 없을 수 있음

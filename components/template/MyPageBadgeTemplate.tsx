@@ -1,5 +1,5 @@
 import fontStyles from "@/constants/fonts";
-import { useBadges, useRepresentativeBadge } from "@/hooks/useBadge";
+import { useBadges, useRepresentativeBadge } from "@/store/useBadgeStore";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import BadgeComponent from "../common/Badge";
 import { TopBar } from "../common/TopBar";

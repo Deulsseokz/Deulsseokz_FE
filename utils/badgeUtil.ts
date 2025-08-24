@@ -1,4 +1,5 @@
-import { Badge, BadgeMeta, RepresentativeInfo, UserBadge } from "@/types/badge";
+import { UserBadge } from "@/api/type";
+import { Badge, BadgeMeta, RepresentativeInfo } from "@/types/badge";
 
 /** 서버에서 보내준 유저 배지 리스트를 배지 카탈로그와 매핑하여 완전한 배지 객체를 반환하는 유틸 함수
  * @param catalog: 프론트에서 저장하는 뱃지 카탈로그
