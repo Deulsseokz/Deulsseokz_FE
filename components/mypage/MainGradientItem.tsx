@@ -1,15 +1,15 @@
 import { MCOLORS } from "@/constants/colors";
 import fontStyles from "@/constants/fonts";
+import { useRepresentativeBadge } from "@/store/useBadgeStore";
 import { StyleSheet, Text, View } from "react-native";
 import Badge from "../common/Badge";
 import Profile from "../common/Profile";
 import RadialBackground from "./RadialBackground";
 
-interface MainGradientItemProps{
-
-}
-
 export default function MainGradientItem(){
+  // 대표 배지
+  const repBadge = useRepresentativeBadge();
+
     return (  
     <View style={styles.shadowWrapper}>
         <RadialBackground style={styles.gradientBackground}/>
@@ -19,7 +19,7 @@ export default function MainGradientItem(){
                 <Text style={styles.name}>예림</Text>
             </View>
             <View style={styles.imgContainer}>
-                <Badge/>
+               {repBadge && <Badge type={repBadge?.name} active={true} selected={false}/>}
                 <Profile/>
             </View>
         </View>
