@@ -1,14 +1,14 @@
 /** @file api/album.ts
  * @module api/album
  * @description 앨범 관련 API 요청 함수들을 정의합니다.
- * @see {@link api/common} 공통 요청 함수 
+ * @see {@link api/common} 공통 요청 함수
  * @see {@link api/type} API 응답에 사용되는 타입들
  */
 
 /**************************************************************/
 
-import { CommonResponse, getRequest, patchRequest, postRequest } from "./common";
-import { AlbumItem, PhotoAddRequest, PhotoFixRequest, PhotoItem } from "./type";
+import { CommonResponse, getRequest, patchRequest, postRequest } from './common';
+import { AlbumItem, PhotoAddRequest, PhotoFixRequest, PhotoItem } from './type';
 
 /**
  * @function getAlbumList
@@ -16,7 +16,7 @@ import { AlbumItem, PhotoAddRequest, PhotoFixRequest, PhotoItem } from "./type";
  * @returns {Promise<CommonResponse<AlbumItem[]>>} 앨범 목록 배열을 포함한 응답
  */
 export async function getAlbumList(): Promise<CommonResponse<AlbumItem[]>> {
-  return await getRequest<AlbumItem[]>("/album/");
+  return await getRequest<AlbumItem[]>('/album/');
 }
 
 /**
@@ -36,11 +36,8 @@ export async function getAlbumByPlace(place: string): Promise<CommonResponse<Pho
  * @param {string} token - Bearer 액세스 토큰 (opt)
  * @returns {Promise<CommonResponse<string>>} API 응답 메시지
  */
-export async function postPhotoToAlbum(
-  body: PhotoAddRequest,
-  token?: string
-): Promise<CommonResponse<string>> {
-  return await postRequest<string, PhotoAddRequest>("/album/url", body, token);
+export async function postPhotoToAlbum(body: PhotoAddRequest, token?: string): Promise<CommonResponse<string>> {
+  return await postRequest<string, PhotoAddRequest>('/album/url', body);
 }
 
 /**
@@ -49,14 +46,7 @@ export async function postPhotoToAlbum(
  * @param {PhotoAddRequest} body - 사진 및 설명 정보
  * @param {string} token - Bearer 액세스 토큰 (opt)
  * @returns {Promise<CommonResponse<string>>} API 응답 메시지
- */ 
-export async function patchPhotoToAlbum(
-  body: PhotoFixRequest,
-  token?: string
-): Promise<CommonResponse<string>> {
-  return await patchRequest<string, PhotoFixRequest>("/photo/", body, token);
+ */
+export async function patchPhotoToAlbum(body: PhotoFixRequest, token: string | null): Promise<CommonResponse<string>> {
+  return await patchRequest<string, PhotoFixRequest>('/photo/', body);
 }
-
-
-
-

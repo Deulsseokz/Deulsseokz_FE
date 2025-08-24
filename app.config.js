@@ -21,6 +21,10 @@ export default {
         NSCameraUsageDescription: '사진을 촬영하려면 카메라 접근이 필요합니다.',
         NSPhotoLibraryUsageDescription: '사진을 선택하려면 앨범 접근이 필요합니다.',
       },
+      useAppleSignIn: true,
+      config: {
+        usesNonExemptEncryption: false,
+      },
     },
     android: {
       package: 'com.mellog.deulseokzz',
@@ -38,10 +42,12 @@ export default {
     },
     plugins: [
       'expo-router',
+      'expo-secure-store',
+      'expo-apple-authentication',
       [
         '@mj-studio/react-native-naver-map',
         {
-          client_id: process.env.NAVER_MAP_CLIENT_ID,
+          client_id: process.env.EXPO_PUBLIC_NAVER_MAP_CLIENT_ID,
           android: {
             ACCESS_FINE_LOCATION: true,
             ACCESS_COARSE_LOCATION: true,
@@ -66,6 +72,12 @@ export default {
           android: {
             extraMavenRepos: ['https://repository.map.naver.com/archive/maven'],
           },
+        },
+      ],
+      [
+        '@react-native-google-signin/google-signin',
+        {
+          iosUrlScheme: 'com.googleusercontent.apps.711444441700-kvqpr2rvkmb0c80dfbrrer4tlto31j15',
         },
       ],
     ],
