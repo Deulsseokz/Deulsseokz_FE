@@ -96,7 +96,7 @@ export interface UserBadge {
 /** 목록 응답 아이템 (서버 원본) */
 export interface ChallengeListItem {
   challengeId: number;
-  place: string;
+  placeName: string;
   isChallenged: boolean;
   challengePhoto: string | undefined;
   location: number[][]; // [lat, lng][] 포맷

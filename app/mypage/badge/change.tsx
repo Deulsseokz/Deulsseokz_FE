@@ -1,5 +1,5 @@
 import MyPageBadgeChangeTemplate from "@/components/template/MyPageBadgeChangeTemplate";
-import { useBadge } from "@/hooks/useBadge";
+import { useBadge } from "@/store/useBadgeStore";
 import { router } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";

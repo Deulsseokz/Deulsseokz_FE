@@ -11,23 +11,23 @@ import { StepHeaderMap } from './_util';
  */
 
 interface SheetHeaderProps {
-  place: string;
+  placeName: string;
   isFavorite: boolean;
   backStep: () => void;
   exitSheet: () => void;
   step: SheetStep;
 }
 
-export default function SheetHeader({ place, isFavorite, backStep, exitSheet, step }: SheetHeaderProps) {
+export default function SheetHeader({ placeName, isFavorite, backStep, exitSheet, step }: SheetHeaderProps) {
   const headerMap = StepHeaderMap[step];
 
   return (
     <View style={style.container}>
       <View style={style.subContainer}>
-        {headerMap.showFavorite && <FavoritePlaceBtn place={place} isFavorite={isFavorite} />}
+        {headerMap.showFavorite && <FavoritePlaceBtn placeName={placeName} isFavorite={isFavorite} />}
         {headerMap.showBackButton && <BackBtn onBack={backStep} />}
       </View>
-      {headerMap.showPlace && <Text style={style.place}>{place}</Text>}
+      {headerMap.showPlace && <Text style={style.place}>{placeName}</Text>}
       <TouchableOpacity onPress={exitSheet}>
         <CloseIcn width={28} height={30} />
       </TouchableOpacity>

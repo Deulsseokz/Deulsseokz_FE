@@ -1,7 +1,7 @@
 import { FavoritePlace } from "@/api/type";
 import { MCOLORS } from "@/constants/colors";
 import fontStyles from "@/constants/fonts";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import FavoritePlaceBtn from "../common/FavoritePlaceBtn";
 import Profile from "../common/Profile";
 
@@ -11,7 +11,7 @@ export default function FavoritePlaceComponent({place, placeImage, content, frie
         <View style={styles.aboluteBtnContainer}>
             <FavoritePlaceBtn placeName={place} isFavorite={true}/>
         </View>
-        <Image source={require('./imgEx.png')} style={styles.image} resizeMode="cover"/>
+        {/* <Image source={require('./imgEx.png')} style={styles.image} resizeMode="cover"/> */}
         {/* 이미지 컴포넌트 */}
         <View style={styles.contentContainer}>
             <Text style={styles.place}>{place}</Text>

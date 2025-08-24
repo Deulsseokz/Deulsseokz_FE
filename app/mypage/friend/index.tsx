@@ -1,16 +1,7 @@
-import { StyleSheet, Text, View } from "react-native";
+import MyPageFriendTemplate from "@/components/template/MyPageFriendTemplate";
 
 export default function FriendScreen(){
     return (
-    <View style={styles.container}>
-        <Text>Friend 스크린입니다</Text>
-    </View>
+      <MyPageFriendTemplate/>
     )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: 'relative',
-  },
-});
