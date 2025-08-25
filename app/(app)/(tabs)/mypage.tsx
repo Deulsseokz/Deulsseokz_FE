@@ -1,26 +1,29 @@
-import { getUserBadgeList } from "@/api/badge";
 import { getMyPageInfo } from "@/api/mypage";
 import MyPageTemplate from "@/components/template/MyPageTemplate";
 import { useBadge } from "@/store/useBadgeStore";
 import { useEffect } from "react";
 
 export default function MyPageScreen() {
-  const {init, setRepresentative} = useBadge();
+  const {init} = useBadge();
 
  /** API fetch */
  const fetchMyPageInfo = async () => {
-  const {result} = await getMyPageInfo();
 
-  // 사용자 배지 초기화
-  init();
-  // GET 해 온 마이페이지 정보를 통해 대표 배지 설정
-  // setRepresentative()
+
+    // 마이페이지 정보 조회
+    const { result } = await getMyPageInfo();
+
+    // 배지 아이디 추출
+    // TODO : 첫 회원가입시 배지 1을 기본값으로 주는 로직 추가 필요
+    const badgeId = result.badgeId!==null ? result.badgeId : "1";
+
+    // 유저 배지 리스트 초기화
+    init(badgeId as string);
  }
 
  /** lifecycle */
  useEffect(()=>{
   fetchMyPageInfo();
-  getUserBadgeList();
  }, []);
 
   return <MyPageTemplate/>;

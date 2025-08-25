@@ -1,75 +1,113 @@
 import { MCOLORS } from "@/constants/colors";
 import fontStyles from "@/constants/fonts";
 import { BadgeType } from "@/types/shareType";
+import React, { memo, useMemo } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { badgeIconsMypage } from "../mypage/_util";
 
 /**
- * 
- * @returns 마이페이지에서 관리되는 뱃지 컴포넌트
+ * 마이페이지에서 관리되는 뱃지 컴포넌트
  */
-
-interface BadgeProps {
-    /** 선택 가능한 뱃지 타입 */
-    type: BadgeType;
-    /** active 여부: 이미지 (컬러/흑백) 결정*/
-    active: boolean;
-    /** 여러 개 중 선택되는 경우 선택됐는지 여부를 받음 (opt) / 선택 불가능한 경우 전달 필요 없음*/
-    selected?: boolean;
-    /** 레이블이 필요한 경우 레이블을 전달 (opt) */
-    label?: string;
-    /** 클릭 가능한 경우, 클릭 핸들러*/
-    onPress?: ()=>void;
-    /** 대표 배지 여부를 받아 editable 아이콘을 표시 */
-    isRepresent?: boolean;
+export interface BadgeProps {
+  /** 뱃지 타입 */
+  type: BadgeType;
+  /** 보유/활성 여부: 이미지(컬러/흑백) 결정 */
+  active: boolean;
+  /** 선택 가능 화면이면 true/false, 선택 불가 화면이면 undefined */
+  selected?: boolean;
+  /** 레이블 텍스트 (opt) */
+  label?: string;
+  /** 클릭 핸들러 (opt) */
+  onPress?: () => void;
+  /** 대표 배지 여부 (editable 오버레이 표시) */
+  isRepresent?: boolean;
 }
 
-/**
- * 뱃지 컴포넌트
- */
-export default function Badge({type, active, selected, label, onPress, isRepresent}:BadgeProps){
-    // imageSource: active 여부에 따라 조건부로 뱃지 이미지를 받아옴
-    const imageSource = active ? badgeIconsMypage[type].active : badgeIconsMypage[type].inactive;
+function BadgeComp({
+  type,
+  active,
+  selected,
+  label,
+  onPress,
+  isRepresent,
+}: BadgeProps) {
+  const activeSrc = badgeIconsMypage[type].active;
+  const inactiveSrc = badgeIconsMypage[type].inactive;
 
-    // editableSrc: 대표 배지이고 수정 아이콘이 필요할 때에만 아이콘을 받아옴
-    const editableSrc = isRepresent && require("@/assets/images/editable.png");
+  // 대표 배지일 때만 오버레이 아이콘 로드
+  const editableSrc = isRepresent ? require("@/assets/images/editable.png") : undefined;
 
-    // textColor
-    // 1. 선택 가능한 상태가 아닐 때: 검정색 
-    // 2-1. 선택 가능하며 선택됐을 때: 핑크색 
-    // 2-2. 선택 가능하며 선택된 상태가 아닐 때: 회색
-    const textColor= selected===undefined ? MCOLORS.grayscale.gray70 : selected ? MCOLORS.brand.secondary : MCOLORS.grayscale.gray30;
+  // 텍스트 컬러: selected/active 조합 반영
+  const textColor = useMemo(() => {
+    // 선택 불가 화면
+    if (selected === undefined) {
+      return active ? MCOLORS.grayscale.gray70 : MCOLORS.grayscale.gray30;
+    }
+    // 선택 가능 화면
+    if (selected) return MCOLORS.brand.secondary; // 선택됨
+    return active ? MCOLORS.grayscale.gray70 : MCOLORS.grayscale.gray30; // 선택 안됨
+  }, [selected, active]);
 
-    return (
-    <Pressable style={styles.container} disabled={!onPress} onPress={onPress ? onPress : undefined}>
-        <View>
-            <Image source={imageSource} style={styles.image} resizeMode="contain"/>
-            {isRepresent && <Image source={editableSrc} style={styles.editable}/>}
-        </View>
-        {label && <Text style={{...styles.text, color: textColor}}>{label}</Text>}
-    </Pressable>);
+  return (
+    <Pressable style={styles.container} disabled={!onPress} onPress={onPress}>
+      <View style={styles.imageWrap}>
+        {/* 이미지 두 장을 겹쳐두고 opacity만 토글하여 즉시 전환 */}
+        <Image
+          source={inactiveSrc}
+          style={[styles.image, { opacity: active ? 0 : 1 }]}
+          resizeMode="contain"
+        />
+        <Image
+          source={activeSrc}
+          style={[styles.image, { opacity: active ? 1 : 0 }]}
+          resizeMode="contain"
+        />
+        {editableSrc && (
+          <Image source={editableSrc} style={styles.editable} resizeMode="contain" />
+        )}
+      </View>
+      {label && <Text style={[styles.text, { color: textColor }]}>{label}</Text>}
+    </Pressable>
+  );
 }
+
+/** 불필요 리렌더 최소화 */
+export default memo(BadgeComp, (p, n) =>
+  p.type === n.type &&
+  p.active === n.active &&
+  p.selected === n.selected &&
+  p.label === n.label &&
+  p.isRepresent === n.isRepresent &&
+  p.onPress === n.onPress
+);
+
+const SIZE = 55;
 
 const styles = StyleSheet.create({
-    container : {
-        display: 'flex',
-        alignItems: 'center',
-        gap: 10,
-        width: 'auto',
-    },
-    image :{
-        position: 'relative',
-        height: 55,
-        width: 55,
-    },
-    editable:{
-        position: 'absolute',
-        height: 55,
-        width: 55,
-        right: 0,
-    },
-    text: {
-        color: '#acacac',
-        ...fontStyles.medium13,
-    }
-})
+  container: {
+    alignItems: "center",
+    gap: 10,
+    width: "auto",
+  },
+  imageWrap: {
+    position: "relative",
+    height: SIZE,
+    width: SIZE,
+  },
+  image: {
+    position: "absolute",
+    height: SIZE,
+    width: SIZE,
+    left: 0,
+    top: 0,
+  },
+  editable: {
+    position: "absolute",
+    height: SIZE,
+    width: SIZE,
+    right: 0,
+  },
+  text: {
+    ...fontStyles.medium13,
+  },
+});

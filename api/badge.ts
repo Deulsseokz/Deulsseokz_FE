@@ -6,29 +6,27 @@
  */
 
 /**************************************************************/
-import { RepresentativeInfo } from "@/types/badge";
 import { CommonResponse, getRequest, patchRequest } from "./common";
-import { UserBadge } from "./type";
+import { ServerBadgeType } from "./type";
 
 /**
  * @function getUserBadgeList
  * @description 유저가 가진 배지 조회
- * @returns {Promise<CommonResponse<UserBadge[]>>} 유저 배지 배열을 포함한 응답
+ * @returns {Promise<CommonResponse<ServerBadgeType[]>>} 유저 배지 배열을 포함한 응답
  */
-export async function getUserBadgeList() : Promise<CommonResponse<UserBadge[]>> {
-    return await getRequest<UserBadge[]>("/badge");
+export async function getUserBadgeList() : Promise<CommonResponse<ServerBadgeType[]>> {
+    return await getRequest<ServerBadgeType[]>("/badge/");
 }
 
 /**
  * @function patchRepresentBadge
  * @description 유저 대표 배지 설정
- * @param {RepresentativeInfo} body - 대표 배지 id
+ * @param {string} body - 대표 배지 id
  * @param {string} token
  * @returns {Promise<CommonResponse<string>>} - API 응답 메시지
  */
 export async function patchRepresentBadge(
-    body: RepresentativeInfo,
-    token?: string
+    body: string,
 ) : Promise<CommonResponse<string>> {
-    return await patchRequest<string, string>(`/badge/represent?badgeId=${body.representativeId}`, token);
+    return await patchRequest<string, string>(`/badge/represent?badgeID=${body}`, body);
 }

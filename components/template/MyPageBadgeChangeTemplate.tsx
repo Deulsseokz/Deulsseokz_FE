@@ -19,7 +19,13 @@ export  default function MyPageBadgeChangeTemplate({selectedBadgeId, setSelected
         <TopBar title="대표 배지" rightButton={<Text style={styles.saveBtnText}>저장</Text>} onRightPress={handleBadgeChange}/>
         <View style={styles.content}>
             {badges.map((item)=> 
-            <Badge key={item.badgeId} type={item.name} active={selectedBadgeId===item.badgeId} selected={selectedBadgeId===item.badgeId} label={item.name} onPress={()=>setSelectedBadge(item.badgeId)} />
+            <Badge 
+                key={item.badgeId} 
+                type={item.name} 
+                active={selectedBadgeId===item.badgeId} 
+                selected={selectedBadgeId===item.badgeId} 
+                label={item.name} 
+                onPress={()=>setSelectedBadge(item.badgeId)} />
             )}
         </View>
     </View>

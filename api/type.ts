@@ -119,6 +119,25 @@ export type ChallengeListResponse = ChallengeListItem[];
 /**************************************************************/
 
 /**
+ * @typedef ServerBadgeType
+ * @description 서버가 주는 뱃지 타입
+ * @property {string} badgeId - 뱃지 아이디
+ * @property {string} badgeName - 뱃지 이름
+ * @property {string | null} badgeImage - 뱃지 이미지 URL
+ * @property {string | null} condition - 뱃지 획득 조건
+ * @property {string} createdAt - 뱃지 획득 일자
+ * @property {boolean} isRepresent - 대표 뱃지 여부
+ */
+export interface ServerBadgeType {
+  badgeId: string;
+  badgeName: string;
+  badgeImage: string | null;
+  condition: string | null;
+  createdAt: string; // 획득 일자
+  isRepresent: boolean;
+}
+
+/**
  * @typedef MyPageItem
  * @description 마이페이지에 사용되는 마이페이지 정보
  * @property {string} userName - 사용자명
@@ -141,6 +160,10 @@ export interface MyPageFixRequest{
   userName: string | null;
   profileImage: string | null;
 }
+
+export interface MyPageBadgeResponse {
+  badges: ServerBadgeType[];
+};
 
 /**************************************************************/
 /**

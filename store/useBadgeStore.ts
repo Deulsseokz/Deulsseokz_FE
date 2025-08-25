@@ -1,46 +1,14 @@
-import { UserBadge } from "@/api/type";
+import * as badgeApi from '@/api/badge';
 import { BADGE_CATALOG } from '@/constants/badgesCatalog';
-import { Badge, RepresentativeInfo } from '@/types/badge';
+import { Badge } from '@/types/badge';
 import { mapServerToBadges, mergeRepresentative } from '@/utils/badgeUtil';
 import { create } from 'zustand';
 
-/** ---------- 더미 서버 데이터 ---------- */
-const DUMMY_SERVER_BADGES: UserBadge[] = [
-  { badgeId: '1', earnedAt: '2025-07-10T09:00:00Z' },
-  { badgeId: '2', earnedAt: '2025-07-15T12:30:00Z' },
-  { badgeId: '3' , earnedAt: '2025-07-15T12:30:00Z' },
-  { badgeId: '4' , earnedAt: '2025-07-15T12:30:00Z' },
-];
-
-/** ---------- 더미 대표 배지 ---------- */
-const DUMMY_REPRESENTATIVE: RepresentativeInfo = { representativeId: '1' };
-
-/** ---------- 주입 가능 API  ---------- */
-type BadgeApi = {
-  // 서버 타입 UserBadge 배열 반환 Promise 객체 받아오는 함수
-  fetchUserBadges: () => Promise<UserBadge[]>;
-  // 추후 마이페이지 API 연동과 합칠 예정
-  fetchRepresentative: () => Promise<RepresentativeInfo>;
-  // 대표 배지 변경
-  setRepresentative: (badgeId: string) => Promise<void>;
-};
-
-// 기본은 더미 구현
-let badgeApi: BadgeApi = {
-  fetchUserBadges: async () => Promise.resolve(DUMMY_SERVER_BADGES),
-  fetchRepresentative: async () => Promise.resolve(DUMMY_REPRESENTATIVE),
-  setRepresentative: async () => Promise.resolve(),
-};
-
-/** 외부에서 실제 API로 교체할 때 사용 (토큰 생기면 여기서 클로저로 처리) */
-export function setBadgeApi(api: Partial<BadgeApi>) {
-  badgeApi = { ...badgeApi, ...api };
-}
-
 /** ---------- Zustand Store ---------- */
+/** 상태 타입 정의 */ 
 type State = {
   badges: Badge[];             // 완전한 유저 배지 목록
-  representativeId?: string;   // 대표 배지 id
+  representativeId: string;   // 대표 배지 id
   loading: boolean;
   setting: boolean;
   error?: string | null;
@@ -48,9 +16,9 @@ type State = {
 
 type Actions = {
   /** 초기 배지 정보 저장 */
-  init: () => Promise<void>;               
+  init: (badgeId:string) => Promise<void>;               
   /** 배지 정보 업데이트 */  
-  refresh: () => Promise<void>;              
+  refresh: (badgeId:string) => Promise<void>;              
   /** 대표 배지 저장 */
   setRepresentative: (badgeId: string) => Promise<void>; 
   clearError: () => void;
@@ -59,9 +27,10 @@ type Actions = {
 
 type Store = State & Actions;
 
+/** 배지 관련 상태 관리 */
 export const useBadge = create<Store>((set, get) => ({
   badges: [],
-  representativeId: undefined,
+  representativeId: '',
   loading: false,
   setting: false,
   error: null,
@@ -77,18 +46,16 @@ export const useBadge = create<Store>((set, get) => ({
       error: null,
     }),
 
-  init: async () => {
+  init: async (repBadgeId: string) => {
     set({ loading: true, error: null });
     try {
-      const [rows, rep] = await Promise.all([
-        badgeApi.fetchUserBadges(),
-        badgeApi.fetchRepresentative(),
-      ]);
-      const merged = mapServerToBadges(BADGE_CATALOG, rows);
-      const withRep = mergeRepresentative(merged, rep);
+      /* 서버에서 유저 배지 목록을 받아와서 카탈로그와 매핑 후 상태에 저장 */
+      const {result} = await badgeApi.getUserBadgeList();
+      const merged = mapServerToBadges(BADGE_CATALOG, result);
+      const withRep = mergeRepresentative(merged, repBadgeId);
       set({
         badges: withRep,
-        representativeId: rep.representativeId,
+        representativeId: repBadgeId,
         loading: false,
       });
     } catch (e: any) {
@@ -96,36 +63,35 @@ export const useBadge = create<Store>((set, get) => ({
     }
   },
 
-  refresh: async () => {
-    set({ loading: true, error: null });
-    try {
-      const [rows, rep] = await Promise.all([
-        badgeApi.fetchUserBadges(),
-        badgeApi.fetchRepresentative(),
-      ]);
-      const merged = mapServerToBadges(BADGE_CATALOG, rows);
-      const withRep = mergeRepresentative(merged, rep);
+refresh: async (repBadgeId:string) => {
+  set({ loading: true, error: null });
+  try {
+    /* 서버에서 유저 배지 목록을 받아와서 카탈로그와 매핑 후 상태에 저장 */
+      const {result} = await badgeApi.getUserBadgeList();
+      const merged = mapServerToBadges(BADGE_CATALOG, result);
+      const withRep = mergeRepresentative(merged, repBadgeId);
       set({
         badges: withRep,
-        representativeId: rep.representativeId,
+        representativeId: repBadgeId,
         loading: false,
       });
-    } catch (e: any) {
-      set({ error: e?.message ?? '알 수 없는 오류', loading: false });
-    }
-  },
+  } catch (e: any) {
+    set({ error: e?.message ?? '알 수 없는 오류', loading: false });
+  }
+},
 
-  setRepresentative: async (badgeId: string) => {
+  setRepresentative: async (newBadgeId: string) => {
     const { badges, representativeId } = get();
-    if (representativeId === badgeId) return;
+    if (representativeId === newBadgeId) return;
 
     // 낙관적 업데이트
     const prev = badges;
-    const next = mergeRepresentative(badges, { representativeId: badgeId } as RepresentativeInfo);
-    set({ badges: next, representativeId: String(badgeId), setting: true, error: null });
+    const next = mergeRepresentative(badges, newBadgeId);
+    set({ badges: next, representativeId: String(newBadgeId), setting: true, error: null });
 
     try {
-      await badgeApi.setRepresentative(badgeId);
+      console.log(newBadgeId);
+      if (newBadgeId) await badgeApi.patchRepresentBadge(newBadgeId);
     } catch (e: any) {
       // 롤백
       set({ badges: prev, representativeId, error: e?.message ?? '대표 배지 설정 실패' });
