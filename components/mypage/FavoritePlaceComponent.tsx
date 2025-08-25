@@ -3,7 +3,6 @@ import { MCOLORS } from "@/constants/colors";
 import fontStyles from "@/constants/fonts";
 import { StyleSheet, Text, View } from "react-native";
 import FavoritePlaceBtn from "../common/FavoritePlaceBtn";
-import Profile from "../common/Profile";
 
 export default function FavoritePlaceComponent({place, placeImage, content, friends, friendsProfileImage}:FavoritePlace){
     return (
@@ -18,7 +17,7 @@ export default function FavoritePlaceComponent({place, placeImage, content, frie
             <Text style={styles.challenge}>{content}</Text>
             {/* 함께한 친구 프로필 */}
             <View style={styles.profileContainer}>
-                <Profile/>
+                {/* 프로필 */}
             </View>
         </View>
     </View>)

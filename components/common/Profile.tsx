@@ -1,12 +1,16 @@
-import { router } from "expo-router";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Image } from "react-native";
 
-export default function Profile () {
-    return (<Pressable onPress={()=>router.push('/mypage/profile')}><Text style={styles.text}>프로필 예시입니다</Text></Pressable>)
+
+interface ProfileProps {
+  size: number;
+  imageUrl: string | null;
+  style?: object;
 }
 
-const styles= StyleSheet.create({
-    text: {
-        color: '#ffffff',
-    }
-});
+export default function Profile({size, imageUrl, style}: ProfileProps) {
+  return (
+  <Image
+    source={ imageUrl ? {uri: imageUrl} : require('@/assets/images/default_profile.png')}
+    style={{width: size, height: size, borderRadius: size / 2, resizeMode: 'cover',  ...style}}>
+  </Image>)
+}   
