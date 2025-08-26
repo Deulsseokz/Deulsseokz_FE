@@ -9,13 +9,14 @@ import { Badge } from "@/types/badge";
 export function mapServerToBadges(
   catalog: Badge[], // 전체 배지 카탈로그
   serverBadges: ServerBadgeType[]
-): Badge[] {
-  return catalog.map(catalogBadge => {
-    const found = serverBadges.find(sb => sb.badgeId === catalogBadge.badgeId);
-    return {
-      ...catalogBadge,
-      earnedAt: found?.createdAt,
-      isRepresent: found?.isRepresent ?? false,
+): any[] {
+  return serverBadges.map(badge => {
+    const found = catalog.find(cb => cb.badgeId == badge.badgeId);
+    if (found)
+      return {
+      ...found,
+      earnedAt: badge.createdAt,
+      isRepresentative: badge.isRepresent,
     };
   });
 }
