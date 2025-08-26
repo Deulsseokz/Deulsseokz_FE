@@ -13,7 +13,7 @@ interface MyPageBadgeChangeTemplateProps {
 
 export  default function MyPageBadgeChangeTemplate({selectedBadgeId, setSelectedBadge, handleBadgeChange}:MyPageBadgeChangeTemplateProps) {
     const badges = useBadges();
-
+    
     return (
     <View style={styles.page}>
         <TopBar title="대표 배지" rightButton={<Text style={styles.saveBtnText}>저장</Text>} onRightPress={handleBadgeChange}/>

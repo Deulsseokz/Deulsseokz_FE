@@ -30,15 +30,18 @@ export default function MyPageBadgeTemplate({ onEditRepresent, onModalOpen}:MyPa
                         </Text>
                     </Pressable>
                 </View>
-               <View style={{...styles.content, ...styles.colorBackGround}}>
-                {repBadge ? <BadgeComponent type={repBadge.name} active={true} label={repBadge.name} onPress={onEditRepresent} isRepresent={true}/> :<Text>아직 대표배지가 없어요!</Text> }
+               <View style={{...styles.content, ...styles.colorBackGround, ...styles.repBadgeContainer}}>
+                {repBadge ? <BadgeComponent type={repBadge.name} selected={true} active={true} label={repBadge.name} onPress={onEditRepresent} isRepresent={true}/> :<Text>아직 대표배지가 없어요!</Text> }
+                <Text style={styles.badgeDescription}>
+                    {repBadge ? repBadge.description : "대표 배지를 설정해보세요!"}
+                </Text>
             </View>
             </View>
             <View style={styles.contentWrapper}>
                 <Text style={styles.title}>
                     배지 지갑
                 </Text>
-                <View style={styles.content}>
+                <View style={{...styles.content, ...styles.badgesContainer}}>
                     {badges.map((item, key)=><BadgeComponent key={key} type={item.name} active={true} label={item.name} onPress={()=>onModalOpen(item.badgeId)} />)}
                 </View>
             </View>
@@ -81,11 +84,27 @@ const styles = StyleSheet.create({
     content: {
         width: '100%',
         paddingVertical: 20,
-        paddingHorizontal: 20,
-        flexWrap: 'wrap',
+    },
+    repBadgeContainer : {
         display:'flex',
-        flexDirection:'row',
+        flexDirection: 'row',
+        justifyContent:'space-between',
+        alignItems: 'center',
+        gap: 30,
+        paddingHorizontal: 30,
+    },
+    badgesContainer : {
+        display:'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
         columnGap: 25,
         rowGap: 30,
+        paddingHorizontal: 20,
+    },
+    badgeDescription: {
+        flex: 1,
+        color: '#4a4a4a',
+        ...fontStyles.medium13,
+        textAlignVertical: 'center',
     }
 })

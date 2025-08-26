@@ -42,7 +42,6 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
     set({ loading: true, error: undefined })
     try {
       const { result } = await getMyPageInfo()
-      console.log('fetchMyPageInfo result', result);  
       const next: MyPage = {
         userName: result.userName,
         profileImage: result.profileImage ?? null,

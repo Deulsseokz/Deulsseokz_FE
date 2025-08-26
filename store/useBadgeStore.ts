@@ -55,7 +55,7 @@ export const useBadge = create<Store>((set, get) => ({
       const withRep = mergeRepresentative(merged, repBadgeId);
       set({
         badges: withRep,
-        representativeId: repBadgeId,
+        representativeId: String(repBadgeId),
         loading: false,
       });
     } catch (e: any) {
