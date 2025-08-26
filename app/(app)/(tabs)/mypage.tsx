@@ -1,30 +1,40 @@
-import { getMyPageInfo } from "@/api/mypage";
 import MyPageTemplate from "@/components/template/MyPageTemplate";
 import { useBadge } from "@/store/useBadgeStore";
-import { useEffect } from "react";
+import { useProfileStore } from "@/store/useProfileStore";
+import { useFocusEffect } from "expo-router";
+import React, { useCallback } from "react";
+import { ActivityIndicator } from "react-native";
 
 export default function MyPageScreen() {
-  const {init} = useBadge();
+  // 프로필 정보 스토어 데이터
+  const data =useProfileStore(s => s.data);
+  // 초기 프로필 정보 불러오기 함수
+  const fetchMyPageInfo = useProfileStore(s => s.fetchMyPageInfo);
+  const error = useProfileStore(s => s.error);
+  // 로딩 상태
+  const loading =useProfileStore(s => s.loading);
 
- /** API fetch */
- const fetchMyPageInfo = async () => {
+  // 배지 스토어 초기화 및 상태
+  const { init } = useBadge();
+  const badgeLoading = useBadge(s => s.loading);
 
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        // 최초 진입 혹은 TTL 만료 시에만 프로필 데이터 get
+        const profile = await fetchMyPageInfo({ ttlMs: 3000 })
+        // 배지 스토어는 여기서 init 1회만
+        if (profile?.badgeId) {
+          await init(profile.badgeId)
+        }
+        else if (error) alert(error);
+      })()
+    }, [fetchMyPageInfo, init])
+)
 
-    // 마이페이지 정보 조회
-    const { result } = await getMyPageInfo();
+  if ((loading || badgeLoading) && !data) return <ActivityIndicator />;
 
-    // 배지 아이디 추출
-    // TODO : 첫 회원가입시 배지 1을 기본값으로 주는 로직 추가 필요
-    const badgeId = result.badgeId!==null ? result.badgeId : "1";
-
-    // 유저 배지 리스트 초기화
-    init(badgeId as string);
- }
-
- /** lifecycle */
- useEffect(()=>{
-  fetchMyPageInfo();
- }, []);
-
-  return <MyPageTemplate/>;
+  return (
+    <MyPageTemplate/>
+  )
 }

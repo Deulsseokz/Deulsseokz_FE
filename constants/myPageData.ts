@@ -8,6 +8,7 @@ export const myPageMenu = [
 
 // 단순 액션 버튼
 export const myPageBtn = [
+  {label: '로그아웃'},
    {label: '탈퇴하기'},
    {label: '고객센터'},
 ]

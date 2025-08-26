@@ -1,24 +1,30 @@
 import { MCOLORS } from "@/constants/colors";
 import fontStyles from "@/constants/fonts";
+import { useProfileStore } from "@/store/useProfileStore";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import Profile from "../common/Profile";
 import { TopBar } from "../common/TopBar";
 
 interface ProfileTemplateProps{
-    // 이름 변경을 위한 스크린 push 함수
     changeNameRoute: ()=>void;
+    changeProfileImage: ()=>void;
 }
 
-export default function MyPageProfileTemplate({changeNameRoute}: ProfileTemplateProps){
+export default function MyPageProfileTemplate({changeNameRoute, changeProfileImage}: ProfileTemplateProps){
+    const myPageData = useProfileStore(s => s.data);
+
     return (<View style={styles.page}>
         <TopBar title="프로필"/>
         <View style={styles.container}>
-            <Profile/>
+            <View style={styles.profileContainer}>
+                <Profile imageUrl={myPageData.profileImage} size={60}/>
+                <Text style={styles.name}>{myPageData.userName}</Text>
+            </View>
             <View style={styles.textContainer}>
                 <Pressable onPress={changeNameRoute}>
                      <Text style={styles.textBtnText}>이름 변경</Text>
                 </Pressable>
-                <Pressable>
+                <Pressable onPress={changeProfileImage}>
                     <Text style={styles.textBtnText}>프로필 사진 변경</Text>
                 </Pressable>
             </View>
@@ -35,9 +41,18 @@ const styles= StyleSheet.create({
         display:'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        gap: 30,
         paddingHorizontal: 20,
-        marginBottom: 40,
+    },
+    profileContainer :{
+        width: '100%',
+        marginVertical: 40,
+        display:'flex',
+        alignItems:'center',
+        gap: 12,    
+    },
+    name:{
+        color: MCOLORS.grayscale.gray70,
+        ...fontStyles.bold15,
     },
     textContainer:{
         width: '100%',

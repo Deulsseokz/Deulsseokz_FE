@@ -90,7 +90,6 @@ refresh: async (repBadgeId:string) => {
     set({ badges: next, representativeId: String(newBadgeId), setting: true, error: null });
 
     try {
-      console.log(newBadgeId);
       if (newBadgeId) await badgeApi.patchRepresentBadge(newBadgeId);
     } catch (e: any) {
       // 롤백
