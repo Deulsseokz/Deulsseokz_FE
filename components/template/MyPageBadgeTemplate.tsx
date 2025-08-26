@@ -1,18 +1,20 @@
 import fontStyles from "@/constants/fonts";
-import { useBadges, useRepresentativeBadge } from "@/store/useBadgeStore";
+import { useRepresentativeBadge } from "@/store/useBadgeStore";
+import { Badge } from "@/types/badge";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import BadgeComponent from "../common/Badge";
 import { TopBar } from "../common/TopBar";
 
 interface MyPageBadgeTemplateProps{
+    // 모든 배지 데이터를 props로 받음
+    badges: Badge[];
+    // 대표 배지 변경 페이지로 이동 함수
     onEditRepresent: ()=>void;
     // 배지에 대한 모달 오픈 함수
     onModalOpen: (badgeId:string)=>void;
-    // 배지 데이터
 }
 
-export default function MyPageBadgeTemplate({ onEditRepresent, onModalOpen}:MyPageBadgeTemplateProps){
-    const badges = useBadges();
+export default function MyPageBadgeTemplate({ badges, onEditRepresent, onModalOpen}:MyPageBadgeTemplateProps){
     const repBadge= useRepresentativeBadge();
 
     return (

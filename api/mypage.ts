@@ -27,7 +27,6 @@ export async function getMyPageInfo() : Promise<CommonResponse<MyPageItem>> {
  */
 export async function patchMyPageInfo(
     body: MyPageFixRequest,
-    token?: string
 ) : Promise<CommonResponse<string>> {
-    return await patchRequest<string, MyPageFixRequest>(`/mypage/info}`, body, token);
+    return await patchRequest<string, MyPageFixRequest>(`/mypage/info`, body);
 }
