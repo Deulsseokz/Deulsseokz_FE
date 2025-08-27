@@ -1,22 +1,20 @@
-import Icon from "@/assets/icons/icon-shop.svg";
+import CoinIcn from "@/assets/icons/icon-coins.svg";
 import { MCOLORS } from "@/constants/colors";
 import fontStyles from "@/constants/fonts";
-import { router } from "expo-router";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
-export default function MyPointBox (){
-    const onPress = () => {
-        router.push('/mypage/point/shop');
-    }
+interface PointBoxInterface {
+    holdingPoint: number;
+}
+
+export default function MyPointBox ({holdingPoint}: PointBoxInterface){
 
     return (
         <View style={styles.box}>
             <Text style={styles.text}>나의 포인트</Text>
             <View style={styles.rowBox}>
-                <Text style={styles.point}>300</Text>
-                <Pressable onPress={onPress} style={styles.shopBtn}>
-                      <Icon width={20} height={20}/>
-                </Pressable>
+                <CoinIcn width={28} height={28} style={styles.icn}/>
+                <Text style={styles.point}>{holdingPoint}</Text>
             </View>
         </View>
     );
@@ -29,22 +27,25 @@ const styles= StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
         padding: 20,
-        paddingRight: 10,
+        paddingRight: 30,
     },
     rowBox: {
         display: 'flex',
         flexDirection: 'row',
+        alignItems:'center'
     },
     text: {
-        color: MCOLORS.grayscale.gray50,
-        ...fontStyles.medium15
+        color: MCOLORS.grayscale.gray70,
+        fontSize: 14,
+        fontWeight: '500',
     },
     point: {
         color: MCOLORS.grayscale.gray80,
          ...fontStyles.medium15
     },
-    shopBtn: {
-        paddingHorizontal:10,
+    icn: {
+        paddingHorizontal:20,
     }
 });
