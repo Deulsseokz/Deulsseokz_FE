@@ -42,11 +42,10 @@ const styles= StyleSheet.create({
     content: {
         width: '100%',
         paddingVertical: 20,
-        paddingHorizontal: 20,
+        paddingHorizontal: 40,
         flexWrap: 'wrap',
         display:'flex',
         flexDirection:'row',
-        justifyContent: 'center',
         columnGap: 25,
         rowGap: 30,
     },
