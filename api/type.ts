@@ -161,9 +161,53 @@ export interface MyPageFixRequest{
   profileImage: string | null;
 }
 
+/**
+ * @typedef MyPageBadgeResponse
+ * @description 마이페이지 배지 정보 응답 형식
+ * @property {ServerBadgeType[]} badges - 사용자가 보유한 배지 목록
+ */
 export interface MyPageBadgeResponse {
   badges: ServerBadgeType[];
 };
+
+/**
+ * @typedef MyPointHistoryRequest
+ * @description 마이페이지 포인트 내역 요청 형식
+ * @property {number} pointEarned - 획득한 포인트
+ * @property {number} pointUsed - 사용한 포인트
+ * @property {string} content - 포인트 내역 설명
+ */
+export interface MyPointHistoryRequest {
+  pointEarned: number;
+  pointUsed: number;
+  content: string;
+}
+
+/**
+ * @typedef MyPointHistoryItem
+ * @description 마이페이지 포인트 내역 아이템
+ * @property {string} date - 포인트 내역 날짜
+ * @property {number} pointEarned - 획득한 포인트
+ * @property {number} pointUsed - 사용한 포인트
+ */
+export interface MyPointHistoryItem {
+  date: string;
+  content: string;
+  todayPoint: number;
+  pointEarned: number;
+  pointUsed: number;
+}
+
+/**
+ * @typedef MyPointHistoryResponse
+ * @description 마이페이지 포인트 내역 응답 형식
+ * @property {number} holdingPoint - 현재 보유 포인트
+ * @property {MyPointHistoryItem[]} pointLogs - 포인트 내역 아이템 배열
+ */
+export interface MyPointHistoryResponse {
+  holdingPoint: number;
+  pointLogs: MyPointHistoryItem[];
+}
 
 /**************************************************************/
 /**

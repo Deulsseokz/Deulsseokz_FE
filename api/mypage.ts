@@ -7,7 +7,7 @@
 
 /**************************************************************/
 import { CommonResponse, getRequest, patchRequest } from "./common";
-import { MyPageFixRequest, MyPageItem } from "./type";
+import { MyPageFixRequest, MyPageItem, MyPointHistoryRequest, MyPointHistoryResponse } from "./type";
 
 /**
  * @function getMyPageInfo
@@ -29,4 +29,27 @@ export async function patchMyPageInfo(
     body: MyPageFixRequest,
 ) : Promise<CommonResponse<string>> {
     return await patchRequest<string, MyPageFixRequest>(`/mypage/info`, body);
+}
+
+/**
+ * 
+ * @function getMyPointHistory
+ * @description 유저의 포인트 전체 내역 조회
+ * @returns {Promise<CommonResponse<MyPointHistoryResponse>>} 포인트 내역을 포함한 응답 객체
+ */
+export async function getMyPointHistory()
+: Promise<CommonResponse<MyPointHistoryResponse>> {
+    return await getRequest<MyPointHistoryResponse>(`/point`);
+}
+
+/**
+ * @function patchPointHistory
+ * @description 유저의 포인트 내역 수정
+ * @param {MyPointHistoryRequest} body - update할 포인트 내역 데이터
+ * @returns {Promise<CommonResponse<string>>} - API 응답 메시지
+ */
+export async function patchPointHistory(
+    body: MyPointHistoryRequest
+) : Promise<CommonResponse<string>> {
+    return await patchRequest<string, MyPointHistoryRequest>(`/point`, body);
 }
