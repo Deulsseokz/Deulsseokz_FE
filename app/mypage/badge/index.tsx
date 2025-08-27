@@ -75,6 +75,8 @@ const modalStyles = StyleSheet.create({
   descriptionContainer: {
     paddingHorizontal: 15,
     paddingVertical: 10,
+    backgroundColor: '#FBFBFB',
+    borderRadius: 20,
   },
   name: {
     color: MCOLORS.brand.secondary,
