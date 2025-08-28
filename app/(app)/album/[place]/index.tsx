@@ -102,9 +102,13 @@ export default function AlbumIdScreen() {
   const handleShare = () => {
     if (!selectedPhoto) return;
 
+    const photoString = encodeURIComponent(JSON.stringify(selectedPhoto));
     router.push({
       pathname: '/album/share',
-      params: { id: selectedPhoto.id, place: placeParam },
+      params: {
+        place: placeParam,
+        photo: photoString,
+      },
     });
   };
 
