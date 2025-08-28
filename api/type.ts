@@ -32,7 +32,7 @@ export interface AlbumItem {
  * @property {Array<{ id: number; name: string; uri: string | null }>} [people] - 사진에 태그된 인물 목록 (opt)
  */
 export interface PhotoItem {
-  id: number;
+  photoId: number;
   url: string;
   feelings: string | null;
   weather: string | null;
