@@ -1,6 +1,6 @@
 /** @file api/common.ts
  * @module api/common
- * @description API 요청 및 응답에 사용되는 공통 함수와 타입을 정의합니다.
+ * @description Axios를 사용한 API 요청 및 응답에 사용되는 공통 함수와 타입을 정의합니다.
  * @see {@link api/type} API 응답에 사용되는 타입들
  * @see {@link api/client} API 요청에 사용되는 axios 인스턴스
  */
@@ -16,6 +16,15 @@ export interface CommonResponse<T> {
   code: string;
   message: string;
   result: T;
+}
+
+/**
+ * 공통 에러를 표시하기 위한 상태
+ */
+export interface CommonErrorState {
+  code?: string;
+  message: string;
+  status?: number;
 }
 
 /** 공통 GET 요청 함수

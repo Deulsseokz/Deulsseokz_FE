@@ -11,7 +11,6 @@ export default function ChallengeDetail() {
   const uriParts = image as string;
   const fileType = uriParts.split('.')[uriParts.split('.').length - 1];
   const formData = new FormData();
-  console.log('freiends', typeof friends);
 
   formData.append('place', place as string);
   if (typeof friends === 'string') {
@@ -33,7 +32,6 @@ export default function ChallengeDetail() {
           'Content-Type': 'multipart/form-data',
         },
       });
-
       if (res.status === 200) {
         router.replace({
           pathname: '/map/[id]/result',

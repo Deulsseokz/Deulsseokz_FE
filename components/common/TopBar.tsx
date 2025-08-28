@@ -1,5 +1,6 @@
 import BackIcon from '@/assets/icons/icon-back.svg';
 import { MCOLORS } from '@/constants/colors';
+import fontStyles from "@/constants/fonts";
 import { router } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -38,10 +39,9 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#000',
-    fontSize: 20,
-    fontWeight: 'bold',
     width: '40%',
     textAlign: 'center',
+    ...fontStyles.medium15,
   },
   backButton: {
     paddingLeft: 10,

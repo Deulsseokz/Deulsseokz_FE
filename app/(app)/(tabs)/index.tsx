@@ -1,4 +1,4 @@
-import { fetchChallengeInfo } from '@/api/fetchChallengeInfo';
+import { fetchChallengeInfo } from "@/api/challenge";
 import SearchLocationBtn from '@/components/map/SearchLocationBtn';
 import BottomSheetTemplate from '@/components/template/map/BottomSheetTemplate';
 import MapTemplate from '@/components/template/MapTemplate';
@@ -6,6 +6,7 @@ import { useStepManager } from '@/hooks/useStepManager';
 import { useUserLocation } from '@/hooks/useUserLocation';
 import { useChallengeListStore } from '@/store/useChallengeListStore';
 import { ChallengeInformation, Coord } from '@/types/challenge';
+import { convertRawChallengeInfo } from "@/utils/convertRawChallengeData";
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
@@ -13,7 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const MountainMapScreen = () => {
   // 전역 챌린지 정보
-  const { data: parsedChallengeData, fetchOnce, loading } = useChallengeListStore();
+  const { data: parsedChallengeData, fetchData, loading } = useChallengeListStore();
   // 바텀시트에 전달되는 챌린지 정보
   const [selectedChallengeInfo, setSelectedChallengeInfo] = useState<ChallengeInformation | null>(null);
   // 유저의 위치 관리
@@ -41,36 +42,23 @@ const MountainMapScreen = () => {
 
   // 챌린지 리스트 데이터 fetch
   useEffect(() => {
-    const fetchData = async () => {
-      await fetchOnce();
-    };
     fetchData();
   }, []);
 
-  // 폴리곤 클릭 이벤트 처리 핸들러
-  const handleClickPolygon = async (challengeId: number, isChallenged: boolean) => {
-    try {
-      const data = await fetchChallengeInfo(challengeId);
+  /**
+   * 폴리곤 클릭 이벤트 처리 핸들러
+   * @description 클릭한 폴리곤의 id, 챌린지 달성 여부를 받아 챌린지 상세 정보를 받아옵니다.
+   * @param challengeId 
+   * @param isChallenged 
+   */
+  const handleClickPolygon = async (challengeId: number, isChallenged:boolean) => {
+      const { result } = await fetchChallengeInfo(challengeId);
 
-      // 괄호 제거
-      const stripBracket = (text?: string) => (text ? text.replace(/^\[[^\]]+\]\s*/, '') : undefined);
+      // 배열에 담아 보내주므로 result의 0번째 인덱스 사용
+      const parsedResult = convertRawChallengeInfo(result[0], challengeId, isChallenged);
 
-      // 데이터를 타입에 맞게 변환
-      const parsedData: ChallengeInformation = {
-        challengeId: challengeId,
-        ...data[0],
-        place: data[0].placeName,
-        condition1: stripBracket(data[0].condition1),
-        condition2: stripBracket(data[0].condition2),
-        condition3: stripBracket(data[0].condition3),
-        isChallenged: isChallenged,
-      };
-
-      setSelectedChallengeInfo(parsedData as ChallengeInformation);
+      setSelectedChallengeInfo(parsedResult);
       setOpen(true); // 모달 오픈
-    } catch (error) {
-      console.error('Error fetching challenge info:', error);
-    }
   };
 
   if (loading || isLoadingLocation || !location || !parsedChallengeData) {

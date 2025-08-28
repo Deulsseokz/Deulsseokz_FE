@@ -13,7 +13,6 @@ export default function Test() {
         <TopBar
           title="테스트"
           rightButton={<Text style={styles.rightButton}>미션 보기</Text>}
-          onRightPress={() => console.log('미션 보기')}
         />
       ),
     });

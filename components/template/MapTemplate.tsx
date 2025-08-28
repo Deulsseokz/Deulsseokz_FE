@@ -37,8 +37,8 @@ export default function MapTemplate({
     }
   }, [initialCoord]);
 
-  const doneChallenge = challengeLocationData.filter(item => item.isChallenged);
-  const notDoneChallenge = challengeLocationData.filter(item => !item.isChallenged);
+  const doneChallenge= challengeLocationData.filter((item)=>item.isChallenged);
+  const notDoneChallenge = challengeLocationData.filter((item)=>!item.isChallenged);
 
   return (
     <NaverMapView
@@ -60,12 +60,12 @@ export default function MapTemplate({
       }
       isExtentBoundedInKorea={true}
     >
-      {notDoneChallenge.map(item => {
+      {notDoneChallenge.map((item,index) => {
         return (
-          <View key={item.challengeId}>
+          <View key={`${item.placeName}-${index}`}>
             {/* Polygon 그리기*/}
             <NaverMapPolygonOverlay
-              key={`${item.challengeId}-polygon`}
+              key={`${item.placeName}-polygon`}
               coords={item.location} // 위도, 경도값 전달
               onTap={() => {
                 handleClickPolygon(item.challengeId, item.isChallenged);
@@ -78,7 +78,7 @@ export default function MapTemplate({
             />
             {/* 캡션 렌더링 */}
             <NaverMapMarkerOverlay
-              key={`${item.challengeId}-marker`}
+              key={`${item.placeName}-marker`}
               latitude={item.center.latitude}
               longitude={item.center.longitude}
               image={require('../../assets/images/map/transparent.png')}
