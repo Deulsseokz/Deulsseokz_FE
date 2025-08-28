@@ -1,54 +1,46 @@
 import { PolaroidPhoto } from '@/components/album/_type';
 import Polaroid from '@/components/album/Polaroid';
 import { PrimaryButton } from '@/components/common/Button/PrimaryButton';
-import ModalManager from '@/components/common/Modal/ModalManager';
 import { TopBar } from '@/components/common/TopBar';
-import { ButtonVariant } from "@/constants/buttonTypes";
-import { ModalType } from '@/enums/modalTypes';
-import useModal from '@/hooks/useModal';
+import { ButtonVariant } from '@/constants/buttonTypes';
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 interface AlbumDownloadTemplateProps {
   photo: PolaroidPhoto;
   albumTitle: string;
   cnt: {
-    curr: string;
-    tot: string;
+    curr: number;
+    tot: number;
   };
+  imageRef: React.RefObject<View | null>;
+  onPressDownload: () => void;
 }
 
-/** 앨범 다운로드 템플릿
- * @param photo - 다운로드할 사진 정보
- * @param albumTitle - 앨범 제목
- * @param cnt - 다운로드 횟수 정보 (현재, 총)
- */
-export default function AlbumDownloadTemplate({ photo, albumTitle, cnt }: AlbumDownloadTemplateProps) {
-  const { isShowing, modalType, modalProps, show, hide } = useModal();
-
-  const handleDownload = () => {
-    show(ModalType.DEFAULT, {
-      title: '사진을 갤러리에 저장했어요',
-      children: <Image source={require('@/assets/images/modal/icon-picture.png')} style={{ width: 80, height: 82 }} />,
-      buttons: {
-        text: '닫기',
-        onPress: hide,
-      },
-    });
-  };
-
+export default function AlbumDownloadTemplate({
+  photo,
+  albumTitle,
+  cnt,
+  imageRef,
+  onPressDownload,
+}: AlbumDownloadTemplateProps) {
   return (
     <View style={styles.page}>
       <TopBar title={albumTitle} />
       <View style={styles.container}>
-        <Polaroid photo={photo} />
+        <View ref={imageRef} collapsable={false} style={{ backgroundColor: 'transparent' }}>
+          <Polaroid photo={photo} />
+        </View>
         <View>
           <Text style={styles.label}>
             남은 횟수 ( {cnt.curr} / {cnt.tot} )
           </Text>
-          <PrimaryButton text="다운로드" onPress={handleDownload} variant={ButtonVariant.Primary} />
+          <PrimaryButton
+            text="다운로드"
+            onPress={onPressDownload}
+            variant={ButtonVariant.Primary}
+          />
         </View>
-        <ModalManager isShowing={isShowing} modalType={modalType} modalProps={modalProps} onClose={hide} />
       </View>
     </View>
   );
@@ -57,7 +49,6 @@ export default function AlbumDownloadTemplate({ photo, albumTitle, cnt }: AlbumD
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-
     backgroundColor: '#fff',
   },
   container: {
