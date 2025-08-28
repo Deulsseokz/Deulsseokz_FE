@@ -55,8 +55,18 @@ export async function patchPhotoToAlbum(body: PhotoFixRequest): Promise<CommonRe
  * @param photoId - 삭제할 사진 ID
  * @returns {Promise<CommonResponse<string>>} API 응답 메시지
  */
-export async function deletePhoto(photoId: number): Promise<CommonResponse<string>> {
-  return deleteRequest<string>(`/photo?photoId=${photoId}`, undefined);
+/**
+ * @function deletePhoto
+ * @description 앨범에서 여러 사진을 삭제하는 API 호출
+ * @param {number[]} photoIds - 삭제할 사진 ID들의 배열
+ * @returns {Promise<CommonResponse<string>>} API 응답 메시지
+ */
+export async function deletePhoto(photoIds: number[]): Promise<CommonResponse<string>> {
+  const requestBody = {
+    photoIds,
+  };
+
+  return deleteRequest<string>('/photo/', requestBody);
 }
 
 /**
