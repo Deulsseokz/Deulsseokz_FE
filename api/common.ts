@@ -86,7 +86,7 @@ export async function postRequest<T, B = unknown>(
  */
 export async function patchRequest<T, B = unknown>(
   endpoint: string,
-  body?: B,
+  body: B,
   config?: AxiosRequestConfig,
 ): Promise<CommonResponse<T>> {
   try {
