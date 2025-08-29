@@ -10,7 +10,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import api from './client';
 
-
 export interface CommonResponse<T> {
   isSuccess: boolean;
   code: string;
@@ -95,16 +94,20 @@ export async function patchRequest<T, B = unknown>(
 
 /** 공통 DELETE 요청 함수
  * @template T - 응답 데이터 타입
+ * @template B - 요청 바디 타입
  * @param {string} endpoint - API 엔드포인트 경로
- * @param {AxiosRequestConfig} [config] - 추가적인 Axios 요청 설정 (e.g., data for body)
+ * @param {B} [body] - 요청 바디 데이터
  * @returns {Promise<CommonResponse<T>>} API 응답을 포함하는 프로미스
  */
-export async function deleteRequest<T>(
+export async function deleteRequest<T, B = unknown>(
   endpoint: string,
-  config?: AxiosRequestConfig,
+  body?: B,
 ): Promise<CommonResponse<T>> {
   try {
-    const response: AxiosResponse<CommonResponse<T>> = await api.delete(endpoint, config);
+    const response: AxiosResponse<CommonResponse<T>> = body
+      ? await api.delete(endpoint, { data: body })
+      : await api.delete(endpoint);
+
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
