@@ -30,13 +30,27 @@ export async function getAlbumByPlace(place: string): Promise<CommonResponse<Pho
 }
 
 /**
- * @function postPhotoToAlbum
- * @description 앨범에 사진 또는 사진/설명을 추가하는 API 호출
+ * @function postPhotoURLToAlbum
+ * @description 앨범에 사진 또는 사진/설명을 추가하는 API 호출 (사진을 s3 url로 전달)
  * @param {PhotoAddRequest} body - 사진 및 설명 정보
  * @returns {Promise<CommonResponse<string>>} API 응답 메시지
  */
-export async function postPhotoToAlbum(body: PhotoAddRequest): Promise<CommonResponse<string>> {
+export async function postPhotoURLToAlbum(body: PhotoAddRequest): Promise<CommonResponse<string>> {
   return await postRequest<string, PhotoAddRequest>('/album/url', body);
+}
+
+/**
+ * @function postPhotoDataToAlbum
+ * @description 앨범에 사진 또는 사진/설명을 추가하는 API 호출 (사진을 form-data로 전달)
+ * @param {FormData} formData - 사진 파일 및 설명 정보
+ * @returns {Promise<CommonResponse<string>>} API 응답 메시지
+ */
+export async function postPhotoDataToAlbum(formData: FormData): Promise<CommonResponse<string>> {
+  return await postRequest<string, FormData>('/photo/', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 }
 
 /**
