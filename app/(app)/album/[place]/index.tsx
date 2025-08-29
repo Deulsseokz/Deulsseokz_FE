@@ -12,8 +12,10 @@ import useModal from '@/hooks/useModal';
 import { FeelingType } from '@/types/feeling';
 import { WeatherType } from '@/types/weather';
 import { Image } from 'expo-image';
+import * as ImagePicker from 'expo-image-picker';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useCallback, useMemo, useState } from 'react';
+import { Alert } from 'react-native';
 
 export default function AlbumIdScreen() {
   /** router */
@@ -138,7 +140,28 @@ export default function AlbumIdScreen() {
   };
 
   //사진추가
-  const handleAdd = () => {};
+  const handleAdd = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('권한 필요', '사진을 추가하려면 갤러리 접근 권한이 필요합니다.');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: 'images',
+      allowsEditing: true,
+      aspect: [3, 4],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const newImageUri = result.assets[0].uri;
+      router.push({
+        pathname: '/album/[place]/edit',
+        params: { place: placeParam, newImageUri },
+      });
+    }
+  };
 
   //사진삭제
   const handleDelete = () => {
