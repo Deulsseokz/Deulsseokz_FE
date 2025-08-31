@@ -3,22 +3,20 @@ export interface Coord {
   longitude: number;
 }
 
-// 챌린지 정보 타입
-// place로 요청
+// 클라이언트 챌린지 정보 타입
 export type ChallengeInformation = {
   challengeId: number;
-  place: string;
   placeName: string; // 장소명
   content: string; // 챌린지명
   point: number; // 포인트
   condition1: string; // 조건 1
   condition2: string; // 조건 2
-  condition3?: string; // 조건 3 (선택적 데이터)
+  condition3?: string | null; // 조건 3 (선택적 데이터)
   isFavorite: boolean; // 관심 장소 등록 여부
   isChallenged: boolean; // 챌린지 수행 여부
 };
 
-// 챌린지 위치 타입
+// 클라이언트 챌린지 위치 타입
 export type ChallengeLocation = {
   // 챌린지 아이디
   challengeId: number;

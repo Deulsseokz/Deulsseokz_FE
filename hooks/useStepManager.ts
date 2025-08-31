@@ -1,6 +1,7 @@
 import { SheetStep, StepParamMap } from '@/components/map/_type';
-import { pickImageFromLibrary, takePhoto } from '@/components/map/_util';
+import { takePhoto } from '@/components/map/_util';
 import { ChallengeInformation } from '@/types/challenge';
+import pickImageFromLibrary from '@/utils/pickImageFromLibrary';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { router } from 'expo-router';
 import { useState } from 'react';
@@ -80,7 +81,7 @@ export const useStepManager = () => {
             pathname: '/map/[id]',
             params: {
               id: challengeInfo.challengeId,
-              place: challengeInfo.placeName,
+              placeName: challengeInfo.placeName,
               content: challengeInfo.content,
               point: challengeInfo.point.toString(),
               condition1: challengeInfo.condition1,

@@ -8,16 +8,16 @@ import { StyleSheet, Text, View } from 'react-native';
  */
 
 interface ChallengeInfoProps {
-  place: string;
+  placeName: string;
   content: string;
   point: number;
 }
 
-export default function ChallengeInfo({ place, content, point }: ChallengeInfoProps) {
+export default function ChallengeInfo({ placeName, content, point }: ChallengeInfoProps) {
   return (
     <View style={style.container}>
       <View style={style.bottomWrapper}>
-        <Text style={style.place}>{place}</Text>
+        <Text style={style.place}>{placeName}</Text>
       </View>
 
       <View style={style.bottomWrapper}>

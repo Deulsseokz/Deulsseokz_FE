@@ -1,16 +1,17 @@
-import { fetchChallengeList } from '@/api/fetchChallengeList';
+import { fetchChallengeList } from "@/api/challenge";
+import { ChallengeListItem } from "@/api/type";
 import { ChallengeLocation } from '@/types/challenge';
-import { convertRawChallengeData, RawChallengeLocation } from '@/utils/convertRawChallengeData';
+import { convertRawChallengeData } from '@/utils/convertRawChallengeData';
 import { create } from 'zustand';
 
 /**
- * 챌린지 정보를 저장한다.
+ * @description 챌린지 정보를 불러와 저장합니다
  */
+
 interface ChallengeStore {
   data: ChallengeLocation[] | null; // 데이터
   loading: boolean; // 로딩 여부
-  error: string | null; // 에러 여부
-  fetchOnce: () => Promise<void>; // fetch 함수
+  fetchData: () => Promise<void>; // fetch 함수
 }
 
 export const useChallengeListStore = create<ChallengeStore>((set, get) => ({
@@ -18,18 +19,18 @@ export const useChallengeListStore = create<ChallengeStore>((set, get) => ({
   loading: false,
   error: null,
 
-  fetchOnce: async () => {
+  fetchData: async () => {
     const { data } = get();
-    if (data) return; // 이미 있다면 재요청 안 함
 
-    set({ loading: true, error: null });
+    set({ loading: true });
 
-    try {
-      const raw = await fetchChallengeList();
-      const converted = raw.map((item: RawChallengeLocation) => convertRawChallengeData(item));
-      set({ data: converted, loading: false });
-    } catch (e) {
-      set({ error: '챌린지 데이터를 불러오지 못했습니다.', loading: false });
-    }
+    const {result} = await fetchChallengeList(); // CommonResponse<ServerChallengeListItem[]>
+
+    const converted: ChallengeLocation[] = result.map((item: ChallengeListItem
+
+    ) =>
+      convertRawChallengeData(item)
+    );
+    set({ data: converted, loading: false });
   },
 }));

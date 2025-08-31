@@ -109,7 +109,7 @@ export default function BottomSheetTemplate({
         <View style={styles.contentContainer}>
           {/* step에 따른 헤더*/}
           <SheetHeader
-            place={challengeInfo.place}
+            placeName={challengeInfo.placeName}
             isFavorite={challengeInfo.isFavorite}
             backStep={backStep}
             exitSheet={exitSheet}
