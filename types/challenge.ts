@@ -22,14 +22,8 @@ export type ChallengeLocation = {
   challengeId: number;
   // 랜드마크 명칭
   placeName: string;
-  // 위도/경도 배열을 사용하여 구한 중심 (위도,경도) 좌표
+  // 중심 (위도,경도) 좌표
   center: Coord;
-  // polygon을 그리기 위한 위도/경도 배열
-  location: Coord[];
   // 챌린지 도전 여부
   isChallenged: boolean;
-  // 이미 성공한 챌린지일 경우 이미지 제공
-  challengePhoto?: string;
-  // 챌린지 성공시 부여받는 포인트
-  point: number;
 };

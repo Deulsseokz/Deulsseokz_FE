@@ -93,14 +93,17 @@ export interface UserBadge {
 
 /**************************************************************/
 
+export interface ServerCoord {
+  lat: number;
+  lng: number;
+}
+
 /** 목록 응답 아이템 (서버 원본) */
 export interface ChallengeListItem {
   challengeId: number;
   placeName: string;
   isChallenged: boolean;
-  challengePhoto: string | undefined;
-  location: number[][]; // [lat, lng][] 포맷
-  point: number;
+  center: ServerCoord;
 };
 
 /** 상세 응답 아이템 (서버 원본) */

@@ -7,19 +7,14 @@ import { router } from 'expo-router';
 
 export default function navigateToCenterCoord(place: string) {
   const challengeLocations = useChallengeListStore.getState().data;
-  const locationData = challengeLocations?.find(item => item.place === place);
+  const locationData = challengeLocations?.find(item => item.placeName === place);
   if (!locationData) return;
-
-  const centerCoord = {
-    latitude: locationData.center.latitude,
-    longitude: locationData.center.longitude,
-  };
 
   router.replace({
     pathname: '/',
     params: {
-      latitude: centerCoord.latitude,
-      longitude: centerCoord.longitude,
+      latitude: locationData.center.latitude,
+      longitude: locationData.center.longitude,
     },
   });
 }
