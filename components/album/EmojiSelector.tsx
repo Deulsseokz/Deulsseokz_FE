@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 /**
  * 이모지 선택 컴포넌트에 전달되는 props 타입
@@ -29,55 +29,90 @@ export default function EmojiSelector<T extends string>({
   return (
     <View style={styles.selector}>
       <Text style={styles.label}>{label}</Text>
-      <View style={styles.emojiRow}>
-        {options.map((opt) => (
-          <TouchableOpacity
-            key={opt}
-            onPress={() => onSelect(opt)}
-            style={[
-              styles.emojiWrapper,
-              selected === opt ? styles.selected : styles.unselected,
-            ]}
-          >
-            <Text style={styles.emoji}>{opt}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.emojiRow}
+      >
+        {options.map(opt => {
+          const isSelected = selected === opt;
+          const isNone = opt === ('없음' as T);
+
+          return (
+            <TouchableOpacity
+              key={opt}
+              onPress={() => onSelect(opt)}
+              style={[
+                styles.emojiWrapper,
+                isSelected ? styles.selectedWrapper : styles.unselectedWrapper,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.emoji,
+                  isNone ? styles.noneEmoji : styles.normalEmoji,
+                  !isSelected && styles.unselectedEmoji,
+                ]}
+              >
+                {opt}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   selector: {
-    width: "100%",
-    flexDirection: "row",
-    gap: 25,
-    alignItems: "center",
-    backgroundColor: "#F9F9F9",
-    borderRadius: 15,
-    paddingRight: 11,
+    width: '100%',
+    flexDirection: 'row',
+    gap: 15,
+    alignItems: 'center',
+    backgroundColor: '#fff',
     paddingVertical: 11,
     paddingHorizontal: 20,
   },
   label: {
-    fontSize: 13,
-    fontWeight: "500",
-    color: "#4A4A4A",
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#4A4A4A',
+    width: 36,
   },
   emojiRow: {
-    flexDirection: "row",
-    gap: 20,
+    flexDirection: 'row',
+    gap: 12,
+    alignItems: 'center',
   },
   emojiWrapper: {
-    opacity: 0.3,
+    width: 44,
+    height: 44,
+    borderRadius: 25,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  selected: {
+  selectedWrapper: {
+    borderColor: '#E5E5E5',
+    backgroundColor: '#F5F5F5',
     opacity: 1,
   },
-  unselected: {
-    opacity: 0.3,
+  unselectedWrapper: {
+    borderColor: 'transparent',
+    opacity: 0.7,
   },
   emoji: {
+    textAlign: 'center',
+  },
+  normalEmoji: {
     fontSize: 24,
+  },
+  noneEmoji: {
+    fontSize: 13,
+    color: '#666',
+  },
+  unselectedEmoji: {
+    opacity: 0.7,
   },
 });

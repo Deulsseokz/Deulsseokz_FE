@@ -29,15 +29,21 @@ export interface AlbumItem {
  * @property {string | null} photoContent - 사진에 대한 텍스트 설명
  * @property {string | null} date - 사진의 날짜 정보 (YYYY-MM-DD)
  * @property {boolean} isFavorite - 대표 사진 여부
+ * @property {Array<{ id: number; name: string; uri: string | null }>} [people] - 사진에 태그된 인물 목록 (opt)
  */
 export interface PhotoItem {
-  id: number
+  photoId: number;
   url: string;
   feelings: string | null;
   weather: string | null;
   photoContent: string | null;
   date: string | null;
   isFavorite: boolean;
+  people?: {
+    id: number;
+    name: string;
+    uri: string | null;
+  }[];
 }
 
 /**

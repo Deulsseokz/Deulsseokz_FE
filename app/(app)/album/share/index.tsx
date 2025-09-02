@@ -1,88 +1,71 @@
-import { getAlbumByPlace } from "@/api/album";
-import { PhotoItem } from "@/api/type";
-import { PolaroidPhoto } from "@/components/album/_type";
-import AlbumShareTemplate from "@/components/template/AlbumShareTemplate";
-import { FeelingType } from "@/types/feeling";
-import { WeatherType } from "@/types/weather";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useEffect, useMemo, useState } from "react";
+import { PolaroidPhoto } from '@/components/album/_type';
+import AlbumShareTemplate from '@/components/template/AlbumShareTemplate';
+import { BadgeType, FrameType } from '@/types/shareType';
+import { useLocalSearchParams } from 'expo-router';
+import React, { useMemo, useState } from 'react';
 
-const MAX_SELECT_IMAGE = 1;
+/** config */
+const frameOptions = [
+  { type: FrameType.WHITE, label: '흰색' },
+  { type: FrameType.BLACK, label: '검정색' },
+  { type: FrameType.RAINBOW, label: '레인보우', price: 20 },
+  { type: FrameType.HANDWRITING, label: '손글씨', price: 80 },
+];
+
+const badgeOptions = [
+  { type: BadgeType.FIRST, label: '첫만남' },
+  { type: BadgeType.HANYANG, label: '한양의 품격' },
+  { type: BadgeType.GENGHI, label: '징기즈칸' },
+  { type: BadgeType.OZI, label: '오지 탐험대' },
+];
 
 export default function AlbumShareScreen() {
   /** router */
-  const router = useRouter();
-  const { place } = useLocalSearchParams<{ place: string }>();
-  const placeParam = useMemo(() => decodeURIComponent(Array.isArray(place) ? place[0] : place), [place]);
+  const { place, photo } = useLocalSearchParams<{ place?: string; photo: string }>();
+
   /** state */
-  const [photos, setPhotos] = useState<PolaroidPhoto[]>([]);
-  const [selectedPhotos, setSelectedPhotos] = useState<PolaroidPhoto[]>([]);
-  /** API utill */
-  const transformPhoto = (photo: PhotoItem): PolaroidPhoto => ({
-    id: photo.id,
-    image: { uri: photo.url },
-    additional: {
-      weather: (photo.weather ?? "") as WeatherType,
-      feeling: (photo.feelings ?? "") as FeelingType,
-      desc: photo.photoContent ?? "",
-    },
-    date: photo.date ?? "",
-  });
+  const [step, setStep] = useState<1 | 2>(1);
+  const [selectedFrame, setSelectedFrame] = useState<FrameType>(FrameType.WHITE);
+  const [selectedBadge, setSelectedBadge] = useState<BadgeType | null>(null);
 
-  /** API fetch */
-  const fetchPhotos = async () => {
-    if (!placeParam) return;
-
+  /** variable */
+  const selectedPhoto = useMemo<PolaroidPhoto | null>(() => {
+    if (!photo) return null;
     try {
-      const res = await getAlbumByPlace(placeParam);
-      if (res.isSuccess) {
-        const transformed = res.result.map(transformPhoto);
-        setPhotos(transformed);
-      } else {
-        console.error("API 오류:", res.message);
-      }
+      return JSON.parse(decodeURIComponent(photo));
     } catch (e) {
-      console.error("API 호출 실패:", e);
+      console.error('사진 파싱 실패:', e);
+      return null;
     }
-  };
-  
-  /** handler function */
-  const handleSelect = (photo: PolaroidPhoto) => {
-    const isSelected = selectedPhotos.includes(photo);
-    if (isSelected) {
-      setSelectedPhotos(selectedPhotos.filter((p) => p !== photo));
-    } else if (selectedPhotos.length < MAX_SELECT_IMAGE) {
-      setSelectedPhotos([...selectedPhotos, photo]);
-    }
-  };
+  }, [photo]);
 
+  /** handler function (related router) */
+  const handleNext = () => setStep(2);
   const handleShare = () => {
-    const selectedPhoto = selectedPhotos[0];
-    if (!selectedPhoto) return;
-
-    const photoString = encodeURIComponent(JSON.stringify(selectedPhoto)); 
-    router.push({
-      pathname: "/album/share/[id]",
-      params: {
-        id: selectedPhoto.id,
-        place: placeParam,
-        photo: photoString,
-      },
+    console.log('공유할 정보:', {
+      photoId: selectedPhoto?.id,
+      frame: selectedFrame,
+      badge: selectedBadge,
     });
   };
 
-  /** lifecycle */
-  useEffect(() => {
-    fetchPhotos();
-  }, [placeParam]);
+  // selectedPhoto가 없으면 렌더링하지 않음 (오류 방지)
+  if (!selectedPhoto) {
+    return null;
+  }
 
   return (
     <AlbumShareTemplate
-      maxSelectCount={MAX_SELECT_IMAGE}
-      selectedPhotos={selectedPhotos}
-      photos={photos}
-      onSelectPhoto={handleSelect}
-      onPressNext={handleShare}
+      step={step}
+      photo={selectedPhoto}
+      selectedFrame={selectedFrame}
+      selectedBadge={selectedBadge}
+      frameOptions={frameOptions}
+      badgeOptions={badgeOptions}
+      onChangeFrame={setSelectedFrame}
+      onChangeBadge={setSelectedBadge}
+      onNext={handleNext}
+      onShare={handleShare}
     />
   );
 }

@@ -1,68 +1,108 @@
-import PhotoSelector from "@/components/album/PhotoSelector";
-import { PrimaryButton } from "@/components/common/Button/PrimaryButton";
-import PriceTag from "@/components/common/PriceTag";
-import { TopBar } from "@/components/common/TopBar";
-import { ButtonVariant } from "@/constants/buttonTypes";
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { PolaroidPhoto } from "../album/_type";
+import CustomPolaroid from '@/components/album/CustomPolaroid';
+import OptionSelectionEl from '@/components/album/OptionSelectionEl';
+import { PrimaryButton } from '@/components/common/Button/PrimaryButton';
+import PriceTag from '@/components/common/PriceTag';
+import { TopBar } from '@/components/common/TopBar';
+import { ButtonVariant } from '@/constants/buttonTypes';
+import { BadgeType, FrameType } from '@/types/shareType';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { PolaroidPhoto } from '../album/_type';
 
 interface AlbumShareTemplateProps {
-  maxSelectCount: number;
-  selectedPhotos: PolaroidPhoto[];
-  photos: PolaroidPhoto[];
-  onSelectPhoto: (photo: PolaroidPhoto) => void;
-  onPressNext: () => void;
+  step: 1 | 2;
+  photo: PolaroidPhoto;
+  selectedFrame: FrameType;
+  selectedBadge: BadgeType | null;
+  frameOptions?: {
+    type: FrameType;
+    label: string;
+    price?: number;
+  }[];
+  badgeOptions?: {
+    type: BadgeType;
+    label: string;
+    price?: number;
+  }[];
+  onChangeFrame: (frame: FrameType) => void;
+  onChangeBadge: (badge: BadgeType) => void;
+  onNext: () => void;
+  onShare: () => void;
 }
 
 /**
- * 앨범 공유 템플릿 - 사진 선택
- * - 선택된 사진을 강조 표시하고, 최대 선택 개수 제한
- * @param maxSelectCount - 최대 선택 가능한 사진 개수
- * @param photos - 전체 사진 리스트
- * @param selectedPhotos - 현재 선택된 사진 리스트
- * @param onSelectPhoto - 사진 선택/해제 핸들러
- * @param onPressNext - 다음 단계로 넘어가는 핸들러
+ * 앨범 공유 템플릿 - 사진 편집(프레임/뱃지 선택)
+ * @param step - 현재 단계 (1: 프레임 선택, 2: 뱃지 선택)
+ * @param photo - 공유할 폴라로이드 사진
+ * @param selectedFrame - 선택된 프레임 타입
+ * @param selectedBadge - 선택된 뱃지 타입
+ * @param frameOptions - 프레임 선택 옵션들 (opt)
+ * @param badgeOptions - 뱃지 선택 옵션들 (opt)
+ * @param onChangeFrame - 프레임 변경 핸들러
+ * @param onChangeBadge - 뱃지 변경 핸들러
+ * @param onNext - 다음 단계로 넘어가는 핸들러
+ * @param onShare - 공유하기 핸들러
  */
 export default function AlbumShareTemplate({
-  maxSelectCount,
-  selectedPhotos,
-  photos,
-  onSelectPhoto,
-  onPressNext,
+  step,
+  photo,
+  selectedFrame,
+  selectedBadge,
+  frameOptions,
+  badgeOptions,
+  onChangeFrame,
+  onChangeBadge,
+  onNext,
+  onShare,
 }: AlbumShareTemplateProps) {
   return (
     <View style={styles.page}>
       <TopBar title="" rightButton={<PriceTag price={800} />} />
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>
-            공유할 사진을 선택하세요{" "}
-            <Text style={styles.count}>{selectedPhotos.length}</Text>
-          </Text>
-          <Text style={styles.limit}>최대 {maxSelectCount}장 가능</Text>
-        </View>
-        <View style={styles.wrapper}>
-          <PhotoSelector
-            photos={photos.map((p) => p.image)}
-            selectedPhotos={selectedPhotos.map((p) => p.image)}
-            onSelectPhoto={(selectedImage) => {
-              const matched = photos.find(
-                (p) =>
-                  typeof p.image === "object" &&
-                  p.image !== null &&
-                  "uri" in p.image &&
-                  "uri" in selectedImage &&
-                  p.image.uri === selectedImage.uri
-              );
-              if (matched) {
-                onSelectPhoto(matched);
-              }
-            }}
-            maxSelectCnt={maxSelectCount}
-          />
-        </View>
-        <PrimaryButton text="다음" variant={ButtonVariant.Primary} onPress={onPressNext} />
+        <CustomPolaroid photo={photo} frame={selectedFrame} badge={selectedBadge} />
+
+        {step === 1 && (
+          <View style={styles.optionBox}>
+            <Text style={styles.label}>프레임</Text>
+            <View style={styles.optionList}>
+              {frameOptions &&
+                frameOptions.map(f => (
+                  <OptionSelectionEl
+                    key={f.type}
+                    label={f.label}
+                    frameType={f.type}
+                    selected={selectedFrame === f.type}
+                    price={f.price}
+                    onPress={type => onChangeFrame(type as FrameType)}
+                  />
+                ))}
+            </View>
+          </View>
+        )}
+
+        {step === 2 && (
+          <View style={styles.optionBox}>
+            <Text style={styles.label}>뱃지</Text>
+            <View style={styles.optionList}>
+              {badgeOptions &&
+                badgeOptions.map(b => (
+                  <OptionSelectionEl
+                    key={b.type}
+                    label={b.label}
+                    badgeType={b.type}
+                    selected={selectedBadge === b.type}
+                    onPress={type => onChangeBadge(type as BadgeType)}
+                  />
+                ))}
+            </View>
+          </View>
+        )}
+
+        <PrimaryButton
+          text={step === 1 ? '다음' : '공유하기'}
+          variant={ButtonVariant.Primary}
+          onPress={step === 1 ? onNext : onShare}
+        />
       </View>
     </View>
   );
@@ -71,46 +111,31 @@ export default function AlbumShareTemplate({
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    flexDirection: "column",
     paddingHorizontal: 20,
     paddingBottom: 20,
-    alignItems: "center",
-    backgroundColor: "#fff",
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
   container: {
     flex: 1,
-    width: "100%",
-    gap: 20,
-    backgroundColor: "#fff",
-    alignItems: "center",
+    width: '100%',
+    alignItems: 'center',
   },
-  header: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+  optionBox: {
+    flexDirection: 'column',
+    gap: 23,
+    paddingVertical: 38,
   },
-  title: {
-    fontSize: 15,
-    fontWeight: "500",
-    color: "#313131",
+  optionList: {
+    flexDirection: 'row',
+    gap: 30,
+  },
+  label: {
+    width: '100%',
+    textAlign: 'left',
+    fontWeight: '500',
+    fontSize: 13,
     lineHeight: 20,
-  },
-  count: {
-    color: "#FF6B9A",
-    fontSize: 15,
-    fontWeight: "500",
-    paddingLeft: 8,
-    lineHeight: 20,
-  },
-  limit: {
-    color: "#ACACAC",
-    fontSize: 15,
-    fontWeight: "500",
-    lineHeight: 20,
-  },
-  wrapper: {
-    flex: 1,
-    width: "100%",
+    color: '#4A4A4A',
   },
 });
