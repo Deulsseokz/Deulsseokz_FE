@@ -14,14 +14,14 @@ import { WeatherType } from '@/types/weather';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Alert } from 'react-native';
 
 export default function AlbumIdScreen() {
   /** router */
   const router = useRouter();
   const { place } = useLocalSearchParams();
-  const placeParam = useMemo(() => (Array.isArray(place) ? place[0] : place), [place]);
+  const placeParam = Array.isArray(place) ? place[0] : place;
 
   /** state */
   const [photos, setPhotos] = useState<PolaroidPhoto[]>([]);

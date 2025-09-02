@@ -29,7 +29,7 @@ export default function AlbumEditScreen() {
     place?: string;
     newImageUri?: string;
   }>();
-  const placeParam = useMemo(() => (place ? decodeURIComponent(place) : ''), [place]);
+  const placeParam = place ? decodeURIComponent(place) : '';
 
   /** state */
   const [selectedFeeling, setSelectedFeeling] = useState<FeelingType>('없음');
@@ -41,7 +41,7 @@ export default function AlbumEditScreen() {
   const { show: showCancelModal, hide: hideCancelModal, ...cancelModal } = useModal();
 
   /** variable */
-  const parsedPhoto: PolaroidPhoto | null = useMemo(() => {
+  const parsedPhoto: PolaroidPhoto | null = (() => {
     if (!photo) return null;
     try {
       return JSON.parse(decodeURIComponent(photo));
@@ -49,7 +49,7 @@ export default function AlbumEditScreen() {
       console.error('사진 파싱 실패:', e);
       return null;
     }
-  }, [photo]);
+  })();
 
   const imageSource = useMemo(() => {
     if (parsedPhoto) return parsedPhoto.image;
