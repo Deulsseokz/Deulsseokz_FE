@@ -1,13 +1,14 @@
-import { useState } from 'react';
-import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { postFavoritePlace } from "@/api/place";
+import { useEffect, useState } from 'react';
+import { Alert, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 interface FavoritePlaceProps {
-  place: string; // 장소 이름
+  placeName: string; // 장소 이름
   isFavorite: boolean; // 해당 장소가 관심장소로 등록 되어 있는지 여부 (props로 미리 받은 값)
 }
 
 // 개별 관심 장소 등록/ 삭제를 관리하는 컴포넌트
-export default function FavoritePlace({ place, isFavorite }: FavoritePlaceProps) {
+export default function FavoritePlaceBtn({ placeName, isFavorite }: FavoritePlaceProps) {
   const [filled, setFilled] = useState(isFavorite);
   const [loading, setLoading] = useState(false);
 
@@ -16,16 +17,23 @@ export default function FavoritePlace({ place, isFavorite }: FavoritePlaceProps)
 
     try {
       setLoading(true);
-      // 1. API 요청
+
+      const response = await postFavoritePlace({"place": placeName, isFavorite: !filled});
 
       // 2. 성공 시 상태 반영
-      setFilled(!filled);
+      if (response.isSuccess) setFilled(!filled);
+      else Alert.alert("관심 장소 등록에 실패하였습니다.")
     } catch (e) {
       console.error('토글 실패', e);
     } finally {
       setLoading(false);
     }
   };
+
+  // 부모에서 넘겨준 상태값과 동기화
+  useEffect(()=>{
+    setFilled(isFavorite);
+  }, [isFavorite]);
 
   const imageSource = filled
     ? require('@/assets/images/icon/icon-heart-filled.png')

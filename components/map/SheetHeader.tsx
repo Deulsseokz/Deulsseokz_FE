@@ -2,7 +2,7 @@ import CloseIcn from '@/assets/icons/icon-close-black.svg';
 import { MCOLORS } from '@/constants/colors';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import BackBtn from '../../components/common/BackBtn';
-import FavoritePlace from '../common/FavoritePlace';
+import FavoritePlaceBtn from '../common/FavoritePlaceBtn';
 import { SheetStep } from './_type';
 import { StepHeaderMap } from './_util';
 
@@ -11,23 +11,23 @@ import { StepHeaderMap } from './_util';
  */
 
 interface SheetHeaderProps {
-  place: string;
+  placeName: string;
   isFavorite: boolean;
   backStep: () => void;
   exitSheet: () => void;
   step: SheetStep;
 }
 
-export default function SheetHeader({ place, isFavorite, backStep, exitSheet, step }: SheetHeaderProps) {
+export default function SheetHeader({ placeName, isFavorite, backStep, exitSheet, step }: SheetHeaderProps) {
   const headerMap = StepHeaderMap[step];
 
   return (
     <View style={style.container}>
       <View style={style.subContainer}>
-        {headerMap.showFavorite && <FavoritePlace place={place} isFavorite={isFavorite} />}
+        {headerMap.showFavorite && <FavoritePlaceBtn placeName={placeName} isFavorite={isFavorite} />}
         {headerMap.showBackButton && <BackBtn onBack={backStep} />}
       </View>
-      {headerMap.showPlace && <Text style={style.place}>{place}</Text>}
+      {headerMap.showPlace && <Text style={style.place}>{placeName}</Text>}
       <TouchableOpacity onPress={exitSheet}>
         <CloseIcn width={28} height={30} />
       </TouchableOpacity>

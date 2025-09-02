@@ -31,6 +31,11 @@ export const fontStyles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 18,
   },
+   medium13: {
+    fontFamily: 'Pretendard-Medium',
+    fontSize: 13,
+    lineHeight: 20,
+  },
   caption: {
     fontFamily: 'Pretendard-SemiBold',
     fontSize: 13,
