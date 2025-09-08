@@ -50,6 +50,12 @@
     <string>1</string>
     <key>ITSAppUsesNonExemptEncryption</key>
     <false/>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>instagram</string>
+      <string>instagram-stories</string>
+      <string>instagramstories</string>
+    </array>
     <key>LSMinimumSystemVersion</key>
     <string>12.0</string>
     <key>LSRequiresIPhoneOS</key>
@@ -77,6 +83,8 @@
     <string>이 앱은 현재 위치를 기반으로 지도를 표시하기 위해 위치 권한이 필요합니다.</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>Allow $(PRODUCT_NAME) to access your microphone</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to save photos</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>사진을 선택하려면 앨범 접근이 필요합니다.</string>
     <key>NSUserActivityTypes</key>
