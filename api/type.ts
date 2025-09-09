@@ -107,7 +107,7 @@ export interface ChallengeListItem {
   challengePhoto: string | undefined;
   location: number[][]; // [lat, lng][] 포맷
   point: number;
-};
+}
 
 /** 상세 응답 아이템 (서버 원본) */
 export interface ChallengeInfoItem {
@@ -118,7 +118,7 @@ export interface ChallengeInfoItem {
   condition2: string;
   condition3?: string | null;
   isFavorite: boolean;
-};
+}
 
 export type ChallengeListResponse = ChallengeListItem[];
 
@@ -162,7 +162,7 @@ export interface MyPageItem {
  * @property {string} userName: 사용자 이름
  * @property {string} profileImage: 사용자 프로필 이미지
  */
-export interface MyPageFixRequest{
+export interface MyPageFixRequest {
   userName: string | null;
   profileImage: string | null;
 }
@@ -174,7 +174,7 @@ export interface MyPageFixRequest{
  */
 export interface MyPageBadgeResponse {
   badges: ServerBadgeType[];
-};
+}
 
 /**
  * @typedef MyPointHistoryRequest
@@ -221,7 +221,7 @@ export interface MyPointHistoryResponse {
  * @description 특정 지역에 대한 랜드마크를 받을 때 사용하는 데이터
  * @place 장소명 배열
  */
-export interface PlaceSearchArea{
+export interface PlaceSearchArea {
   place: string[];
 }
 
@@ -251,4 +251,19 @@ export interface FavoritePlace {
 export interface FavoritePlaceSubmitRequest {
   place: string;
   isFavorite: boolean;
+}
+
+/**
+ * @typedef MyFriendListResponse
+ * @description 유저의 친구 목록 응답 형식
+ * @property {number} userId - 친구 id
+ * @property {string} friendsName - 친구 이름
+ * @property {string | null} profileImage - 친구 프로필 이미지
+ * @property {boolean} isClose - 친구 여부
+ */
+export interface MyFriendListResponse {
+  userId: number;
+  friendsName: string;
+  profileImage: string | null;
+  isClose: boolean;
 }

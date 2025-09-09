@@ -6,16 +6,22 @@
  */
 
 /**************************************************************/
-import { CommonResponse, getRequest, patchRequest } from "./common";
-import { MyPageFixRequest, MyPageItem, MyPointHistoryRequest, MyPointHistoryResponse } from "./type";
+import { CommonResponse, getRequest, patchRequest } from './common';
+import {
+  MyFriendListResponse,
+  MyPageFixRequest,
+  MyPageItem,
+  MyPointHistoryRequest,
+  MyPointHistoryResponse,
+} from './type';
 
 /**
  * @function getMyPageInfo
  * @description 유저의 마이페이지 정보 조회
  * @returns {Promise<CommonResponse<MyPageItem>>} 마이페이지 정보를 포함한 응답
  */
-export async function getMyPageInfo() : Promise<CommonResponse<MyPageItem>> {
-    return await getRequest<MyPageItem>("/mypage/info");
+export async function getMyPageInfo(): Promise<CommonResponse<MyPageItem>> {
+  return await getRequest<MyPageItem>('/mypage/info');
 }
 
 /**
@@ -25,21 +31,18 @@ export async function getMyPageInfo() : Promise<CommonResponse<MyPageItem>> {
  * @param {string} token
  * @returns {Promise<CommonResponse<string>>} - API 응답 메시지
  */
-export async function patchMyPageInfo(
-    body: MyPageFixRequest,
-) : Promise<CommonResponse<string>> {
-    return await patchRequest<string, MyPageFixRequest>(`/mypage/info`, body);
+export async function patchMyPageInfo(body: MyPageFixRequest): Promise<CommonResponse<string>> {
+  return await patchRequest<string, MyPageFixRequest>(`/mypage/info`, body);
 }
 
 /**
- * 
+ *
  * @function getMyPointHistory
  * @description 유저의 포인트 전체 내역 조회
  * @returns {Promise<CommonResponse<MyPointHistoryResponse>>} 포인트 내역을 포함한 응답 객체
  */
-export async function getMyPointHistory()
-: Promise<CommonResponse<MyPointHistoryResponse>> {
-    return await getRequest<MyPointHistoryResponse>(`/point`);
+export async function getMyPointHistory(): Promise<CommonResponse<MyPointHistoryResponse>> {
+  return await getRequest<MyPointHistoryResponse>(`/point`);
 }
 
 /**
@@ -48,8 +51,15 @@ export async function getMyPointHistory()
  * @param {MyPointHistoryRequest} body - update할 포인트 내역 데이터
  * @returns {Promise<CommonResponse<string>>} - API 응답 메시지
  */
-export async function patchPointHistory(
-    body: MyPointHistoryRequest
-) : Promise<CommonResponse<string>> {
-    return await patchRequest<string, MyPointHistoryRequest>(`/point`, body);
+export async function patchPointHistory(body: MyPointHistoryRequest): Promise<CommonResponse<string>> {
+  return await patchRequest<string, MyPointHistoryRequest>(`/point`, body);
+}
+
+/**
+ * @function getMyFriendsList
+ * @description 유저의 친구 목록 조회
+ * @returns {Promise<CommonResponse<MyFriendListResponse[]>>} 친구 목록을 포함한 응답 객체
+ */
+export async function getMyFriendsList(): Promise<CommonResponse<MyFriendListResponse[]>> {
+  return await getRequest<MyFriendListResponse[]>(`/friends/`);
 }
