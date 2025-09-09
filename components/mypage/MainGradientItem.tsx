@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: 'hidden',
     position: 'relative',
+    marginBottom: 15,
   },
    gradientBackground : {
     ...StyleSheet.absoluteFillObject,

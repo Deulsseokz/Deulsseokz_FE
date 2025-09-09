@@ -4,6 +4,7 @@ import { StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import MainGradientItem from "../mypage/MainGradientItem";
 import MainRenderItem from "../mypage/MainRenderItem";
+import MyMissionBox from "../mypage/MyMissionBox";
 
 
 export default function MyPageTemplate() {
@@ -12,6 +13,7 @@ export default function MyPageTemplate() {
     <SafeAreaView style={styles.container}>
        <Text style={styles.title}>마이페이지</Text>
        <MainGradientItem/>
+       <MyMissionBox/>
        <MainRenderItem/>
     </SafeAreaView>
   );
