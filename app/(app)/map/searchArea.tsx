@@ -1,4 +1,4 @@
-import { getPlaceSearchArea } from "@/api/place";
+import { getPlaceSearchArea } from "@/api/placeDTO";
 import MapSearchAreaTemplate from '@/components/template/map/MapSearchAreaTemplate';
 import { router } from "expo-router";
 

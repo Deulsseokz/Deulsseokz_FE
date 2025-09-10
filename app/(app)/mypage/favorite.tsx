@@ -1,4 +1,4 @@
-import { getFavoritePlace } from "@/api/place";
+import { getFavoritePlace } from "@/api/placeDTO";
 import { FavoritePlace } from "@/api/type";
 import MyPageFavoriteTemplate from "@/components/template/MyPageFavoriteTemplate";
 import { useEffect, useState } from "react";

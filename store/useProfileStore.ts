@@ -1,5 +1,5 @@
 // useProfileStore.ts
-import { getMyPageInfo, patchMyPageInfo } from '@/api/mypage';
+import { getMyPageInfo, patchMyPageInfo } from '@/api/myPageDTO';
 import { MyPageFixRequest } from "@/api/type";
 import { create } from 'zustand';
 
