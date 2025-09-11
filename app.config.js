@@ -34,6 +34,20 @@ export default {
       },
       edgeToEdgeEnabled: true,
       permissions: ['ACCESS_FINE_LOCATION', 'ACCESS_COARSE_LOCATION'],
+      intentFilters: [
+        {
+          action: 'VIEW',
+          autoVerify: true,
+          data: [
+            {
+              scheme: 'https',
+              host: 'deulsseokz.github.io',
+              pathPrefix: '/Mellog.github.io/',
+            },
+          ],
+          category: ['BROWSABLE', 'DEFAULT'],
+        },
+      ],
     },
     web: {
       bundler: 'metro',

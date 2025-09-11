@@ -22,6 +22,7 @@ export default function FriendsContainer({ friends }: { friends: MyFriendListRes
       numColumns={4}
       scrollEnabled={friends.length > 28}
       contentContainerStyle={styles.contentContainer}
+      // null ui 처리해야함
       ListEmptyComponent={<Text>친구가 없습니다.</Text>}
       columnWrapperStyle={{ gap: itemGapWidth }}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
