@@ -6,13 +6,16 @@
  */
 
 /**************************************************************/
-import { CommonResponse, getRequest, patchRequest } from './common';
+import { CommonResponse, deleteRequest, getRequest, patchRequest } from './common';
 import {
+  DeleteFriendRequest,
+  FriendProfileResponse,
   MyFriendListResponse,
   MyPageFixRequest,
   MyPageItem,
   MyPointHistoryRequest,
   MyPointHistoryResponse,
+  PatchCloseFriendRequest,
 } from './type';
 
 /**
@@ -62,4 +65,35 @@ export async function patchPointHistory(body: MyPointHistoryRequest): Promise<Co
  */
 export async function getMyFriendsList(): Promise<CommonResponse<MyFriendListResponse[]>> {
   return await getRequest<MyFriendListResponse[]>(`/friends/`);
+}
+
+/**
+ * @function getFriendProfileList
+ * @description 유저의 친구 프로필 목록 조회
+ * @returns {Promise<CommonResponse<MyFriendListResponse[]>>} 친구 프로필 목록을 포함한 응답 객체
+ */
+export async function getFriendProfile(userId: number): Promise<CommonResponse<FriendProfileResponse>> {
+  return await getRequest<FriendProfileResponse>(`/friends/friend-profile?friendId=${userId}`);
+}
+
+/**
+ * @function deleteMyFriend
+ * @description 유저의 친구 목록 삭제
+ * @param {number[]} body - 삭제할 친구 아이디 목록
+ * @returns {Promise<CommonResponse<string>>} - API 응답 메시지
+ */
+
+export async function deleteMyFriend(body: DeleteFriendRequest): Promise<CommonResponse<string>> {
+  return await deleteRequest<string>(`/friends/delete`, body);
+}
+
+/**
+ * @function patchCloseFriend
+ * @description 친한 친구 여부 설정
+ * @param {body} 친한 친구 추가(add) or 삭제(subtract) 여부와 유저 아이디 (ex. {add: 2} / {subtract: 2})
+ * @returns {Promise<CommonResponse<string>>} - API 응답 메시지
+ */
+
+export async function patchCloseFriend(body: PatchCloseFriendRequest): Promise<CommonResponse<null>> {
+  return await patchRequest<null, PatchCloseFriendRequest>(`/friends/close`, body);
 }

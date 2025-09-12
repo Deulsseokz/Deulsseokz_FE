@@ -1,5 +1,6 @@
-import IconMore from '@/assets/icons/icon-more.svg';
-import Dropdown from '@/components/common/Dropdown';
+import { getFriendProfile } from '@/api/mypage';
+import { FriendProfileResponse } from '@/api/type';
+import IconAddFriend from '@/assets/icons/icon-addFriend.svg';
 import { TopBar } from '@/components/common/TopBar';
 import FriendsContainer from '@/components/mypage/FriendsContainer';
 import LinkContainer from '@/components/mypage/LinkContainer';
@@ -10,6 +11,7 @@ import { ModalType } from '@/enums/modalTypes';
 import { FriendsList } from '@/types/friend';
 import React, { useState } from 'react';
 import { Share, StyleSheet, Text, View } from 'react-native';
+import FriendProfileModal from '../mypage/FriendProfileModal';
 
 export default function MyPageFriendTemplate({
   friends,
@@ -17,15 +19,8 @@ export default function MyPageFriendTemplate({
   onOpenInviteModal,
   onCloseInviteModal,
 }: FriendsList) {
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-
-  const handleDropdownClose = () => {
-    setIsDropdownVisible(false);
-  };
-
-  const handleRightButtonPress = () => {
-    setIsDropdownVisible(true);
-  };
+  const [isProfileVisible, setIsProfileVisible] = useState(false);
+  const [friendProfileData, setFriendProfileData] = useState<FriendProfileResponse | null>(null);
 
   const handleOpenInviteModal = () => {
     onOpenInviteModal(ModalType.DEFAULT, {
@@ -37,6 +32,16 @@ export default function MyPageFriendTemplate({
       ],
       children: <LinkContainer />,
     });
+  };
+
+  const handleOpenFriendProfileModal = async (id: number) => {
+    try {
+      const res = await getFriendProfile(id);
+      setFriendProfileData(res.result);
+      setIsProfileVisible(true);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const shareLink = async () => {
@@ -52,26 +57,21 @@ export default function MyPageFriendTemplate({
 
   return (
     <>
-      <Dropdown
-        visible={isDropdownVisible}
-        onClose={handleDropdownClose}
-        options={[
-          {
-            label: '추가하기',
-            onPress: handleOpenInviteModal,
-          },
-          { label: '삭제하기', onPress: () => {} },
-        ]}
-      />
-
+      {friendProfileData && (
+        <FriendProfileModal
+          isVisible={isProfileVisible}
+          onClose={() => setIsProfileVisible(false)}
+          data={friendProfileData}
+        />
+      )}
       <View style={styles.page}>
-        <TopBar title="친구 관리" rightButton={<IconMore />} onRightPress={handleRightButtonPress} />
+        <TopBar title="친구 관리" rightButton={<IconAddFriend />} onRightPress={handleOpenInviteModal} />
         <View style={styles.viewContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>친구</Text>
             <Text style={styles.count}>{numOfFriends}</Text>
           </View>
-          <FriendsContainer friends={friends} />
+          <FriendsContainer friends={friends} onPressProfile={handleOpenFriendProfileModal} />
         </View>
       </View>
     </>

@@ -267,3 +267,24 @@ export interface MyFriendListResponse {
   profileImage: string | null;
   isClose: boolean;
 }
+
+export interface FriendProfileResponse {
+  friendName: string;
+  profileImage: string;
+  withMe: number;
+  friendSuccess: number;
+  isClose: boolean;
+  friendId: number;
+}
+
+export interface DeleteFriendRequest {
+  friendIds: number[];
+}
+
+export type PatchCloseFriendRequest =
+  | {
+      add: number;
+    }
+  | {
+      subtract: number;
+    };

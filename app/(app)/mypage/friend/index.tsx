@@ -10,8 +10,8 @@ export default function FriendScreen() {
   const numOfFriends = friends.length;
 
   useEffect(() => {
-    getMyFriendsList().then(result => {
-      setFriends(result.result);
+    getMyFriendsList().then(res => {
+      setFriends(res.result);
     });
   }, []);
 

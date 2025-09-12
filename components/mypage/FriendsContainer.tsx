@@ -3,7 +3,13 @@ import { MCOLORS } from '@/constants/colors';
 import { fontStyles } from '@/constants/fonts';
 import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export default function FriendsContainer({ friends }: { friends: MyFriendListResponse[] }) {
+export default function FriendsContainer({
+  friends,
+  onPressProfile,
+}: {
+  friends: MyFriendListResponse[];
+  onPressProfile: (userId: number) => void;
+}) {
   const windowWidth = Dimensions.get('window').width;
   const itemGapWidth = (windowWidth * 0.8 - 200) / 3;
 
@@ -12,7 +18,7 @@ export default function FriendsContainer({ friends }: { friends: MyFriendListRes
       data={friends}
       keyExtractor={item => item.userId.toString()}
       renderItem={({ item }) => (
-        <TouchableOpacity style={styles.item}>
+        <TouchableOpacity style={styles.item} onPress={() => onPressProfile(item.userId)}>
           <Image style={styles.image} source={{ uri: item.profileImage! }} />
           <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
             {item.friendsName}
