@@ -277,10 +277,6 @@ export interface FriendProfileResponse {
   friendId: number;
 }
 
-export interface DeleteFriendRequest {
-  friendIds: number[];
-}
-
 export type PatchCloseFriendRequest =
   | {
       add: number;

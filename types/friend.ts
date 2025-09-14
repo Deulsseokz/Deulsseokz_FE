@@ -12,4 +12,6 @@ export interface FriendsList {
   numOfFriends: number;
   onOpenInviteModal: (type: ModalType, props?: any) => void;
   onCloseInviteModal: () => void;
+  isProfileVisible: boolean;
+  setIsProfileVisible: (visible: boolean) => void;
 }

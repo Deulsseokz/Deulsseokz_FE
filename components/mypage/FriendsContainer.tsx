@@ -2,6 +2,7 @@ import { MyFriendListResponse } from '@/api/type';
 import { MCOLORS } from '@/constants/colors';
 import { fontStyles } from '@/constants/fonts';
 import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import NoFriendsWrapper from './NoFriendsWrapper';
 
 export default function FriendsContainer({
   friends,
@@ -29,7 +30,7 @@ export default function FriendsContainer({
       scrollEnabled={friends.length > 28}
       contentContainerStyle={styles.contentContainer}
       // null ui 처리해야함
-      ListEmptyComponent={<Text>친구가 없습니다.</Text>}
+      ListEmptyComponent={<NoFriendsWrapper />}
       columnWrapperStyle={{ gap: itemGapWidth }}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       ListFooterComponent={() => <View style={styles.footer} />}

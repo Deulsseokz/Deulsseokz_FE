@@ -6,14 +6,17 @@ import useModal from '@/hooks/useModal';
 import React, { useEffect, useState } from 'react';
 export default function FriendScreen() {
   const [friends, setFriends] = useState<MyFriendListResponse[]>([]);
+  const [isProfileVisible, setIsProfileVisible] = useState(false);
   const { isShowing, modalType, modalProps, hide, show } = useModal();
   const numOfFriends = friends.length;
 
   useEffect(() => {
-    getMyFriendsList().then(res => {
-      setFriends(res.result);
-    });
-  }, []);
+    if (!isProfileVisible) {
+      getMyFriendsList().then(res => {
+        setFriends(res.result);
+      });
+    }
+  }, [isProfileVisible]);
 
   return (
     <>
@@ -23,6 +26,8 @@ export default function FriendScreen() {
         numOfFriends={numOfFriends}
         onOpenInviteModal={show}
         onCloseInviteModal={hide}
+        isProfileVisible={isProfileVisible}
+        setIsProfileVisible={setIsProfileVisible}
       />
     </>
   );

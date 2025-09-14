@@ -8,7 +8,6 @@
 /**************************************************************/
 import { CommonResponse, deleteRequest, getRequest, patchRequest } from './common';
 import {
-  DeleteFriendRequest,
   FriendProfileResponse,
   MyFriendListResponse,
   MyPageFixRequest,
@@ -78,13 +77,13 @@ export async function getFriendProfile(userId: number): Promise<CommonResponse<F
 
 /**
  * @function deleteMyFriend
- * @description 유저의 친구 목록 삭제
- * @param {number[]} body - 삭제할 친구 아이디 목록
+ * @description 유저의 친구 삭제
+ * @param {number} body - 삭제할 친구 아이디
  * @returns {Promise<CommonResponse<string>>} - API 응답 메시지
  */
 
-export async function deleteMyFriend(body: DeleteFriendRequest): Promise<CommonResponse<string>> {
-  return await deleteRequest<string>(`/friends/delete`, body);
+export async function deleteMyFriend(friendId: number): Promise<CommonResponse<null>> {
+  return await deleteRequest<null>(`/friends/delete?friendId=${friendId}`);
 }
 
 /**

@@ -1,21 +1,15 @@
 import { patchCloseFriend } from '@/api/mypage';
-import { FriendProfileResponse } from '@/api/type';
 import IconCloseBlack from '@/assets/icons/icon-close-black.svg';
+import IconDeleteFriend from '@/assets/icons/icon-deleteFriend.svg';
 import IconStarEmpty from '@/assets/icons/icon-star-empty.svg';
 import IconStarPink from '@/assets/icons/icon-star-pink.svg';
 import { MCOLORS } from '@/constants/colors';
 import fonts from '@/constants/fonts';
 import { useState } from 'react';
 import { Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-export default function FriendProfileModal({
-  isVisible,
-  onClose,
-  data,
-}: {
-  isVisible: boolean;
-  data: FriendProfileResponse;
-  onClose: () => void;
-}) {
+import { FriendProfileModalProps } from './_type';
+
+export default function FriendProfileModal({ isVisible, onClose, data, onDeleteFriend }: FriendProfileModalProps) {
   const [isClose, setIsClose] = useState(data.isClose);
 
   const handlePatchCloseFriend = () => {
@@ -39,9 +33,14 @@ export default function FriendProfileModal({
             <TouchableOpacity style={styles.btn} onPress={onClose}>
               <IconCloseBlack />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btn} onPress={handlePatchCloseFriend}>
-              {isClose ? <IconStarPink /> : <IconStarEmpty />}
-            </TouchableOpacity>
+            <View style={styles.btnRightContainer}>
+              <TouchableOpacity style={styles.btn} onPress={() => onDeleteFriend(data.friendId)}>
+                <IconDeleteFriend />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.btn} onPress={handlePatchCloseFriend}>
+                {isClose ? <IconStarPink /> : <IconStarEmpty />}
+              </TouchableOpacity>
+            </View>
           </View>
           <Image source={{ uri: data.profileImage }} style={styles.profileImage} />
           <Text style={styles.friendName}>{data.friendName}</Text>
@@ -86,6 +85,10 @@ const styles = StyleSheet.create({
   btn: {
     width: 28,
     height: 28,
+  },
+  btnRightContainer: {
+    flexDirection: 'row',
+    gap: 30,
   },
   profileImage: {
     width: 72,

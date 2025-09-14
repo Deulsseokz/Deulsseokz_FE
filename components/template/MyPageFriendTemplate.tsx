@@ -1,4 +1,4 @@
-import { getFriendProfile } from '@/api/mypage';
+import { deleteMyFriend, getFriendProfile } from '@/api/mypage';
 import { FriendProfileResponse } from '@/api/type';
 import IconAddFriend from '@/assets/icons/icon-addFriend.svg';
 import { TopBar } from '@/components/common/TopBar';
@@ -18,8 +18,9 @@ export default function MyPageFriendTemplate({
   numOfFriends,
   onOpenInviteModal,
   onCloseInviteModal,
+  isProfileVisible,
+  setIsProfileVisible,
 }: FriendsList) {
-  const [isProfileVisible, setIsProfileVisible] = useState(false);
   const [friendProfileData, setFriendProfileData] = useState<FriendProfileResponse | null>(null);
 
   const handleOpenInviteModal = () => {
@@ -37,8 +38,18 @@ export default function MyPageFriendTemplate({
   const handleOpenFriendProfileModal = async (id: number) => {
     try {
       const res = await getFriendProfile(id);
+
       setFriendProfileData(res.result);
       setIsProfileVisible(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDeleteFriend = async (id: number) => {
+    try {
+      await deleteMyFriend(id);
+      setIsProfileVisible(false);
     } catch (error) {
       console.error(error);
     }
@@ -62,6 +73,7 @@ export default function MyPageFriendTemplate({
           isVisible={isProfileVisible}
           onClose={() => setIsProfileVisible(false)}
           data={friendProfileData}
+          onDeleteFriend={handleDeleteFriend}
         />
       )}
       <View style={styles.page}>
