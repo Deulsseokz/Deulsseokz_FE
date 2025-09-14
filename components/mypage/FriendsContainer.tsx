@@ -1,4 +1,5 @@
 import { MyFriendListResponse } from '@/api/type';
+import IconStarLined from '@/assets/icons/icon-star-lined.svg';
 import { MCOLORS } from '@/constants/colors';
 import { fontStyles } from '@/constants/fonts';
 import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -20,7 +21,11 @@ export default function FriendsContainer({
       keyExtractor={item => item.userId.toString()}
       renderItem={({ item }) => (
         <TouchableOpacity style={styles.item} onPress={() => onPressProfile(item.userId)}>
-          <Image style={styles.image} source={{ uri: item.profileImage! }} />
+          <View style={styles.imageContainer}>
+            {item.isClose && <IconStarLined style={styles.star} />}
+            <Image style={styles.image} source={{ uri: item.profileImage! }} />
+          </View>
+
           <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
             {item.friendsName}
           </Text>
@@ -46,6 +51,16 @@ const styles = StyleSheet.create({
   item: {
     gap: 10,
     alignItems: 'center',
+  },
+  imageContainer: {
+    position: 'relative',
+    width: 40,
+    height: 40,
+  },
+  star: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
   },
   image: {
     resizeMode: 'cover',
