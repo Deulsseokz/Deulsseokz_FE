@@ -8,31 +8,23 @@ import { ModalType } from '@/enums/modalTypes';
 import useModal from '@/hooks/useModal';
 import { FeelingType } from '@/types/feeling';
 import { WeatherType } from '@/types/weather';
+import { showCustomToast } from '@/utils/toastManager';
 import { Image } from 'expo-image';
-import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useCallback, useMemo, useState } from 'react';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useCallback, useEffect, useState } from 'react';
 
 export default function AlbumDeleteScreen() {
   /** router */
   const router = useRouter();
   const { place } = useLocalSearchParams<{ place: string }>();
-  const placeParam = useMemo(
-    () => (place ? decodeURIComponent(Array.isArray(place) ? place[0] : place) : ''),
-    [place],
-  );
+  const placeParam = place ? decodeURIComponent(Array.isArray(place) ? place[0] : place) : '';
 
   /** state */
   const [photos, setPhotos] = useState<PolaroidPhoto[]>([]);
   const [selectedPhotos, setSelectedPhotos] = useState<PolaroidPhoto[]>([]);
 
   /** hooks */
-  const {
-    isShowing: isModalVisible,
-    modalType,
-    modalProps,
-    show: showModal,
-    hide: hideModal,
-  } = useModal();
+  const { isShowing: isModalVisible, modalType, modalProps, show: showModal, hide: hideModal } = useModal();
 
   /** API util */
   const transformPhoto = (photo: PhotoItem): PolaroidPhoto => ({
@@ -45,6 +37,7 @@ export default function AlbumDeleteScreen() {
     },
     date: photo.date ?? '',
     loc: placeParam ?? '',
+    isFavorite: photo.isFavorite,
   });
 
   /** API fetch */
@@ -63,20 +56,20 @@ export default function AlbumDeleteScreen() {
 
   /** handler function */
   const handleSelect = (photo: PolaroidPhoto) => {
+    if (photo.isFavorite) {
+      showCustomToast('대표 사진은 삭제할 수 없어요');
+      return;
+    }
+
     const isSelected = selectedPhotos.find(p => p.id === photo.id);
     if (isSelected) {
       setSelectedPhotos(selectedPhotos.filter(p => p.id !== photo.id));
     } else {
+      if (photos.length > 1 && selectedPhotos.length >= photos.length - 1) {
+        showCustomToast('모든 사진을 삭제할 수 없어요', '최소 1장의 사진은 남아 있어야 해요');
+        return;
+      }
       setSelectedPhotos([...selectedPhotos, photo]);
-    }
-  };
-
-  const handleSelectAll = () => {
-    // 전체 선택/해제 토글 로직
-    if (selectedPhotos.length === photos.length) {
-      setSelectedPhotos([]);
-    } else {
-      setSelectedPhotos(photos);
     }
   };
 
@@ -86,12 +79,7 @@ export default function AlbumDeleteScreen() {
     showModal(ModalType.DEFAULT, {
       title: '선택한 사진을 삭제할까요?',
       desc: '삭제는 되돌릴 수 없어요.',
-      children: (
-        <Image
-          source={require('@/assets/images/modal/icon-warning.png')}
-          style={{ width: 80, height: 82 }}
-        />
-      ),
+      children: <Image source={require('@/assets/images/modal/icon-warning.png')} style={{ width: 80, height: 82 }} />,
       options: [
         { text: '취소', variant: ButtonVariant.Subtle, onPress: hideModal },
         {
@@ -115,11 +103,9 @@ export default function AlbumDeleteScreen() {
   };
 
   /** lifecycle */
-  useFocusEffect(
-    useCallback(() => {
-      fetchPhotos();
-    }, [fetchPhotos]),
-  );
+  useEffect(() => {
+    fetchPhotos();
+  }, [fetchPhotos]);
 
   return (
     <>
@@ -128,15 +114,9 @@ export default function AlbumDeleteScreen() {
         selectedPhotos={selectedPhotos}
         photos={photos}
         onSelectPhoto={handleSelect}
-        onSelectAll={handleSelectAll}
         onPressDelete={handleDeletePress}
       />
-      <ModalManager
-        isShowing={isModalVisible}
-        modalType={modalType}
-        modalProps={modalProps}
-        onClose={hideModal}
-      />
+      <ModalManager isShowing={isModalVisible} modalType={modalType} modalProps={modalProps} onClose={hideModal} />
     </>
   );
 }

@@ -5,6 +5,7 @@ export const MCOLORS = {
   brand: {
     primary: '#000',
     secondary: '#F76F8E',
+    third: '#FDF6F8',
   },
   grayscale: {
     gray0: '#FFF',

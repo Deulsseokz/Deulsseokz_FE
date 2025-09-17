@@ -9,7 +9,6 @@ interface AlbumDeleteTemplateProps {
   albumTitle: string;
   photos: PolaroidPhoto[];
   onSelectPhoto: (photo: PolaroidPhoto) => void;
-  onSelectAll: () => void;
   onPressDelete: () => void;
 }
 
@@ -21,10 +20,10 @@ export default function AlbumDeleteTemplate({
   photos,
   onSelectPhoto,
   onPressDelete,
-  onSelectAll,
   albumTitle,
 }: AlbumDeleteTemplateProps) {
   const isDeleteEnabled = selectedPhotos.length > 0;
+  const maxSelectableCount = photos.length > 1 ? photos.length - 1 : photos.length;
 
   return (
     <View style={styles.page}>
@@ -36,9 +35,6 @@ export default function AlbumDeleteTemplate({
             <Text style={styles.limit}>{photos.length}</Text>
           </View>
           <View style={styles.headerSection}>
-            <TouchableOpacity onPress={onSelectAll}>
-              <Text style={styles.bold}>전체 선택</Text>
-            </TouchableOpacity>
             <TouchableOpacity onPress={onPressDelete} disabled={!isDeleteEnabled}>
               <Text style={[styles.count, !isDeleteEnabled && styles.disabledText]}>
                 {selectedPhotos.length} <Text style={styles.bold}>삭제</Text>
@@ -48,22 +44,10 @@ export default function AlbumDeleteTemplate({
         </View>
         <View style={styles.wrapper}>
           <PhotoSelector
-            photos={photos.map(p => p.image)}
-            selectedPhotos={selectedPhotos.map(p => p.image)}
-            onSelectPhoto={selectedImage => {
-              const matched = photos.find(
-                p =>
-                  typeof p.image === 'object' &&
-                  p.image !== null &&
-                  'uri' in p.image &&
-                  'uri' in selectedImage &&
-                  p.image.uri === selectedImage.uri,
-              );
-              if (matched) {
-                onSelectPhoto(matched);
-              }
-            }}
-            maxSelectCnt={photos.length}
+            photos={photos}
+            selectedPhotos={selectedPhotos}
+            onSelectPhoto={onSelectPhoto}
+            maxSelectCnt={maxSelectableCount}
           />
         </View>
       </View>

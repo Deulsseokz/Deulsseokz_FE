@@ -1,6 +1,9 @@
+import { toastConfig } from '@/components/common/Toast/ToastWrapper';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Stack } from 'expo-router';
 import React, { useEffect } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 import { SplashScreenController } from '../components/auth/splash';
 import { useAuthenticationStore } from '../store/useAuthenticationStore';
 
@@ -15,10 +18,11 @@ export default function Root() {
   }, []);
 
   return (
-    <React.Fragment>
+    <SafeAreaProvider>
       <SplashScreenController />
       <RootNavigator />
-    </React.Fragment>
+      <Toast config={toastConfig} topOffset={75} />
+    </SafeAreaProvider>
   );
 }
 
