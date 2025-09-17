@@ -7,7 +7,7 @@
 
 /**************************************************************/
 import { CommonResponse, getRequest, patchRequest } from "./common";
-import { MyPageFixRequest, MyPageItem, MyPointHistoryRequest, MyPointHistoryResponse } from "./type";
+import { MyPageFixRequest, MyPageItem, MyPointHistoryRequest, MyPointHistoryResponse, RegionConquerRateResponse, RegionConquerStatusResponse } from "./type";
 
 /**
  * @function getMyPageInfo
@@ -52,4 +52,24 @@ export async function patchPointHistory(
     body: MyPointHistoryRequest
 ) : Promise<CommonResponse<string>> {
     return await patchRequest<string, MyPointHistoryRequest>(`/point`, body);
+}
+
+/**
+ * @function getChallengeLocal
+ * @description 지역별 챌린지 정복률 조회
+ * @returns {Promise<CommonResponse<RegionConquerRateResponse>>} 지역별 정복률 정보를 포함한 응답
+ */
+export async function getChallengeLocal(
+) : Promise<CommonResponse<RegionConquerRateResponse>> {
+    return await getRequest<RegionConquerRateResponse>(`/challenge/local`);
+}
+
+/**
+ * @function getChallengeCompletion
+ * @description 지역 내 장소별 챌린지 정복 여부 조회
+ * @returns {Promise<CommonResponse<RegionConquerStatusResponse>>} 지역별 챌린지 정복 현황 정보를 포함한 응답
+ */
+export async function getChallengeCompletion(
+): Promise<CommonResponse<RegionConquerStatusResponse>> {
+    return await getRequest<RegionConquerStatusResponse>(`/challenge/completion`);
 }

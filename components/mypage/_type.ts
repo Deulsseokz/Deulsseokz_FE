@@ -1,3 +1,4 @@
+import { RegionName } from "@/constants/map/regionMap";
 import { ImageSourcePropType } from "react-native";
 
 /**
@@ -15,3 +16,15 @@ export type MenuItem = {
 export type BtnItem = {
   label: string;
 };
+
+/**
+ * 지역별 정복률 배열 타입
+ */
+export type RegionConquerRateList = Record<RegionName, number>;
+
+/**
+ * 지역 카테고리별 정복 여부 타입
+ */
+export type ChallengeCompletionStatus = {
+  regionName: Record<RegionName, Record<string, boolean>>;
+}
