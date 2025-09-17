@@ -1,8 +1,10 @@
 import { PolaroidPhoto } from '@/components/album/_type';
 import AlbumShareTemplate from '@/components/template/AlbumShareTemplate';
+import { useInstagramShare } from '@/hooks/useInstagramShare';
 import { BadgeType, FrameType } from '@/types/shareType';
 import { useLocalSearchParams } from 'expo-router';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
+import ViewShot from 'react-native-view-shot';
 
 /** config */
 const frameOptions = [
@@ -28,6 +30,12 @@ export default function AlbumShareScreen() {
   const [selectedFrame, setSelectedFrame] = useState<FrameType>(FrameType.WHITE);
   const [selectedBadge, setSelectedBadge] = useState<BadgeType | null>(null);
 
+  /** ref */
+  const viewShotRef = useRef<ViewShot>(null);
+
+  /** hooks */
+  const { share: handleShare } = useInstagramShare(viewShotRef);
+
   /** variable */
   const selectedPhoto = useMemo<PolaroidPhoto | null>(() => {
     if (!photo) return null;
@@ -41,13 +49,6 @@ export default function AlbumShareScreen() {
 
   /** handler function (related router) */
   const handleNext = () => setStep(2);
-  const handleShare = () => {
-    console.log('공유할 정보:', {
-      photoId: selectedPhoto?.id,
-      frame: selectedFrame,
-      badge: selectedBadge,
-    });
-  };
 
   // selectedPhoto가 없으면 렌더링하지 않음 (오류 방지)
   if (!selectedPhoto) {
@@ -56,6 +57,7 @@ export default function AlbumShareScreen() {
 
   return (
     <AlbumShareTemplate
+      ref={viewShotRef}
       step={step}
       photo={selectedPhoto}
       selectedFrame={selectedFrame}
