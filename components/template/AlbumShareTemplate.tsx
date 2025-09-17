@@ -7,6 +7,7 @@ import { ButtonVariant } from '@/constants/buttonTypes';
 import { BadgeType, FrameType } from '@/types/shareType';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import ViewShot from 'react-native-view-shot';
 import { PolaroidPhoto } from '../album/_type';
 
 interface AlbumShareTemplateProps {
@@ -43,70 +44,80 @@ interface AlbumShareTemplateProps {
  * @param onNext - 다음 단계로 넘어가는 핸들러
  * @param onShare - 공유하기 핸들러
  */
-export default function AlbumShareTemplate({
-  step,
-  photo,
-  selectedFrame,
-  selectedBadge,
-  frameOptions,
-  badgeOptions,
-  onChangeFrame,
-  onChangeBadge,
-  onNext,
-  onShare,
-}: AlbumShareTemplateProps) {
-  return (
-    <View style={styles.page}>
-      <TopBar title="" rightButton={<PriceTag price={800} />} />
-      <View style={styles.container}>
-        <CustomPolaroid photo={photo} frame={selectedFrame} badge={selectedBadge} />
+const AlbumShareTemplate = React.forwardRef<ViewShot, AlbumShareTemplateProps>(
+  (
+    {
+      step,
+      photo,
+      selectedFrame,
+      selectedBadge,
+      frameOptions,
+      badgeOptions,
+      onChangeFrame,
+      onChangeBadge,
+      onNext,
+      onShare,
+    },
+    ref,
+  ) => {
+    return (
+      <View style={styles.page}>
+        <TopBar title="" rightButton={<PriceTag price={800} />} />
+        <View style={styles.container}>
+          <ViewShot ref={ref} options={{ fileName: 'polaroid-share', format: 'png', quality: 1.0 }}>
+            <CustomPolaroid photo={photo} frame={selectedFrame} badge={selectedBadge} />
+          </ViewShot>
 
-        {step === 1 && (
-          <View style={styles.optionBox}>
-            <Text style={styles.label}>프레임</Text>
-            <View style={styles.optionList}>
-              {frameOptions &&
-                frameOptions.map(f => (
-                  <OptionSelectionEl
-                    key={f.type}
-                    label={f.label}
-                    frameType={f.type}
-                    selected={selectedFrame === f.type}
-                    price={f.price}
-                    onPress={type => onChangeFrame(type as FrameType)}
-                  />
-                ))}
+          {step === 1 && (
+            <View style={styles.optionBox}>
+              <Text style={styles.label}>프레임</Text>
+              <View style={styles.optionList}>
+                {frameOptions &&
+                  frameOptions.map(f => (
+                    <OptionSelectionEl
+                      key={f.type}
+                      label={f.label}
+                      frameType={f.type}
+                      selected={selectedFrame === f.type}
+                      price={f.price}
+                      onPress={type => onChangeFrame(type as FrameType)}
+                    />
+                  ))}
+              </View>
             </View>
-          </View>
-        )}
+          )}
 
-        {step === 2 && (
-          <View style={styles.optionBox}>
-            <Text style={styles.label}>뱃지</Text>
-            <View style={styles.optionList}>
-              {badgeOptions &&
-                badgeOptions.map(b => (
-                  <OptionSelectionEl
-                    key={b.type}
-                    label={b.label}
-                    badgeType={b.type}
-                    selected={selectedBadge === b.type}
-                    onPress={type => onChangeBadge(type as BadgeType)}
-                  />
-                ))}
+          {step === 2 && (
+            <View style={styles.optionBox}>
+              <Text style={styles.label}>뱃지</Text>
+              <View style={styles.optionList}>
+                {badgeOptions &&
+                  badgeOptions.map(b => (
+                    <OptionSelectionEl
+                      key={b.type}
+                      label={b.label}
+                      badgeType={b.type}
+                      selected={selectedBadge === b.type}
+                      onPress={type => onChangeBadge(type as BadgeType)}
+                    />
+                  ))}
+              </View>
             </View>
-          </View>
-        )}
+          )}
 
-        <PrimaryButton
-          text={step === 1 ? '다음' : '공유하기'}
-          variant={ButtonVariant.Primary}
-          onPress={step === 1 ? onNext : onShare}
-        />
+          <PrimaryButton
+            text={step === 1 ? '다음' : '공유하기'}
+            variant={ButtonVariant.Primary}
+            onPress={step === 1 ? onNext : onShare}
+          />
+        </View>
       </View>
-    </View>
-  );
-}
+    );
+  },
+);
+
+AlbumShareTemplate.displayName = 'AlbumShareTemplate';
+export default AlbumShareTemplate;
 
 const styles = StyleSheet.create({
   page: {

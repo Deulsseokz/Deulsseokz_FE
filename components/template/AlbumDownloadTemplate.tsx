@@ -4,15 +4,11 @@ import { PrimaryButton } from '@/components/common/Button/PrimaryButton';
 import { TopBar } from '@/components/common/TopBar';
 import { ButtonVariant } from '@/constants/buttonTypes';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 interface AlbumDownloadTemplateProps {
   photo: PolaroidPhoto;
   albumTitle: string;
-  cnt: {
-    curr: number;
-    tot: number;
-  };
   imageRef: React.RefObject<View | null>;
   onPressDownload: () => void;
 }
@@ -20,7 +16,6 @@ interface AlbumDownloadTemplateProps {
 export default function AlbumDownloadTemplate({
   photo,
   albumTitle,
-  cnt,
   imageRef,
   onPressDownload,
 }: AlbumDownloadTemplateProps) {
@@ -32,14 +27,7 @@ export default function AlbumDownloadTemplate({
           <Polaroid photo={photo} />
         </View>
         <View>
-          <Text style={styles.label}>
-            남은 횟수 ( {cnt.curr} / {cnt.tot} )
-          </Text>
-          <PrimaryButton
-            text="다운로드"
-            onPress={onPressDownload}
-            variant={ButtonVariant.Primary}
-          />
+          <PrimaryButton text="다운로드" onPress={onPressDownload} variant={ButtonVariant.Primary} />
         </View>
       </View>
     </View>

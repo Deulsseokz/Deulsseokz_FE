@@ -85,6 +85,10 @@ export default {
         {
           android: {
             extraMavenRepos: ['https://repository.map.naver.com/archive/maven'],
+            package: 'com.instagram.android',
+          },
+          ios: {
+            queries: ['instagram', 'instagram-stories'],
           },
         },
       ],

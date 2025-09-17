@@ -5,7 +5,7 @@ import { ModalType } from '@/enums/modalTypes';
 import useModal from '@/hooks/useModal';
 import * as MediaLibrary from 'expo-media-library';
 import { useLocalSearchParams } from 'expo-router';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Alert, Image, View } from 'react-native';
 import { captureRef } from 'react-native-view-shot';
 
@@ -13,20 +13,11 @@ export default function AlbumDownloadScreen() {
   /** router */
   const { photo, place } = useLocalSearchParams();
 
-  /** state */
-  const [downloadCount, setDownloadCount] = useState({ curr: 3, tot: 5 });
-
   /** refs */
   const viewToCaptureRef = useRef<View>(null);
 
   /** hooks */
-  const {
-    isShowing: isModalVisible,
-    modalType,
-    modalProps,
-    show: showModal,
-    hide: hideModal,
-  } = useModal();
+  const { isShowing: isModalVisible, modalType, modalProps, show: showModal, hide: hideModal } = useModal();
 
   /** variable */
   let parsedPhoto: PolaroidPhoto | null = null;
@@ -60,10 +51,7 @@ export default function AlbumDownloadScreen() {
       showModal(ModalType.DEFAULT, {
         title: '사진을 갤러리에 저장했어요',
         children: (
-          <Image
-            source={require('@/assets/images/modal/icon-picture.png')}
-            style={{ width: 80, height: 82 }}
-          />
+          <Image source={require('@/assets/images/modal/icon-picture.png')} style={{ width: 80, height: 82 }} />
         ),
         buttons: {
           text: '닫기',
@@ -83,16 +71,10 @@ export default function AlbumDownloadScreen() {
       <AlbumDownloadTemplate
         photo={parsedPhoto}
         albumTitle={place as string}
-        cnt={downloadCount}
         imageRef={viewToCaptureRef}
         onPressDownload={handleDownload}
       />
-      <ModalManager
-        isShowing={isModalVisible}
-        modalType={modalType}
-        modalProps={modalProps}
-        onClose={hideModal}
-      />
+      <ModalManager isShowing={isModalVisible} modalType={modalType} modalProps={modalProps} onClose={hideModal} />
     </>
   );
 }

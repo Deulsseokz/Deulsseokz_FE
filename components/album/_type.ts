@@ -23,6 +23,8 @@ export interface PolaroidPhoto {
   date: string;
   /** 촬영 장소 */
   loc: string;
+  /** 대표 사진 여부 */
+  isFavorite?: boolean;
 }
 
 /** Polaroid 컴포넌트에 전달되는 공용 props 타입 */
