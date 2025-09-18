@@ -1,7 +1,7 @@
-import { BadgeType, FrameType } from "@/types/shareType";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
-import PriceTag from "../common/PriceTag";
-import { badgeIcons, frameIcons } from "./_utli";
+import { BadgeType, FrameType } from '@/types/shareType';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import PriceTag from '../common/PriceTag';
+import { badgeIcons, frameIcons } from './_utli';
 
 interface OptionSelectionElProps {
   /** 옵션 레이블 */
@@ -13,7 +13,7 @@ interface OptionSelectionElProps {
   /** 현재 선택 상태 여부 */
   selected: boolean;
   /** 가격이 있는 경우 표시할 가격 (opt)*/
-  price?: number; 
+  price?: number;
   /** 옵션을 선택했을 때 호출되는 콜백 */
   onPress: (type: FrameType | BadgeType) => void;
 }
@@ -31,27 +31,34 @@ export default function OptionSelectionEl({
   price,
   onPress,
 }: OptionSelectionElProps) {
+  const isFrame = frameType !== undefined;
+  const isBadge = badgeType !== undefined;
 
-  const imageSource =
-    frameType !== undefined
-      ? selected
-        ? frameIcons[frameType].active
-        : frameIcons[frameType].inactive
-      : badgeType !== undefined
-      ? selected
-        ? badgeIcons[badgeType].active
-        : badgeIcons[badgeType].inactive
-      : undefined;
+  const imageSource = isFrame
+    ? selected
+      ? frameIcons[frameType!].active
+      : frameIcons[frameType!].inactive
+    : isBadge
+    ? selected
+      ? badgeIcons[badgeType!].active
+      : badgeIcons[badgeType!].inactive
+    : undefined;
 
   const handlePress = () => {
-    if (frameType !== undefined) onPress(frameType);
-    else if (badgeType !== undefined) onPress(badgeType);
+    if (isFrame) onPress(frameType!);
+    else if (isBadge) onPress(badgeType!);
   };
+
+  const iconStyle = isFrame ? styles.frameIcon : styles.badgeIcon;
 
   return (
     <View style={styles.optionContainer}>
-      <Pressable onPress={handlePress}>
-        <Image source={imageSource} style={styles.icon} />
+      <Pressable onPress={handlePress} disabled={!imageSource}>
+        {imageSource ? (
+          <Image source={imageSource} style={iconStyle} />
+        ) : (
+          <View style={[iconStyle, styles.iconPlaceholder]} />
+        )}
       </Pressable>
       <Text style={styles.label}>{label}</Text>
       {price !== undefined && <PriceTag price={price} />}
@@ -61,16 +68,27 @@ export default function OptionSelectionEl({
 
 const styles = StyleSheet.create({
   optionContainer: {
-    alignItems: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     minHeight: 120,
     gap: 4,
   },
-  icon: {
+  frameIcon: {
     width: 60,
     height: 60,
+    resizeMode: 'contain',
+  },
+  badgeIcon: {
+    width: 75,
+    height: 75,
+    resizeMode: 'contain',
+  },
+  iconPlaceholder: {
+    backgroundColor: '#F2F2F2',
+    borderRadius: 8,
   },
   label: {
     fontSize: 12,
-    color: "#333",
+    color: '#333',
   },
 });
