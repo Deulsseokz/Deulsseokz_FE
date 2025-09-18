@@ -1,10 +1,11 @@
+import fontStyles from '@/constants/fonts';
 import { formatDate } from '@/utils/formatDate';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 import { PolaroidPhoto } from './_type';
+import { feelingImageMap, weatherImageMap } from './_utli';
 import PeopleOverlay from './PeopleOverlay';
-
 const { width: windowWidth } = Dimensions.get('window');
 const CARD_WIDTH = windowWidth * 0.7;
 const CARD_HEIGHT = 514;
@@ -23,11 +24,7 @@ interface PhotoSetCarouselProps {
  * - 각 사진은 폴라로이드 스타일로 표시됨
  */
 
-export default function PhotoSetCarousel({
-  photos,
-  activeIndex,
-  setActiveIndex,
-}: PhotoSetCarouselProps) {
+export default function PhotoSetCarousel({ photos, activeIndex, setActiveIndex }: PhotoSetCarouselProps) {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   // 슬라이드 바뀌면 오버레이 닫기
@@ -47,6 +44,10 @@ export default function PhotoSetCarousel({
         modeConfig={{ parallaxScrollingScale: 0.9, parallaxScrollingOffset: 50 }}
         renderItem={({ item, index }) => {
           const expanded = expandedIndex === index;
+
+          const feelingIcon = feelingImageMap[item.additional.feeling];
+          const weatherIcon = weatherImageMap[item.additional.weather];
+
           return (
             <View style={styles.card}>
               <View style={styles.polaroid}>
@@ -62,12 +63,14 @@ export default function PhotoSetCarousel({
 
                 {/* 추가 정보 */}
                 <View style={styles.additional}>
-                  {(item.additional?.feeling || item.additional?.weather) && (
-                    <Text style={styles.emoji}>
-                      {item.additional?.feeling ?? ''} {item.additional?.weather ?? ''}
-                    </Text>
+                  {(feelingIcon || weatherIcon) && (
+                    <View style={styles.emojiRow}>
+                      {feelingIcon && <Image source={feelingIcon} style={styles.emojiIcon} resizeMode="contain" />}
+                      {weatherIcon && <Image source={weatherIcon} style={styles.emojiIcon} resizeMode="contain" />}
+                    </View>
                   )}
-                  {item.additional?.desc && (
+
+                  {item.additional.desc?.length > 0 && (
                     <Text style={styles.desc} numberOfLines={2}>
                       {item.additional.desc}
                     </Text>
@@ -92,11 +95,12 @@ const styles = StyleSheet.create({
   card: { alignItems: 'center', justifyContent: 'center' },
   polaroid: {
     width: '100%',
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 15,
     backgroundColor: '#fff',
     display: 'flex',
     flexDirection: 'column',
-    gap: 10,
+    gap: 15,
     shadowColor: '#000',
     shadowOpacity: 0.2,
     shadowRadius: 6,
@@ -109,10 +113,14 @@ const styles = StyleSheet.create({
   image: { width: '100%', height: '100%', resizeMode: 'cover' },
 
   /** 추가정보/푸터 */
-  emoji: { fontSize: 20, marginBottom: 5 },
-  additional: { minHeight: 70 },
-  desc: { fontSize: 13, lineHeight: 20, color: '#4A4A4A' },
-  footer: { flexDirection: 'row', justifyContent: 'space-between', paddingTop: 20 },
+  additional: { minHeight: 80, display: 'flex', flexDirection: 'column', gap: 5 },
+
+  /** 이모지(아이콘) 영역 */
+  emojiRow: { flexDirection: 'row', alignItems: 'center', gap: 5 },
+  emojiIcon: { width: 24, height: 24 },
+
+  desc: { ...fontStyles.medium13, color: '#4A4A4A' },
+  footer: { flexDirection: 'row', justifyContent: 'space-between' },
   date: { fontSize: 12, color: '#ACACAC' },
   loc: { fontSize: 12, color: '#7A7A7A' },
 });
