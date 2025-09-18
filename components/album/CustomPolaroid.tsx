@@ -1,8 +1,10 @@
 import { BadgeType, FrameType } from '@/types/shareType';
 import { formatDate } from '@/utils/formatDate';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, StyleSheet, Text, View } from 'react-native';
+import { Shadow } from 'react-native-shadow-2';
 import { PolaroidProps } from './_type';
 import { badgeImageMap, feelingImageMap, frameImageMap, weatherImageMap } from './_utli';
+
 interface CustomPolaroidProps {
   /** 폴라로이드에 표시할 사진 정보 */
   photo: PolaroidProps['photo'];
@@ -26,68 +28,84 @@ export default function CustomPolaroid({ photo, frame, badge }: PolaroidProps & 
   const weatherIcon = weatherImageMap[additional.weather];
 
   return (
-    <View style={[styles.polaroid, isBlack ? styles.blackFrame : styles.whiteFrame]}>
-      <Image source={image} style={styles.image} />
+    <View style={styles.stage}>
+      <Shadow distance={5} offset={[1, 2]} startColor="#0000001A">
+        <View style={[styles.polaroid, isBlack ? styles.blackFrame : styles.whiteFrame]}>
+          <Image source={image} style={styles.image} />
+          {frameImageMap[frame] && <Image source={frameImageMap[frame]} style={styles.overlay} />}
 
-      {frameImageMap[frame] && <Image source={frameImageMap[frame]} style={styles.overlay} />}
+          <View>
+            <View style={styles.metaRow}>
+              {feelingIcon && <Image source={feelingIcon} style={styles.metaIcon} />}
+              {weatherIcon && <Image source={weatherIcon} style={styles.metaIcon} />}
+              {!feelingIcon && !weatherIcon && <Text style={[styles.metaFallback, textColor]}>없음</Text>}
+            </View>
+
+            <Text style={[styles.desc, textColor]} numberOfLines={2}>
+              {additional.desc}
+            </Text>
+          </View>
+
+          <View style={styles.footer}>
+            <Text style={styles.date}>{formatDate(date)}</Text>
+            <Text style={styles.loc}>{photo.loc}</Text>
+          </View>
+        </View>
+      </Shadow>
 
       {badge && badgeImageMap[badge] && <Image source={badgeImageMap[badge]} style={styles.badge} />}
-
-      <View>
-        <View style={styles.metaRow}>
-          {feelingIcon && <Image source={feelingIcon} style={styles.metaIcon} />}
-          {weatherIcon && <Image source={weatherIcon} style={styles.metaIcon} />}
-          {!feelingIcon && !weatherIcon && <Text style={[styles.metaFallback, textColor]}>없음</Text>}
-        </View>
-
-        <Text style={[styles.desc, textColor]} numberOfLines={2}>
-          {additional.desc}
-        </Text>
-      </View>
-
-      <View style={styles.footer}>
-        <Text style={styles.date}>{formatDate(date)}</Text>
-        <Text style={styles.loc}>{photo.loc}</Text>
-      </View>
     </View>
   );
 }
 
+const CARD_WIDTH = 145;
+
 const styles = StyleSheet.create({
+  stage: {
+    position: 'relative',
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 50,
+    paddingRight: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+  },
+
   polaroid: {
-    width: 145,
+    width: CARD_WIDTH,
     paddingTop: 30,
     paddingRight: 9,
     paddingBottom: 10,
     paddingLeft: 9,
-
     backgroundColor: '#fff',
     flexDirection: 'column',
-
-    shadowColor: '#000',
-    shadowOpacity: 0.14,
-    shadowOffset: { width: 0, height: 1.35 },
-    elevation: 5,
   },
   blackFrame: { backgroundColor: '#000' },
   whiteFrame: { backgroundColor: '#fff' },
+
   image: { width: 128, height: 159, resizeMode: 'cover' },
+
   overlay: {
     position: 'absolute',
     top: 0,
     left: 0,
-    width: 145,
+    width: CARD_WIDTH,
     height: '100%',
     resizeMode: 'contain',
   },
+
   badge: {
     position: 'absolute',
-    top: -10,
-    left: -40,
+    top: 0,
+    left: 0,
     width: 70,
     height: 70,
     resizeMode: 'contain',
+    zIndex: 10,
+    ...Platform.select({ android: { elevation: 20 } }),
   },
+
   metaRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -97,7 +115,9 @@ const styles = StyleSheet.create({
   },
   metaIcon: { width: 14, height: 14, resizeMode: 'contain' },
   metaFallback: { fontSize: 10 },
-  desc: { fontSize: 7, lineHeight: 10, minHeight: 54 },
+
+  desc: { fontSize: 7.8, lineHeight: 10, minHeight: 54 },
+
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',

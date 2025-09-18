@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   label: {
-    paddingTop: 3,
+    paddingTop: 5,
     ...fontStyles.medium13,
     color: '#333',
   },
