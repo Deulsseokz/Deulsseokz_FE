@@ -1,3 +1,4 @@
+import fontStyles from '@/constants/fonts';
 import { BadgeType, FrameType } from '@/types/shareType';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import PriceTag from '../common/PriceTag';
@@ -69,9 +70,8 @@ export default function OptionSelectionEl({
 const styles = StyleSheet.create({
   optionContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: 120,
-    gap: 4,
+    minHeight: 150,
+    gap: 7,
   },
   frameIcon: {
     width: 60,
@@ -88,7 +88,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   label: {
-    fontSize: 12,
+    paddingTop: 3,
+    ...fontStyles.medium13,
     color: '#333',
   },
 });
