@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
  * 멜로그 폰트 시스템
  */
 
-// semibold, bold, medium, 
+// semibold, bold, medium,
 export const fontStyles = StyleSheet.create({
   bold20: {
     fontFamily: 'Pretendard-Bold',
@@ -31,10 +31,15 @@ export const fontStyles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 18,
   },
-   medium13: {
+  medium13: {
     fontFamily: 'Pretendard-Medium',
     fontSize: 13,
     lineHeight: 20,
+  },
+  medium9: {
+    fontFamily: 'Pretendard-Medium',
+    fontSize: 9,
+    lineHeight: 10,
   },
   caption: {
     fontFamily: 'Pretendard-SemiBold',

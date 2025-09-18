@@ -1,17 +1,12 @@
-import { BadgeType, FrameType } from "@/types/shareType";
-import { formatDate } from "@/utils/formatDate";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import { PolaroidProps } from "./_type";
-import { badgeImageMap, frameImageMap } from "./_utli";
+import { BadgeType, FrameType } from '@/types/shareType';
+import { formatDate } from '@/utils/formatDate';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { PolaroidProps } from './_type';
+import { badgeImageMap, frameImageMap } from './_utli';
 
 interface CustomPolaroidProps {
   /** 폴라로이드에 표시할 사진 정보 */
-  photo: PolaroidProps["photo"];
+  photo: PolaroidProps['photo'];
   /** 선택된 프레임 타입 */
   frame: FrameType;
   /** 선택된 뱃지 타입 */
@@ -30,20 +25,13 @@ export default function CustomPolaroid({
   const { image, additional, date } = photo;
 
   const isBlack = frame === FrameType.BLACK;
-  const textColor = { color: isBlack ? "#E9E9E9" : "#4A4A4A" };
+  const textColor = { color: isBlack ? '#E9E9E9' : '#4A4A4A' };
 
   return (
-    <View
-      style={[
-        styles.polaroid,
-        isBlack ? styles.blackFrame : styles.whiteFrame,
-      ]}
-    >
+    <View style={[styles.polaroid, isBlack ? styles.blackFrame : styles.whiteFrame]}>
       <Image source={image} style={styles.image} />
 
-      {frameImageMap[frame] && (
-        <Image source={frameImageMap[frame]} style={styles.overlay} />
-      )}
+      {frameImageMap[frame] && <Image source={frameImageMap[frame]} style={styles.overlay} />}
 
       {badge && badgeImageMap[badge] && (
         <Image source={badgeImageMap[badge]} style={styles.badge} />
@@ -58,7 +46,10 @@ export default function CustomPolaroid({
         </Text>
       </View>
 
-      <Text style={[styles.date, textColor]}>{formatDate(date)}</Text>
+      <View style={styles.footer}>
+        <Text style={styles.date}>{formatDate(date)}</Text>
+        <Text style={styles.loc}>{photo.loc}</Text>
+      </View>
     </View>
   );
 }
@@ -70,42 +61,42 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingLeft: 9,
 
-    backgroundColor: "#fff",
-    flexDirection: "column",
+    backgroundColor: '#fff',
+    flexDirection: 'column',
 
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOpacity: 0.14,
     shadowOffset: { width: 0, height: 1.35 },
     elevation: 5,
   },
   blackFrame: {
-    backgroundColor: "#000",
-    color: "#E9E9E9",
+    backgroundColor: '#000',
+    color: '#E9E9E9',
   },
   whiteFrame: {
-    backgroundColor: "#fff",
-    color: "#4A4A4A",
+    backgroundColor: '#fff',
+    color: '#4A4A4A',
   },
   image: {
     width: 127,
     height: 158,
-    resizeMode: "cover",
+    resizeMode: 'cover',
   },
   overlay: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     width: 145,
-    height: "100%",
-    resizeMode: "contain",
+    height: '100%',
+    resizeMode: 'contain',
   },
   badge: {
-    position: "absolute",
+    position: 'absolute',
     top: -10,
     left: -40,
     width: 70,
     height: 70,
-    resizeMode: "contain",
+    resizeMode: 'contain',
   },
   emoji: {
     fontSize: 10,
@@ -117,9 +108,18 @@ const styles = StyleSheet.create({
     lineHeight: 10,
     minHeight: 54,
   },
+
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: 8,
+  },
   date: {
     fontSize: 8,
-    color: "#ACACAC",
-    paddingTop: 4,
+    color: '#ACACAC',
+  },
+  loc: {
+    fontSize: 8,
+    color: '#7A7A7A',
   },
 });

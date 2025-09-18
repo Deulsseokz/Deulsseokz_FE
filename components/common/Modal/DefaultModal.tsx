@@ -1,7 +1,7 @@
-import { ButtonSize, ButtonVariant } from "@/constants/buttonTypes";
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { PrimaryButton } from "../Button/PrimaryButton";
+import { ButtonSize, ButtonVariant } from '@/constants/buttonTypes';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { PrimaryButton } from '../Button/PrimaryButton';
 
 interface DefaultModalProps {
   /** 모달 제목 */
@@ -20,7 +20,7 @@ interface DefaultModalProps {
   /** 서브 옵션 버튼들 (btnVariant 필요) */
   options?: {
     /** 버튼 스타일 종류 */
-    types: ButtonVariant;
+    variant: ButtonVariant;
     /** 버튼 텍스트 */
     text: string;
     /** 버튼 클릭 시 실행 함수 */
@@ -59,15 +59,14 @@ export default function DefaultModal({
           {options.map((option, idx) => (
             <PrimaryButton
               key={idx}
-               variant={option.types}
-               size={ButtonSize.Small}
+              variant={option.variant}
+              size={ButtonSize.Small}
               text={option.text}
               onPress={option.onPress}
             />
           ))}
         </View>
       )}
-
     </View>
   );
 }
@@ -76,33 +75,32 @@ const styles = StyleSheet.create({
   container: {
     width: 310,
     minHeight: 320,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 20,
     paddingVertical: 55,
     paddingHorizontal: 40,
-    alignItems: "center",
-    justifyContent: "space-between"
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   title: {
     fontWeight: 700,
     fontSize: 20,
     lineHeight: 24,
-    textAlign: "center",
+    textAlign: 'center',
   },
   desc: {
     fontWeight: 500,
     fontSize: 13,
     lineHeight: 20,
-    color: "#313131",
-    textAlign: "center",
+    color: '#313131',
+    textAlign: 'center',
     paddingTop: 6,
     paddingBottom: 18,
   },
   optionsWrapper: {
-    flexDirection: "row",
-    width: "100%",
+    flexDirection: 'row',
+    width: '100%',
     paddingTop: 27,
-   justifyContent: "space-around",
+    justifyContent: 'space-around',
   },
-
 });

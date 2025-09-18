@@ -1,7 +1,15 @@
 import { AlbumItem } from '@/api/type';
+import EmptyBox from '@/assets/images/album/empty.svg';
 import PhotoSet from '@/components/album/Photoset';
 import { useRouter } from 'expo-router';
-import { ImageSourcePropType, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import {
+  ImageSourcePropType,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 
 interface Props {
   title: string;
@@ -21,25 +29,34 @@ export default function AlbumHomeTemplate({ title, albums }: Props) {
   const normalizeImages = (photo: string | string[] | null): ImageSourcePropType[] => {
     if (!photo) return [];
     if (Array.isArray(photo)) {
-      return photo.map(url => ({ uri: url }));
+      return photo.map((url) => ({ uri: url }));
     }
     return [{ uri: photo }];
   };
 
-  // 앨범 리스트 아무것도 없을 때 창도 만들어주세요
-  if (!albums) {
+  /** 앨범 없을 때 */
+  if (!albums || albums.length === 0) {
     return (
       <View style={styles.page}>
         <Text style={styles.title}>{title}</Text>
+        <View style={styles.emptyContainer}>
+          <EmptyBox width={102} height={102} />
+          <Text style={styles.emptyText}>사진이 없습니다</Text>
+        </View>
       </View>
     );
   }
+
+  /** 앨범 있을 때 */
   return (
     <View style={styles.page}>
       <Text style={styles.title}>{title}</Text>
       <ScrollView contentContainerStyle={styles.grid}>
         {albums.map((album, index) => (
-          <View key={`${album.place}-${index}`} style={[styles.item, isSmallScreen && styles.fullItem]}>
+          <View
+            key={`${album.place}-${index}`}
+            style={[styles.item, isSmallScreen && styles.fullItem]}
+          >
             <PhotoSet
               images={normalizeImages(album.representPhoto)}
               label={album.place}
@@ -76,5 +93,16 @@ const styles = StyleSheet.create({
   },
   fullItem: {
     width: '45%',
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyText: {
+    marginTop: 13,
+    fontSize: 13,
+    color: '#ACACAC',
+    fontWeight: '500',
   },
 });
