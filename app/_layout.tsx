@@ -1,4 +1,5 @@
 import { toastConfig } from '@/components/common/Toast/ToastWrapper';
+import { getMessaging, setBackgroundMessageHandler } from '@react-native-firebase/messaging';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Stack } from 'expo-router';
 import React, { useEffect } from 'react';
@@ -6,6 +7,18 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { SplashScreenController } from '../components/auth/splash';
 import { useAuthenticationStore } from '../store/useAuthenticationStore';
+
+// @description 앱이 백그라운드나 종료된 상태에서 메시지를 받았을 때 실행되는 함수
+
+setBackgroundMessageHandler(getMessaging(), async remoteMessage => {
+  const { isAuthenticated } = useAuthenticationStore.getState();
+  if (!isAuthenticated) {
+    return;
+  }
+  console.log('Background message received:', remoteMessage);
+  // 푸시 알림 표시
+  // 푸시 알림 표시
+});
 
 export default function Root() {
   // Set up the auth context and render our layout inside of it.
