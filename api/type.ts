@@ -137,6 +137,35 @@ export type PlaceAreaResponse = LocationItem[];
 /**************************************************************/
 
 /**
+ * @typedef RegionConquerRateResponse
+ * @description 지역 카테고리별 정복률 현황 응답 형식
+ * @property {string} regionName - 지역 이름
+ * @property {number} conquerRate - 해당 지역의 정복률 (0~100)
+ */
+export interface RegionConquerRateResponse {
+  [regionName: string] : number;
+}
+
+/** 지역 정복 여부 */
+export interface RegionConquerStatusItem {
+  regionName: string;                 // 서버에서 영문 regionName 줌
+  challenges: Record<string, boolean>;    // 장소별 정복 여부
+};
+
+/**
+ * @typedef RegionConquerStatusResponse
+ * @description 특정 지역의 챌린지 정복 현황 응답 형식
+ * @property {string} regionName - 지역 이름
+ * @property {RegionConquerStatus} challenges - 해당 지역의 챌린지별 정복 여부
+ */
+export interface RegionConquerStatusResponse {
+   regionName: string;
+   challenges: RegionConquerStatusItem[];
+}
+
+/**************************************************************/
+
+/**
  * @typedef ServerBadgeType
  * @description 서버가 주는 뱃지 타입
  * @property {string} badgeId - 뱃지 아이디
@@ -161,11 +190,15 @@ export interface ServerBadgeType {
  * @property {string} userName - 사용자명
  * @property {string} profileImage - 사용자 프로필 이미지
  * @property {string} badgeId - 대표 배지 아이디
+ * @property {number} success - 미션 성공 개수
+ * @property {number} conquer - 미션 정복률
  */
 export interface MyPageItem {
   userName: string;
   profileImage: string | null;
   badgeId: string;
+  success: number;
+  conquer: number;
 }
 
 /**

@@ -3,7 +3,7 @@ import { getMyPageInfo, patchMyPageInfo } from '@/api/myPageDTO';
 import { MyPageFixRequest } from "@/api/type";
 import { create } from 'zustand';
 
-export type MyPage = { userName: string; profileImage: string | null }
+export type MyPage = { userName: string; profileImage: string | null; success: number; conquer: number; }
 
 type State = {
   data: MyPage
@@ -25,7 +25,7 @@ type Actions = {
 export type ProfileStore = State & Actions
 
 export const useProfileStore = create<ProfileStore>((set, get) => ({
-  data: { userName: '', profileImage: null },
+  data: { userName: '', profileImage: null, success: 0, conquer: 0 },
   loading: false,
   saving: false,
   error: undefined,
@@ -45,7 +45,11 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
       const next: MyPage = {
         userName: result.userName,
         profileImage: result.profileImage ?? null,
+        success: result.success,
+        conquer: result.conquer,
       }
+      // badgeId는 별도로 반환 (업데이트 감지용)
+      // null일 수도 있음 (대표배지 미설정 상태)
       set({ data: next, loading: false, lastFetchedAt: now })
       return { profile: next, badgeId: result.badgeId ?? null }
     } catch (e: any) {
@@ -83,5 +87,5 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
   },
 
   clear: () =>
-    set({ data:{ userName: '', profileImage: null }, error: undefined, lastFetchedAt: undefined, loading: false, saving: false }),
+    set({ data:{ userName: '', profileImage: null, success: 0, conquer: 0 }, error: undefined, lastFetchedAt: undefined, loading: false, saving: false }),
 }))
