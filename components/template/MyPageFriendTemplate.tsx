@@ -1,4 +1,4 @@
-import { deleteMyFriend, getFriendProfile } from '@/api/mypage';
+import { deleteMyFriend, getFriendProfile } from "@/api/myPageDTO";
 import { FriendProfileResponse } from '@/api/type';
 import IconAddFriend from '@/assets/icons/icon-addFriend.svg';
 import { TopBar } from '@/components/common/TopBar';

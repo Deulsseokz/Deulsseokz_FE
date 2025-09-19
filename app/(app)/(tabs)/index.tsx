@@ -1,4 +1,4 @@
-import { fetchChallengeInfo } from "@/api/challenge";
+import { fetchChallengeInfo } from "@/api/challengeDTO";
 import SearchLocationBtn from '@/components/map/SearchLocationBtn';
 import BottomSheetTemplate from '@/components/template/map/BottomSheetTemplate';
 import MapTemplate from '@/components/template/MapTemplate';
@@ -21,15 +21,12 @@ const MountainMapScreen = () => {
   const [location, isLoadingLocation] = useUserLocation();
   // 모달 시트 오픈 설정
   const [open, setOpen] = useState(false);
+  // fetching 상태 관리
+  const [isFetching, setIsFetching] = useState(false);
+
   // 바텀시트의 step과 param을 관리하는 state/ 함수들
   const { step, stepPayloads, updateValue, backStep, nextStep, resetStep } = useStepManager();
-
-  // 바텀시트 종료
-  const exitSheet = () => {
-    resetStep();
-    setSelectedChallengeInfo(null);
-    setOpen(false); // 모달 닫기
-  };
+  
 
   // 지역 검색 화면에서 이동한 경우, initialCoord 값을 넣어 카메라 위치 이동 처리
   const { latitude, longitude } = useLocalSearchParams();
@@ -52,13 +49,28 @@ const MountainMapScreen = () => {
    * @param isChallenged 
    */
   const handleClickPolygon = async (challengeId: number, isChallenged:boolean) => {
-      const { result } = await fetchChallengeInfo(challengeId);
+    try {
+      setIsFetching(true); 
+      const response = await fetchChallengeInfo(challengeId);
+      if (response.result.length > 0) {
+        const parsedResult = convertRawChallengeInfo(response.result[0], challengeId, isChallenged);
+        setSelectedChallengeInfo(parsedResult);
+        setOpen(true); // 모달 오픈
+      } else {
+        console.warn('No challenge info found for the given ID.');
+      }
+    } catch (error) {
+      console.error('Error fetching challenge info:', error);
+    } finally {
+      setIsFetching(false);
+    }
+  };
 
-      // 배열에 담아 보내주므로 result의 0번째 인덱스 사용
-      const parsedResult = convertRawChallengeInfo(result[0], challengeId, isChallenged);
-
-      setSelectedChallengeInfo(parsedResult);
-      setOpen(true); // 모달 오픈
+    // 바텀시트 종료
+  const exitSheet = () => {
+    resetStep();
+    setSelectedChallengeInfo(null);
+    setOpen(false); // 모달 닫기
   };
 
   if (loading || isLoadingLocation || !location || !parsedChallengeData) {

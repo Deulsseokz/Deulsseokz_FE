@@ -47,7 +47,7 @@ export default function ChallengeDetailTemplate({
         <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
-              <ChallengeInfo place={place} content={content} point={Number(point)} />
+              <ChallengeInfo placeName={place} content={content} point={Number(point)} />
               <ChallengeCondition condition1={condition1} condition2={condition2} condition3={condition3} />
             </View>
           </View>

@@ -7,8 +7,8 @@ import { Coord } from "@mj-studio/react-native-naver-map";
 // 맵에 필요한 Coord 데이터 형식에 맞게 서버 Coord 데이터를 변환
 export function convertRawChallengeData(raw: ChallengeListItem): ChallengeLocation {
   const clientCenter = {
-    latitude: raw.center.lat,
-    longitude: raw.center.lng,
+    latitude: raw.location[0],
+    longitude: raw.location[1],
   } as Coord;
 
   return {
