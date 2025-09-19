@@ -33,6 +33,12 @@
         <data android:scheme="mellog"/>
         <data android:scheme="exp+mellog"/>
       </intent-filter>
+      <intent-filter android:autoVerify="true" data-generated="true">
+        <action android:name="android.intent.action.VIEW"/>
+        <data android:scheme="https" android:host="deulsseokz.github.io" android:pathPrefix="/Mellog.github.io/"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+      </intent-filter>
     </activity>
     <provider android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.provider" android:exported="false" android:grantUriPermissions="true">
       <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/provider_paths"/>

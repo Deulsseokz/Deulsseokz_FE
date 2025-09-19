@@ -319,3 +319,12 @@ export type PatchCloseFriendRequest =
   | {
       subtract: number;
     };
+
+/**
+ * @typedef FcmTokenRequest
+ * @description FCM 토큰 전송 요청 형식
+ * @property {string} fcm-token - FCM 토큰
+ */
+export interface FcmTokenRequest {
+  'fcm-token': string;
+}

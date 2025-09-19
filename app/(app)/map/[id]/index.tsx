@@ -24,6 +24,7 @@ export default function ChallengeDetail() {
     type: `image/jpeg`,
   } as any); // 또는 as unknown as Blob
 
+  // 푸쉬 알림 권한 꺼두었으면 푸쉬 알림 권한 요청 후 제출
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
