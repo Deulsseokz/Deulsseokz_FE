@@ -1,7 +1,7 @@
 import MyPageTemplate from "@/components/template/MyPageTemplate";
 import { useBadge } from "@/store/useBadgeStore";
 import { useProfileStore } from "@/store/useProfileStore";
-import { useFocusEffect } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import React, { useCallback } from "react";
 import { ActivityIndicator } from "react-native";
 
@@ -30,11 +30,15 @@ export default function MyPageScreen() {
         else if (error) alert(error);
       })()
     }, [fetchMyPageInfo, init])
-)
+  )
+
+  const onRouteMission = () => {
+    router.push('/mypage/mission');
+  }
 
   if ((loading || badgeLoading) && !data) return <ActivityIndicator />;
 
   return (
-    <MyPageTemplate/>
+    <MyPageTemplate onPressPoint={onRouteMission} />
   )
 }

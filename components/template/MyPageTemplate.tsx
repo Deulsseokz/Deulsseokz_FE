@@ -4,14 +4,19 @@ import { StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import MainGradientItem from "../mypage/MainGradientItem";
 import MainRenderItem from "../mypage/MainRenderItem";
+import MyMissionBox from "../mypage/MyMissionBox";
 
+interface MyPageTemplateProps {
+  onPressPoint?: () => void;
+}
 
-export default function MyPageTemplate() {
+export default function MyPageTemplate({ onPressPoint }: MyPageTemplateProps) {
 
   return (
     <SafeAreaView style={styles.container}>
        <Text style={styles.title}>마이페이지</Text>
        <MainGradientItem/>
+       <MyMissionBox isMainComponent={true} successCount={6} totalCount={10} onPress={onPressPoint}/>
        <MainRenderItem/>
     </SafeAreaView>
   );

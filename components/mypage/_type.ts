@@ -1,3 +1,5 @@
+import { RegionName } from "@/constants/map/regionMap";
+import { ImageSourcePropType } from "react-native";
 import { FriendProfileResponse } from '@/api/type';
 
 /**
@@ -6,6 +8,7 @@ import { FriendProfileResponse } from '@/api/type';
 export type MenuItem = {
   label: string;
   route: string;
+  icon : ImageSourcePropType;
 };
 
 /**
@@ -16,6 +19,16 @@ export type BtnItem = {
 };
 
 /**
+ * 지역별 정복률 배열 타입
+ */
+export type RegionConquerRateList = Record<RegionName, number>;
+
+/**
+ * 지역 카테고리별 정복 여부 타입
+ */
+export type ChallengeCompletionStatus = {
+  regionName: Record<RegionName, Record<string, boolean>>;
+}
  * 친구 프로필 모달 props 타입
  */
 export interface FriendProfileModalProps {
