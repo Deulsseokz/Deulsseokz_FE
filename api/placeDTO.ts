@@ -7,7 +7,7 @@
 
 /**************************************************************/
 import { CommonResponse, getRequest, postRequest } from "./common";
-import { FavoritePlace, FavoritePlaceSubmitRequest, PlaceSearchArea } from "./type";
+import { FavoritePlace, FavoritePlaceSubmitRequest, PlaceAreaResponse, PlaceSearchAreaResponse } from "./type";
 
 /**
  * @function getFavoritePlace
@@ -36,8 +36,17 @@ export async function postFavoritePlace(
  * @function  getPlaceSearchArea
  * @description 특정 지역의 랜드마크 배열 조회
  * @param {string} place - 조회할 장소 이름
- * @returns {Promise<CommonResponse<PlaceSearchArea>>} 랜드마크명 배열
+ * @returns {Promise<CommonResponse<PlaceSearchAreaResponse>>} 랜드마크명 배열
  */
-export async function getPlaceSearchArea(place:string) : Promise<CommonResponse<PlaceSearchArea>> {
-    return await getRequest<PlaceSearchArea>(`place/search-area/?area=${place}`);
+export async function getPlaceSearchArea(place:string) : Promise<CommonResponse<PlaceSearchAreaResponse>> {
+    return await getRequest<PlaceSearchAreaResponse>(`place/search-area/?area=${place}`);
+}
+
+/**
+ * @function getAllPlaceArea
+ * @description 모든 지역에 따른 랜드마크 조회
+ * @returns {Promise<CommonResponse<PlaceAreaResponse>>} 지역에 따른 랜드마크명 배열
+ */
+export async function getAllPlaceArea(): Promise<CommonResponse<PlaceAreaResponse>>{
+    return await getRequest<PlaceAreaResponse>(`/place/area`);
 }

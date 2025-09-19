@@ -1,8 +1,23 @@
+import { getAllPlaceArea } from "@/api/placeDTO";
 import LocationTemplate from '@/components/template/map/LocationTemplate';
-import { LOCATION_DATA } from '@/constants/map/locationData';
+import { Location as LocationType } from "@/types/location";
+import { useEffect, useState } from "react";
 
 export default function Location() {
-  // TODO: 모든 지역을 조회하는 api 도입
+  const [data, setData] = useState<LocationType[]>([]);
 
-  return <LocationTemplate locationList={LOCATION_DATA} />;
+  const fetchPlaceArea = async () => {
+    try {
+      const response = await getAllPlaceArea();
+      setData(response.result);
+    } catch (error) {
+      console.error('Error fetching place areas:', error);
+    }
+  }
+
+  useEffect(()=>{
+    fetchPlaceArea();
+  }, [])
+
+  return <LocationTemplate locationList={data} />;
 }

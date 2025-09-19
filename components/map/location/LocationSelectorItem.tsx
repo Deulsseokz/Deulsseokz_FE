@@ -31,10 +31,11 @@ const style = StyleSheet.create({
   item: {
     paddingVertical: 8,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   text: {
     fontSize: 15,
     fontWeight: '600',
+    textAlign: 'left',
   },
 });

@@ -121,6 +121,19 @@ export interface ChallengeInfoItem {
 
 export type ChallengeListResponse = ChallengeListItem[];
 
+/** 장소 검색 응답 아이템 */
+export interface PlaceSearchAreaResponse {
+  place: string[];
+}
+
+/** 장소 별 랜드마크 응답 아이템 */
+export interface LocationItem {
+  area: string;
+  places: string[];
+}
+
+export type PlaceAreaResponse = LocationItem[];
+
 /**************************************************************/
 
 /**

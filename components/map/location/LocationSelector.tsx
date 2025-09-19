@@ -15,7 +15,7 @@ export default function LocationSelector({ onPress, locationList, selected }: Lo
   const { width } = Dimensions.get('window');
 
   // 동적인 아이템 너비 결정
-  const CONTAINER_PADDING_HORIZONTAL = 20;
+  const CONTAINER_PADDING_HORIZONTAL = 0;
   const NUM_COLUMNS = 4;
   const ITEM_WIDTH = (width - CONTAINER_PADDING_HORIZONTAL * (NUM_COLUMNS + 1)) / NUM_COLUMNS;
 
@@ -43,6 +43,6 @@ const style = StyleSheet.create({
     backgroundColor: '#f8f8f8',
     borderRadius: 20,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
 });
