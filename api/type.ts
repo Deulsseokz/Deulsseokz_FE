@@ -99,17 +99,13 @@ export interface UserBadge {
 
 /**************************************************************/
 
-export interface ServerCoord {
-  lat: number;
-  lng: number;
-}
-
 /** 목록 응답 아이템 (서버 원본) */
 export interface ChallengeListItem {
   challengeId: number;
   placeName: string;
   isChallenged: boolean;
-  center: ServerCoord;
+  challengePhoto: string | null;
+  location: number[]; // [lat, lng] 
 };
 
 /** 상세 응답 아이템 (서버 원본) */
@@ -216,16 +212,6 @@ export interface MyPointHistoryItem {
 export interface MyPointHistoryResponse {
   holdingPoint: number;
   pointLogs: MyPointHistoryItem[];
-}
-
-/**************************************************************/
-/**
- * @typedef PlaceSearchArea
- * @description 특정 지역에 대한 랜드마크를 받을 때 사용하는 데이터
- * @place 장소명 배열
- */
-export interface PlaceSearchArea {
-  place: string[];
 }
 
 /**

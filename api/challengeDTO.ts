@@ -27,10 +27,6 @@ export async function fetchChallengeList(): Promise<CommonResponse<ChallengeList
  * @description 특정 챌린지의 상세 정보를 서버 타입으로 가져옵니다.
  * @param {number} challengeId - 챌린지 구분 id (서버 쿼리: placeId)
  * @returns {Promise<ChallengeInfoItem>}
- *
- * @remarks
- * - 앱에서 `ChallengeInformation`이 필요하면 `composeChallengeInformation`로
- *   서버 응답 + 외부 컨텍스트(challengeId, place, isChallenged)를 합성하세요.
  */
 export const fetchChallengeInfo = (
   challengeId: number
@@ -39,3 +35,13 @@ export const fetchChallengeInfo = (
     params: { placeId: challengeId },
   });
 };
+
+/**
+ * @function fetchRecommendPlaces
+ * @description 추천 장소 리스트를 서버 타입으로 가져옵니다.
+ * @returns {Promise<string[]>} // 따로 감싸지 않고 result에 바로 string[] 배열이 옴
+ */
+export const fetchRecommendPlaces = (
+): Promise<CommonResponse<string[]>> => {
+  return getRequest<string[]>('/place/recommend');
+}

@@ -4,7 +4,6 @@
  */
 
 import { MCOLORS } from '@/constants/colors';
-import { TEMP_RECOMMEND_DATA } from '@/constants/map/locationData';
 import navigateToCenterCoord from '@/utils/navigateToCenterCoord';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -20,7 +19,6 @@ interface ListItemProps {
 export default function LocationListItem({ success, title, listItems }: ListItemProps) {
   // TODO : 추천 검색어 API 연동
   const titleColor = !success ? MCOLORS.brand.secondary : MCOLORS.grayscale.gray70;
-  if (listItems.length == 0) listItems = TEMP_RECOMMEND_DATA;
 
   return (
     <ScrollView style={style.container} contentContainerStyle={{ paddingBottom: 40 }}>
