@@ -4,21 +4,33 @@ import LocationListItem from '@/components/map/location/LocationListItem';
 import { MCOLORS } from '@/constants/colors';
 import { Location } from '@/types/location';
 import { router, useLocalSearchParams } from 'expo-router';
+import { useEffect } from "react";
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+interface MapSearchResultTemplateProps {
+  fetchPlaceRecommend: () => void;
+  recommendPlaces: string[];
+}
 
 // 검색 결과를 반환하는 스크린
 // 1) 검색 결과 있음 -> 해당 지역에 대한 LocationListItem을 반환
 // 2) 검색 결과 없음 -> 추천 검색어로 채운 LocationListItem 반환
-export default function MapSearchResultTemplate() {
+export default function MapSearchResultTemplate({ fetchPlaceRecommend, recommendPlaces }: MapSearchResultTemplateProps) {
   const { input, success, result } = useLocalSearchParams();
 
   const parsedResult = result ? (JSON.parse(result as string) as Location) : undefined;
   const isSuccess = success === 'true';
 
+  useEffect(()=>{
+    if (!isSuccess) {
+      fetchPlaceRecommend();
+    }
+  }, [isSuccess]);
+
   if (parsedResult == undefined) {
     Alert.alert('검색 실패 오류');
-    return;
+    router.back();
   } else
     return (
       <SafeAreaView style={style.container}>
@@ -30,7 +42,7 @@ export default function MapSearchResultTemplate() {
           // 실패: 추천 검색어
           <View style={style.contentContainer}>
             <Text style={style.failText}>'{input}'에 대한 검색 결과가 없습니다</Text>
-            <LocationListItem success={isSuccess} title={'추천 검색어'} listItems={parsedResult.places} />
+            <LocationListItem success={isSuccess} title={'추천 검색어'} listItems={recommendPlaces} />
           </View>
         )}
       </SafeAreaView>

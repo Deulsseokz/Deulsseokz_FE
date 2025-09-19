@@ -1,4 +1,4 @@
-import { patchCloseFriend } from '@/api/mypage';
+import { patchCloseFriend } from "@/api/myPageDTO";
 import IconCloseBlack from '@/assets/icons/icon-close-black.svg';
 import IconDeleteFriend from '@/assets/icons/icon-deleteFriend.svg';
 import IconStarEmpty from '@/assets/icons/icon-star-empty.svg';

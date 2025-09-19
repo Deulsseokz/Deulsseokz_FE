@@ -1,18 +1,19 @@
 import { ChallengeInformation, ChallengeLocation } from '@/types/challenge';
 
 import { ChallengeInfoItem, ChallengeListItem } from "@/api/type";
-import { getPolygonCenter, toCoordArray } from './geo';
+import { Coord } from "@mj-studio/react-native-naver-map";
 
 // raw 챌린지 데이터를 형식에 맞게 변환하는 유틸 함수
-// 1. center 좌표 추가
-// 2. Coord 타입에 맞게 location 데이터를 변환
+// 맵에 필요한 Coord 데이터 형식에 맞게 서버 Coord 데이터를 변환
 export function convertRawChallengeData(raw: ChallengeListItem): ChallengeLocation {
-  const coords = toCoordArray(raw.location);
-  const center = getPolygonCenter(coords);
+  const clientCenter = {
+    latitude: raw.location[0],
+    longitude: raw.location[1],
+  } as Coord;
+
   return {
     ...raw,
-    location: coords,
-    center: center,
+    center: clientCenter,
   };
 }
 

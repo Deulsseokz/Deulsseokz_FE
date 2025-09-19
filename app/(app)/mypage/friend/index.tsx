@@ -1,4 +1,4 @@
-import { getMyFriendsList } from '@/api/mypage';
+import { getMyFriendsList } from "@/api/myPageDTO";
 import { MyFriendListResponse } from '@/api/type';
 import ModalManager from '@/components/common/Modal/ModalManager';
 import MyPageFriendTemplate from '@/components/template/MyPageFriendTemplate';

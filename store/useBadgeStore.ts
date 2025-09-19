@@ -1,4 +1,4 @@
-import * as badgeApi from '@/api/badge';
+import * as badgeApi from '@/api/badgeDTO';
 import { BADGE_CATALOG } from '@/constants/badgesCatalog';
 import { Badge } from '@/types/badge';
 import { mapServerToBadges, mergeRepresentative } from '@/utils/badgeUtil';

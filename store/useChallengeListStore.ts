@@ -1,5 +1,4 @@
-import { fetchChallengeList } from "@/api/challenge";
-import { ChallengeListItem } from "@/api/type";
+import { fetchChallengeList } from "@/api/challengeDTO";
 import { ChallengeLocation } from '@/types/challenge';
 import { convertRawChallengeData } from '@/utils/convertRawChallengeData';
 import { create } from 'zustand';
@@ -24,13 +23,20 @@ export const useChallengeListStore = create<ChallengeStore>((set, get) => ({
 
     set({ loading: true });
 
-    const {result} = await fetchChallengeList(); // CommonResponse<ServerChallengeListItem[]>
+    try {
+       const response = await fetchChallengeList(); // CommonResponse<ServerChallengeListItem[]>
 
-    const converted: ChallengeLocation[] = result.map((item: ChallengeListItem
-
-    ) =>
-      convertRawChallengeData(item)
-    );
-    set({ data: converted, loading: false });
+    if (response.isSuccess) {
+      const rawData = response.result; // ServerChallengeListItem[]
+      if (rawData.length === 0) {
+        set({ data: [], loading: false });
+        return;
+      }
+      const converted = rawData.map(convertRawChallengeData); // ChallengeLocation[]
+      set({ data: converted, loading: false });
+    }
+    } catch (error) {
+      set({ loading: false });
+    }
   },
 }));

@@ -13,7 +13,7 @@ import { StyleSheet, Text, View } from 'react-native';
 interface ChallengeConditionProps {
   condition1: string;
   condition2: string;
-  condition3?: string;
+  condition3?: string | undefined | null;
 }
 
 export default function ChallengeCondition({ condition1, condition2, condition3 }: ChallengeConditionProps) {

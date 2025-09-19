@@ -1,4 +1,4 @@
-import { getMyPointHistory } from "@/api/mypage";
+import { getMyPointHistory } from "@/api/myPageDTO";
 import { MyPointHistoryResponse } from "@/api/type";
 import MyPagePointTemplate from "@/components/template/MyPagePointTemplate";
 import { useEffect, useState } from "react";

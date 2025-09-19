@@ -1,4 +1,4 @@
-import { postFavoritePlace } from "@/api/place";
+import { postFavoritePlace } from "@/api/placeDTO";
 import { useEffect, useState } from 'react';
 import { Alert, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
