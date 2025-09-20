@@ -60,17 +60,6 @@ export default function BottomSheetTemplate({
     }).start();
   }, [visible]);
 
-  useEffect(() => {
-    getMyFriendsList().then(res => {
-      setFriends(
-        res.result.map(friend => ({
-          userId: friend.userId,
-          userName: friend.friendsName,
-        })),
-      );
-    });
-  }, []);
-
   // 각 스텝별 중심 콘텐츠를 렌더합니다.
   const renderStepContent = () => {
     switch (step) {
