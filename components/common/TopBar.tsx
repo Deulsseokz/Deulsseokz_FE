@@ -2,19 +2,21 @@ import BackIcon from '@/assets/icons/icon-back.svg';
 import { MCOLORS } from '@/constants/colors';
 import fontStyles from "@/constants/fonts";
 import { router } from 'expo-router';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 interface TopBarProps {
   title: string | null;
   rightButton?: React.ReactNode;
   onRightPress?: () => void;
+  containerStyle?: StyleProp<ViewStyle>; // 선택적 최상위 컨테이너 스타일
 }
 
-export function TopBar({ title, rightButton, onRightPress }: TopBarProps) {
+export function TopBar({ title, rightButton, onRightPress, containerStyle }: TopBarProps) {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
+    <View style={[styles.container, { paddingTop: insets.top }, containerStyle]}>
       <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
         <BackIcon width={30} height={30} />
       </TouchableOpacity>

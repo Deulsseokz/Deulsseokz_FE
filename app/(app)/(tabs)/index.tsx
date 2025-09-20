@@ -1,4 +1,8 @@
 import { fetchChallengeInfo } from "@/api/challengeDTO";
+import { getMyFriendsList } from "@/api/myPageDTO";
+import { MyFriendListResponse } from '@/api/type';
+import { SheetStep } from '@/components/map/_type';
+import FriendListSheet from '@/components/map/FriendListSheet';
 import SearchLocationBtn from '@/components/map/SearchLocationBtn';
 import BottomSheetTemplate from '@/components/template/map/BottomSheetTemplate';
 import MapTemplate from '@/components/template/MapTemplate';
@@ -24,6 +28,12 @@ const MountainMapScreen = () => {
   // fetching 상태 관리
   const [isFetching, setIsFetching] = useState(false);
 
+  // 친구 관련 상태
+   // 친구 목록 시트의 visible 상태 추가
+  const [isFriendListSheetVisible, setFriendListSheetVisible] = useState(false);
+    // 모든 친구 목록
+  const [allFriends, setAllFriends] = useState<MyFriendListResponse[]>([]);
+
   // 바텀시트의 step과 param을 관리하는 state/ 함수들
   const { step, stepPayloads, updateValue, backStep, nextStep, resetStep } = useStepManager();
   
@@ -41,6 +51,18 @@ const MountainMapScreen = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+   useEffect(() => {
+    // 부모에서 친구 목록 fetch
+    getMyFriendsList().then(res => {
+      setAllFriends(res.result);
+    });
+  }, []);
+
+  // 친구 목록 시트 열기 핸들러
+  const showFriendListSheet = () => {
+    setFriendListSheetVisible(true);
+  };
 
   /**
    * 폴리곤 클릭 이벤트 처리 핸들러
@@ -105,8 +127,20 @@ const MountainMapScreen = () => {
           step={step} // 실제 step
           challengeInfo={selectedChallengeInfo}
           stepPayloads={stepPayloads}
+          onShowFriendListSheet={showFriendListSheet}
         />
       )}
+      {isFriendListSheetVisible && (
+        <FriendListSheet
+          visible={isFriendListSheetVisible}
+          onClose={() => setFriendListSheetVisible(false)}
+          allFriends={allFriends}
+          selectedFriends={stepPayloads[SheetStep.SELECT_FRIEND] ?? []}
+          updateSelection={(newSelection) => {
+            // 선택된 친구 목록을 부모의 state에 업데이트
+            updateValue(SheetStep.SELECT_FRIEND, newSelection);
+        }}
+      />)}
     </View>
   );
 };

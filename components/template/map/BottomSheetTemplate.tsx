@@ -24,6 +24,7 @@ interface BottomSheetProps {
   step: SheetStep; // 모달의 step 관리
   challengeInfo: ChallengeInformation; // 챌린지 정보 객체
   stepPayloads: Partial<StepParamMap>; // 부모가 관리하는 파라미터 값
+  onShowFriendListSheet: () => void; // 친구 목록 시트 열기 함수
 }
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -37,6 +38,7 @@ export default function BottomSheetTemplate({
   stepPayloads,
   challengeInfo,
   nextStep,
+  onShowFriendListSheet
 }: BottomSheetProps) {
   const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
   const insets = useSafeAreaInsets();
@@ -73,6 +75,7 @@ export default function BottomSheetTemplate({
           <FriendSelector
             selected={stepPayloads[SheetStep.SELECT_FRIEND] ?? []}
             updateValue={v => updateValue(SheetStep.SELECT_FRIEND, v)}
+            onShowFriendListSheet={onShowFriendListSheet}
           />
         );
       case SheetStep.SUBMIT:
