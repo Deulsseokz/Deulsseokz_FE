@@ -9,15 +9,6 @@ import ConquestHistoryTabs from "../mypage/ConquestHistoryTabs";
 import ConquestListView from "../mypage/ConquestListView";
 import ConquestMapView from "../mypage/ConquestMapView";
 
-// 지도 뷰에 전달할 임시 데이터 (ui 확인용)
-const conquestRateData = {
-    "Seoul": 42.1, "Incheon": 15.5, "Gyeonggi-West": 68.0,
-    "Gyeonggi-East": 71.3, "Gyeonggi-North": 65.4, "Gyeonggi-South": 78.9,
-    "Gangwon": 0, "Chungbuk": 72.0, "Chungnam": 69.8, "Jeonbuk": 77.4,
-    "Gwangju-Jeonnam": 81.6, "Daegu-Gyeongbuk": 79.0,
-    "Busan-Ulsan-Gyeongnam": 88.7, "Ulleungdo": 92.5, "Jejudo": 90.3
-} as RegionConquerRateList;
-
 type ActiveTab = 'list' | 'map';
 
 interface MyPageMissionScreenProps {
@@ -52,8 +43,7 @@ export default function MyPageMissionScreen({ localConquerStatus, challengeCompl
                     {activeTab === 'list' ? (
                         <ConquestListView challengeCompletionStatus={challengeCompletionStatus} />
                     ) : (
-                        <ConquestMapView localConquerStatus={conquestRateData} />
-                            // todo: 실제 데이터로 변경
+                        <ConquestMapView localConquerStatus={localConquerStatus} />
                     )}
                 </View>
             </View>
