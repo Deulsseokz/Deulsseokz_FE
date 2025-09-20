@@ -127,6 +127,7 @@ const MountainMapScreen = () => {
           step={step} // 실제 step
           challengeInfo={selectedChallengeInfo}
           stepPayloads={stepPayloads}
+          allFriends={allFriends}
           onShowFriendListSheet={showFriendListSheet}
         />
       )}

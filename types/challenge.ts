@@ -14,6 +14,7 @@ export type ChallengeInformation = {
   condition3?: string | null; // 조건 3 (선택적 데이터)
   isFavorite: boolean; // 관심 장소 등록 여부
   isChallenged: boolean; // 챌린지 수행 여부
+  friends?: number[]; // 챌린지 수행한 친구 아이디 배열
 };
 
 // 클라이언트 챌린지 위치 타입
