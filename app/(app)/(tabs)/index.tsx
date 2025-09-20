@@ -11,14 +11,14 @@ import { useUserLocation } from '@/hooks/useUserLocation';
 import { useChallengeListStore } from '@/store/useChallengeListStore';
 import { ChallengeInformation, Coord } from '@/types/challenge';
 import { convertRawChallengeInfo } from "@/utils/convertRawChallengeData";
-import { router, useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const MountainMapScreen = () => {
   // 전역 챌린지 정보
-  const { data: parsedChallengeData, fetchData, loading } = useChallengeListStore();
+  const { data: parsedChallengeData, fetchData, refetchData, loading } = useChallengeListStore();
   // 바텀시트에 전달되는 챌린지 정보
   const [selectedChallengeInfo, setSelectedChallengeInfo] = useState<ChallengeInformation | null>(null);
   // 유저의 위치 관리
@@ -48,9 +48,13 @@ const MountainMapScreen = () => {
     !isNaN(parsedLat) && !isNaN(parsedLng) ? { latitude: parsedLat, longitude: parsedLng } : undefined;
 
   // 챌린지 리스트 데이터 fetch
-  useEffect(() => {
-    fetchData();
-  }, []);
+   useFocusEffect(
+    useCallback(() => {
+      refetchData();
+
+      console.log('refetch challenge data on focus');
+    }, [refetchData])
+  );
 
    useEffect(() => {
     // 부모에서 친구 목록 fetch
