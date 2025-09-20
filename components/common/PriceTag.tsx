@@ -1,5 +1,5 @@
-import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import React from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 interface PriceTagProps {
   /** 가격 */
@@ -12,10 +12,7 @@ interface PriceTagProps {
 export default function PriceTag({ price }: PriceTagProps) {
   return (
     <View style={styles.wrapper}>
-      <Image
-        source={require("@/assets/images/album/icon-coins.png")}
-        style={styles.coin}
-      />
+      <Image source={require('@/assets/images/album/icon-coins.png')} style={styles.coin} />
       <Text style={styles.price}>{price}</Text>
     </View>
   );
@@ -23,13 +20,22 @@ export default function PriceTag({ price }: PriceTagProps) {
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: "#F8F8F8",
+    backgroundColor: '#F8F8F8',
     borderRadius: 100,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 4,
+
+    // iOS
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.1,
+
+    // Android
+    elevation: 4,
   },
   coin: {
     width: 20,
@@ -37,7 +43,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 13,
-    color: "#4A4A4A",
-    fontWeight: "500",
+    color: '#4A4A4A',
+    fontWeight: '500',
   },
 });

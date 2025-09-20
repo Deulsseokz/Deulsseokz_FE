@@ -1,9 +1,10 @@
-import { getChallengeCompletion, getChallengeLocal } from '@/api/myPageDTO';
-import { RegionConquerStatusResponse } from '@/api/type';
-import { ChallengeCompletionStatus, RegionConquerRateList } from '@/components/mypage/_type';
-import MyPageMissionTemplate from '@/components/template/MyPageMissionTemplate';
-import { RegionName } from '@/constants/map/regionMap';
-import { useCallback, useEffect, useState } from 'react';
+
+import { getChallengeCompletion, getChallengeLocal } from "@/api/myPageDTO";
+import { RegionConquerStatusResponse } from "@/api/type";
+import { ChallengeCompletionStatus, RegionConquerRateList } from "@/components/mypage/_type";
+import MyPageMissionTemplate from "@/components/template/MyPageMissionTemplate";
+import { RegionName } from "@/constants/map/regionMap";
+import { useCallback, useEffect, useState } from "react";
 
 export default function MissionScreen() {
   const [localConquerStatus, setLocalConquerStatus] = useState<RegionConquerRateList>({} as RegionConquerRateList);

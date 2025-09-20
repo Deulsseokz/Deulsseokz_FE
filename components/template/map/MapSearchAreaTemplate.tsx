@@ -1,4 +1,5 @@
-import LocationSearchBar from '@/components/map/location/LocationSearchBar';
+import SearchBar from "@/components/common/SearchBar";
+import { useRouter } from "expo-router";
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -9,9 +10,15 @@ interface MapSearchAreaTemplate {
 
 // 지역에 대한 검색을 하고, 그 결과로 지역과 랜드마크 리스트 아이템을 리턴하는 스크린
 export default function MapSearchAreaTemplate({ onSearchBtn }: MapSearchAreaTemplate) {
+  const router = useRouter();
+ 
   return (
     <SafeAreaView style={style.container}>
-      <LocationSearchBar onSearchBtn={onSearchBtn}></LocationSearchBar>
+       <SearchBar
+        onBack={() => router.back()}
+        onSearch={onSearchBtn}
+        placeholder="지역이나 장소를 입력하세요"
+      />
     </SafeAreaView>
   );
 }

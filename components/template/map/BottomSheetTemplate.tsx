@@ -1,4 +1,5 @@
-import { getMyFriendsList } from '@/api/myPageDTO';
+
+import { MyFriendListResponse } from "@/api/type";
 import { PrimaryButton } from '@/components/common/Button/PrimaryButton';
 import { SheetStep, StepParamMap } from '@/components/map/_type';
 import { StepButtonMap } from '@/components/map/_util';
@@ -8,10 +9,10 @@ import ChallengeInfo from '@/components/map/ChallengeInfo';
 import FriendSelector from '@/components/map/FriendSelector';
 import SheetHeader from '@/components/map/SheetHeader';
 import WithWhomSelector from '@/components/map/WithWhomSelector';
-import { ButtonVariant } from '@/constants/buttonTypes';
+import { ButtonVariant } from "@/constants/buttonTypes";
 import { ChallengeInformation } from '@/types/challenge';
-import { Friend } from '@/types/friend';
-import React, { useEffect, useRef, useState } from 'react';
+import { useRouter } from "expo-router";
+import React, { useEffect, useRef } from 'react';
 import { Animated, Dimensions, Platform, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -26,6 +27,8 @@ interface BottomSheetProps {
   step: SheetStep; // 모달의 step 관리
   challengeInfo: ChallengeInformation; // 챌린지 정보 객체
   stepPayloads: Partial<StepParamMap>; // 부모가 관리하는 파라미터 값
+  allFriends: MyFriendListResponse[]; // 전체 친구 목록
+  onShowFriendListSheet: () => void; // 친구 목록 시트 열기 함수
 }
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -39,11 +42,14 @@ export default function BottomSheetTemplate({
   stepPayloads,
   challengeInfo,
   nextStep,
+  allFriends,
+  onShowFriendListSheet
 }: BottomSheetProps) {
   const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
   const insets = useSafeAreaInsets();
   const sheetHeight = SCREEN_HEIGHT * 0.5;
-  const [friends, setFriends] = useState<Friend[]>([]);
+
+  const router = useRouter();
 
   // 바텀시트 올라오기 애니메이션
   useEffect(() => {
@@ -85,9 +91,9 @@ export default function BottomSheetTemplate({
       case SheetStep.SELECT_FRIEND:
         return (
           <FriendSelector
-            friends={friends}
             selected={stepPayloads[SheetStep.SELECT_FRIEND] ?? []}
             updateValue={v => updateValue(SheetStep.SELECT_FRIEND, v)}
+            onShowFriendListSheet={onShowFriendListSheet}
           />
         );
       case SheetStep.SUBMIT:
@@ -105,6 +111,7 @@ export default function BottomSheetTemplate({
   const { text, getVariant } = StepButtonMap[step];
 
   if (!visible || !challengeInfo) return null;
+
   return (
     <View style={styles.container}>
       {/* 바텀 모달뷰 */}
@@ -129,19 +136,22 @@ export default function BottomSheetTemplate({
             step={step}
           />
           {renderStepContent()}
+          {/* TODO: 친구 객체를 한꺼번에 받아 렌더링 */}
+          {challengeInfo.isChallenged && challengeInfo.friends?.length !== 0 && (
+            <ChallengeFriends
+              friends={allFriends.filter(friend => challengeInfo.friends?.includes(friend.userId))}
+            />
+          )}
         </View>
 
         {/* 하단 버튼 영역 */}
-        <View style={styles.btnContainer}>
-          {challengeInfo.isChallenged ? (
-            <PrimaryButton variant={ButtonVariant.Disable} text={'점령 완료'} onPress={() => {}} />
-          ) : (
-            <PrimaryButton
-              variant={getVariant(stepPayloads)}
-              text={text}
-              onPress={() => nextStep(challengeInfo, stepPayloads)}
-            />
-          )}
+
+         <View style={styles.btnContainer}>
+          {challengeInfo.isChallenged ? <PrimaryButton variant={ButtonVariant.Primary} text={"사진 보기"} onPress={()=>router.push(`/album/${challengeInfo.placeName}`)} /> : <PrimaryButton
+           variant={getVariant(stepPayloads)}
+            text={text}
+            onPress={() => nextStep(challengeInfo, stepPayloads)}
+          />}
         </View>
       </Animated.View>
     </View>

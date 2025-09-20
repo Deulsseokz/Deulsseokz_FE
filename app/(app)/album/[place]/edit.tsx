@@ -41,15 +41,15 @@ export default function AlbumEditScreen() {
   const { show: showCancelModal, hide: hideCancelModal, ...cancelModal } = useModal();
 
   /** variable */
-  const parsedPhoto: PolaroidPhoto | null = (() => {
+  const parsedPhoto: PolaroidPhoto | null = useMemo(() => {
     if (!photo) return null;
     try {
-      return JSON.parse(decodeURIComponent(photo));
+      return JSON.parse(decodeURIComponent(photo)) as PolaroidPhoto;
     } catch (e) {
       console.error('사진 파싱 실패:', e);
       return null;
     }
-  })();
+  }, [photo]);
 
   const imageSource = useMemo(() => {
     if (parsedPhoto) return parsedPhoto.image;
@@ -95,10 +95,7 @@ export default function AlbumEditScreen() {
         title: '오늘의 일기를 저장했어요',
         desc: '오늘도 행복한 추억을 만들었네요',
         children: (
-          <Image
-            source={require('@/assets/images/modal/icon-save-diary.png')}
-            style={{ width: 80, height: 82 }}
-          />
+          <Image source={require('@/assets/images/modal/icon-save-diary.png')} style={{ width: 80, height: 82 }} />
         ),
         buttons: {
           text: '확인',
@@ -118,12 +115,7 @@ export default function AlbumEditScreen() {
     showCancelModal(ModalType.DEFAULT, {
       title: '저장하지 않고 나갈까요?',
       desc: '작성한 내용이 모두 사라져요',
-      children: (
-        <Image
-          source={require('@/assets/images/modal/icon-warning.png')}
-          style={{ width: 80, height: 82 }}
-        />
-      ),
+      children: <Image source={require('@/assets/images/modal/icon-warning.png')} style={{ width: 80, height: 82 }} />,
       options: [
         { text: '취소', variant: ButtonVariant.Subtle, onPress: hideCancelModal },
         { text: '나가기', variant: ButtonVariant.Primary, onPress: () => router.back() },

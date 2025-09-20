@@ -1,4 +1,9 @@
-import { fetchChallengeInfo } from '@/api/challengeDTO';
+import { fetchChallengeInfo } from "@/api/challengeDTO";
+import { getMyFriendsList } from "@/api/myPageDTO";
+import { MyFriendListResponse } from '@/api/type';
+import { SheetStep } from '@/components/map/_type';
+import FriendListSheet from '@/components/map/FriendListSheet';
+
 import SearchLocationBtn from '@/components/map/SearchLocationBtn';
 import BottomSheetTemplate from '@/components/template/map/BottomSheetTemplate';
 import MapTemplate from '@/components/template/MapTemplate';
@@ -6,15 +11,15 @@ import { useStepManager } from '@/hooks/useStepManager';
 import { useUserLocation } from '@/hooks/useUserLocation';
 import { useChallengeListStore } from '@/store/useChallengeListStore';
 import { ChallengeInformation, Coord } from '@/types/challenge';
-import { convertRawChallengeInfo } from '@/utils/convertRawChallengeData';
-import { router, useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import { convertRawChallengeInfo } from "@/utils/convertRawChallengeData";
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const MountainMapScreen = () => {
   // 전역 챌린지 정보
-  const { data: parsedChallengeData, fetchData, loading } = useChallengeListStore();
+  const { data: parsedChallengeData, fetchData, refetchData, loading } = useChallengeListStore();
   // 바텀시트에 전달되는 챌린지 정보
   const [selectedChallengeInfo, setSelectedChallengeInfo] = useState<ChallengeInformation | null>(null);
   // 유저의 위치 관리
@@ -23,6 +28,12 @@ const MountainMapScreen = () => {
   const [open, setOpen] = useState(false);
   // fetching 상태 관리
   const [isFetching, setIsFetching] = useState(false);
+
+  // 친구 관련 상태
+   // 친구 목록 시트의 visible 상태 추가
+  const [isFriendListSheetVisible, setFriendListSheetVisible] = useState(false);
+    // 모든 친구 목록
+  const [allFriends, setAllFriends] = useState<MyFriendListResponse[]>([]);
 
   // 바텀시트의 step과 param을 관리하는 state/ 함수들
   const { step, stepPayloads, updateValue, backStep, nextStep, resetStep } = useStepManager();
@@ -37,9 +48,25 @@ const MountainMapScreen = () => {
     !isNaN(parsedLat) && !isNaN(parsedLng) ? { latitude: parsedLat, longitude: parsedLng } : undefined;
 
   // 챌린지 리스트 데이터 fetch
-  useEffect(() => {
-    fetchData();
+   useFocusEffect(
+    useCallback(() => {
+      refetchData();
+
+      console.log('refetch challenge data on focus');
+    }, [refetchData])
+  );
+
+   useEffect(() => {
+    // 부모에서 친구 목록 fetch
+    getMyFriendsList().then(res => {
+      setAllFriends(res.result);
+    });
   }, []);
+
+  // 친구 목록 시트 열기 핸들러
+  const showFriendListSheet = () => {
+    setFriendListSheetVisible(true);
+  };
 
   /**
    * 폴리곤 클릭 이벤트 처리 핸들러
@@ -104,8 +131,21 @@ const MountainMapScreen = () => {
           step={step} // 실제 step
           challengeInfo={selectedChallengeInfo}
           stepPayloads={stepPayloads}
+          allFriends={allFriends}
+          onShowFriendListSheet={showFriendListSheet}
         />
       )}
+      {isFriendListSheetVisible && (
+        <FriendListSheet
+          visible={isFriendListSheetVisible}
+          onClose={() => setFriendListSheetVisible(false)}
+          allFriends={allFriends}
+          selectedFriends={stepPayloads[SheetStep.SELECT_FRIEND] ?? []}
+          updateSelection={(newSelection) => {
+            // 선택된 친구 목록을 부모의 state에 업데이트
+            updateValue(SheetStep.SELECT_FRIEND, newSelection);
+        }}
+      />)}
     </View>
   );
 };

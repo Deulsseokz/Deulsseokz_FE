@@ -1,8 +1,9 @@
 import { BadgeType, FrameType } from '@/types/shareType';
 import { formatDate } from '@/utils/formatDate';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, StyleSheet, Text, View } from 'react-native';
+import { Shadow } from 'react-native-shadow-2';
 import { PolaroidProps } from './_type';
-import { badgeImageMap, frameImageMap } from './_utli';
+import { badgeImageMap, feelingImageMap, frameImageMap, weatherImageMap } from './_utli';
 
 interface CustomPolaroidProps {
   /** 폴라로이드에 표시할 사진 정보 */
@@ -17,109 +18,111 @@ interface CustomPolaroidProps {
  * 폴라로이드 사진에 프레임을 입힐 수 있는 커스텀 폴라로이드 컴포넌트
  * - FrameType에 따라 오버레이 적용함
  */
-export default function CustomPolaroid({
-  photo,
-  frame,
-  badge,
-}: PolaroidProps & CustomPolaroidProps) {
+export default function CustomPolaroid({ photo, frame, badge }: PolaroidProps & CustomPolaroidProps) {
   const { image, additional, date } = photo;
 
   const isBlack = frame === FrameType.BLACK;
   const textColor = { color: isBlack ? '#E9E9E9' : '#4A4A4A' };
 
+  const feelingIcon = feelingImageMap[additional.feeling];
+  const weatherIcon = weatherImageMap[additional.weather];
+
   return (
-    <View style={[styles.polaroid, isBlack ? styles.blackFrame : styles.whiteFrame]}>
-      <Image source={image} style={styles.image} />
+    <View style={styles.stage}>
+      <Shadow distance={5} offset={[1, 2]} startColor="#0000001A">
+        <View style={[styles.polaroid, isBlack ? styles.blackFrame : styles.whiteFrame]}>
+          <Image source={image} style={styles.image} />
+          {frameImageMap[frame] && <Image source={frameImageMap[frame]} style={styles.overlay} />}
 
-      {frameImageMap[frame] && <Image source={frameImageMap[frame]} style={styles.overlay} />}
+          <View>
+            <View style={styles.metaRow}>
+              {feelingIcon && <Image source={feelingIcon} style={styles.metaIcon} />}
+              {weatherIcon && <Image source={weatherIcon} style={styles.metaIcon} />}
+              {!feelingIcon && !weatherIcon && <Text style={[styles.metaFallback, textColor]}>없음</Text>}
+            </View>
 
-      {badge && badgeImageMap[badge] && (
-        <Image source={badgeImageMap[badge]} style={styles.badge} />
-      )}
+            <Text style={[styles.desc, textColor]} numberOfLines={2}>
+              {additional.desc}
+            </Text>
+          </View>
 
-      <View>
-        <Text style={[styles.emoji, textColor]}>
-          {additional.feeling} {additional.weather}
-        </Text>
-        <Text style={[styles.desc, textColor]} numberOfLines={2}>
-          {additional.desc}
-        </Text>
-      </View>
+          <View style={styles.footer}>
+            <Text style={styles.date}>{formatDate(date)}</Text>
+            <Text style={styles.loc}>{photo.loc}</Text>
+          </View>
+        </View>
+      </Shadow>
 
-      <View style={styles.footer}>
-        <Text style={styles.date}>{formatDate(date)}</Text>
-        <Text style={styles.loc}>{photo.loc}</Text>
-      </View>
+      {badge && badgeImageMap[badge] && <Image source={badgeImageMap[badge]} style={styles.badge} />}
     </View>
   );
 }
+
+const CARD_WIDTH = 145;
+
 const styles = StyleSheet.create({
+  stage: {
+    position: 'relative',
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 50,
+    paddingRight: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+  },
+
   polaroid: {
-    width: 145,
+    width: CARD_WIDTH,
     paddingTop: 30,
     paddingRight: 9,
     paddingBottom: 10,
     paddingLeft: 9,
-
     backgroundColor: '#fff',
     flexDirection: 'column',
+  },
+  blackFrame: { backgroundColor: '#000' },
+  whiteFrame: { backgroundColor: '#fff' },
 
-    shadowColor: '#000',
-    shadowOpacity: 0.14,
-    shadowOffset: { width: 0, height: 1.35 },
-    elevation: 5,
-  },
-  blackFrame: {
-    backgroundColor: '#000',
-    color: '#E9E9E9',
-  },
-  whiteFrame: {
-    backgroundColor: '#fff',
-    color: '#4A4A4A',
-  },
-  image: {
-    width: 127,
-    height: 158,
-    resizeMode: 'cover',
-  },
+  image: { width: 128, height: 159, resizeMode: 'cover' },
+
   overlay: {
     position: 'absolute',
     top: 0,
     left: 0,
-    width: 145,
+    width: CARD_WIDTH,
     height: '100%',
     resizeMode: 'contain',
   },
+
   badge: {
     position: 'absolute',
-    top: -10,
-    left: -40,
+    top: 0,
+    left: 0,
     width: 70,
     height: 70,
     resizeMode: 'contain',
+    zIndex: 10,
+    ...Platform.select({ android: { elevation: 20 } }),
   },
-  emoji: {
-    fontSize: 10,
+
+  metaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
     paddingTop: 7,
     paddingBottom: 7,
   },
-  desc: {
-    fontSize: 7,
-    lineHeight: 10,
-    minHeight: 54,
-  },
+  metaIcon: { width: 14, height: 14, resizeMode: 'contain' },
+  metaFallback: { fontSize: 10 },
+
+  desc: { fontSize: 7.8, lineHeight: 10, minHeight: 54 },
 
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: 8,
   },
-  date: {
-    fontSize: 8,
-    color: '#ACACAC',
-  },
-  loc: {
-    fontSize: 8,
-    color: '#7A7A7A',
-  },
+  date: { fontSize: 8, color: '#ACACAC' },
+  loc: { fontSize: 8, color: '#7A7A7A' },
 });

@@ -46,14 +46,14 @@ export default function MyPagePointTemplate({ holdingPoint, pointLogs }: PointSc
           <FlatList
             style={styles.historyList}
             data={monthHistory}
-            keyExtractor={(item) => `${item.date}-${item.todayPoint}`}
+            keyExtractor={(item,index) => `${item.date}-${item.todayPoint}-${item.content}-${index}`}
             ItemSeparatorComponent={() => <View style={styles.separator} />}
             renderItem={({ item }) => (
               <PointHistoryItem
                 date={item.date}
                 content={item.content}
                 todayPoint={item.todayPoint}
-                changedPoint={item.pointEarned==0 ? item.pointUsed : item.pointEarned}
+                changedPoint={item.pointEarned==0 ? -1*item.pointUsed : item.pointEarned}
               />
             )}
             ListEmptyComponent={
@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
   },
   pointHistory: {
     gap: 20,
+    height: "75%",
   },
   pointHistoryText: {
     color: MCOLORS.grayscale.gray70,

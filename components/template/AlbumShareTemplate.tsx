@@ -4,8 +4,10 @@ import { PrimaryButton } from '@/components/common/Button/PrimaryButton';
 import PriceTag from '@/components/common/PriceTag';
 import { TopBar } from '@/components/common/TopBar';
 import { ButtonVariant } from '@/constants/buttonTypes';
+import { usePointStore } from '@/store/usePointStore';
 import { BadgeType, FrameType } from '@/types/shareType';
-import React from 'react';
+import { showCustomToast } from '@/utils/toastManager';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ViewShot from 'react-native-view-shot';
 import { PolaroidPhoto } from '../album/_type';
@@ -60,9 +62,67 @@ const AlbumShareTemplate = React.forwardRef<ViewShot, AlbumShareTemplateProps>(
     },
     ref,
   ) => {
+    const { holdingPoint, fetchPointHistory, updatePoint } = usePointStore();
+    const [isFinalizing, setIsFinalizing] = useState(false);
+
+    const framePrice = frameOptions?.find(f => f.type === selectedFrame)?.price || 0;
+    const badgePrice = badgeOptions?.find(b => b.type === selectedBadge)?.price || 0;
+    const totalCost = step === 1 ? framePrice : framePrice + badgePrice;
+
+    // UI에 표시될 예상 보유 포인트 (음수 가능, 적용해서 프리뷰는 되고 / 다음 핸들러 클릭 시, 사용 불가 모달 노출함)
+    const projectedPoints = holdingPoint - totalCost;
+    const displayPoints = isFinalizing ? holdingPoint : projectedPoints;
+
+    const handleConfirm = async () => {
+      // '다음' 버튼 - 포인트 확인만 수행
+      if (step === 1) {
+        if (holdingPoint < framePrice) {
+          showCustomToast('포인트가 부족해요');
+          return;
+        }
+        onNext();
+        return;
+      }
+
+      // '공유하기' 버튼 - 최종 포인트 확인 및 API 호출
+      if (step === 2) {
+        const finalCost = framePrice + badgePrice;
+        if (holdingPoint < finalCost) {
+          showCustomToast('포인트가 부족해요');
+          return;
+        }
+
+        if (finalCost > 0) {
+          setIsFinalizing(true);
+          try {
+            let content = '';
+            if (framePrice > 0 && badgePrice > 0) content = '프레임 및 뱃지 사용';
+            else if (framePrice > 0) content = '프레임 사용';
+            else if (badgePrice > 0) content = '뱃지 사용';
+
+            await updatePoint({
+              pointEarned: 0,
+              pointUsed: finalCost,
+              content,
+            });
+          } catch (error) {
+            console.error('포인트 차감에 실패했습니다:', error);
+            setIsFinalizing(false);
+            return;
+          }
+        }
+
+        onShare();
+      }
+    };
+
+    useEffect(() => {
+      fetchPointHistory();
+    }, [fetchPointHistory]);
+
     return (
       <View style={styles.page}>
-        <TopBar title="" rightButton={<PriceTag price={800} />} />
+        <TopBar title="" rightButton={<PriceTag price={displayPoints} />} />
         <View style={styles.container}>
           <ViewShot ref={ref} options={{ fileName: 'polaroid-share', format: 'png', quality: 1.0 }}>
             <CustomPolaroid photo={photo} frame={selectedFrame} badge={selectedBadge} />
@@ -98,6 +158,7 @@ const AlbumShareTemplate = React.forwardRef<ViewShot, AlbumShareTemplateProps>(
                       label={b.label}
                       badgeType={b.type}
                       selected={selectedBadge === b.type}
+                      price={b.price}
                       onPress={type => onChangeBadge(type as BadgeType)}
                     />
                   ))}
@@ -108,7 +169,7 @@ const AlbumShareTemplate = React.forwardRef<ViewShot, AlbumShareTemplateProps>(
           <PrimaryButton
             text={step === 1 ? '다음' : '공유하기'}
             variant={ButtonVariant.Primary}
-            onPress={step === 1 ? onNext : onShare}
+            onPress={handleConfirm}
           />
         </View>
       </View>
@@ -131,6 +192,8 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: '30',
   },
   optionBox: {
     flexDirection: 'column',
@@ -139,7 +202,8 @@ const styles = StyleSheet.create({
   },
   optionList: {
     flexDirection: 'row',
-    gap: 30,
+    width: '100%',
+    gap: 10,
   },
   label: {
     width: '100%',

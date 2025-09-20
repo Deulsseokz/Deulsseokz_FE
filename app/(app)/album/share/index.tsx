@@ -12,6 +12,7 @@ const frameOptions = [
   { type: FrameType.BLACK, label: '검정색' },
   { type: FrameType.RAINBOW, label: '레인보우', price: 20 },
   { type: FrameType.HANDWRITING, label: '손글씨', price: 80 },
+  { type: FrameType.SHAPE, label: '손글씨', price: 80 },
 ];
 
 const badgeOptions = [

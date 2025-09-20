@@ -1,5 +1,5 @@
+import { MyFriendListResponse } from "@/api/type";
 import { ButtonVariant } from "@/constants/buttonTypes";
-import { Friend } from '@/types/friend';
 import { ImageSourcePropType } from 'react-native';
 
 // 바텀시트의 단계 정의
@@ -14,7 +14,7 @@ export enum SheetStep {
 export type StepParamMap = {
   [SheetStep.INFO]: void;
   [SheetStep.WITH_WHOM]: ChallengeWith;
-  [SheetStep.SELECT_FRIEND]: Friend[];
+  [SheetStep.SELECT_FRIEND]: MyFriendListResponse[];
   [SheetStep.SUBMIT]: void;
 };
 
