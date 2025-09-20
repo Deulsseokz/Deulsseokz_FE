@@ -3,14 +3,14 @@
  * @returns 챌린지를 함께하는 친구를 명시하는 컴포넌트
  */
 
-import IcnFriend from '@/assets/icons/icon-person.svg';
+import { MyFriendListResponse } from "@/api/type";
 import { MCOLORS } from '@/constants/colors';
-import { Friend } from '@/types/friend';
 import { StyleSheet, Text, View } from 'react-native';
+import FriendProfile from "../common/FriendProfile";
 
 interface ChallengeFriendsProps {
   // 챌린지 실패/성공 여부
-  friends: Friend[];
+  friends: MyFriendListResponse[];
 }
 
 function ChallengeFriends({ friends }: ChallengeFriendsProps) {
@@ -24,7 +24,11 @@ function ChallengeFriends({ friends }: ChallengeFriendsProps) {
       <View style={style.friendsContainer}>
         {!alone &&
           friends.map((item, index) => {
-            return <IcnFriend key={index} style={{ ...style.relativeImg, left: index * -10 }} />;
+            return (
+              <View style={{...style.relativeImg, left: index * -1, zIndex: friends.length - index}} key={index}>
+                <FriendProfile friend={item} isSelected={false} />
+              </View>
+            );
           })}
       </View>
     </View>
@@ -38,7 +42,7 @@ const style = StyleSheet.create({
     width: '100%',
     backgroundColor: '#f8f8f8',
     borderRadius: 15,
-    paddingVertical: 22,
+    paddingVertical: 20,
     paddingHorizontal: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -54,8 +58,6 @@ const style = StyleSheet.create({
     lineHeight: 15,
   },
   relativeImg: {
-    width: 40,
-    height: 40,
     position: 'relative',
     zIndex: 1,
   },

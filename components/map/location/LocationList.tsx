@@ -29,7 +29,9 @@ export default function LocationList({ locationList, selectedArea }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    height: 'auto',
+  },
   item: {
     padding: 14,
     marginBottom: 10,

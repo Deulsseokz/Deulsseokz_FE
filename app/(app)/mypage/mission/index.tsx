@@ -1,4 +1,4 @@
-import { getChallengeCompletion, getChallengeLocal } from "@/api/mypage";
+import { getChallengeCompletion, getChallengeLocal } from "@/api/myPageDTO";
 import { RegionConquerStatusResponse } from "@/api/type";
 import { ChallengeCompletionStatus, RegionConquerRateList } from "@/components/mypage/_type";
 import MyPageMissionTemplate from "@/components/template/MyPageMissionTemplate";

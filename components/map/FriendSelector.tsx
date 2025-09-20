@@ -1,21 +1,23 @@
+import { getMyFriendsList } from "@/api/myPageDTO";
+import { MyFriendListResponse } from "@/api/type";
 import { MCOLORS } from '@/constants/colors';
-import { Friend } from '@/types/friend';
-import { useState } from 'react';
-import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import FriendProfile from '../common/FriendProfile';
 
 interface FriendSelectorProps {
-  friends: Friend[]; // 친구 목록 배열
-  selected: Friend[]; // 선택된 친구 배열
-  updateValue: (selected: Friend[]) => void;
+  selected: MyFriendListResponse[]; // 선택된 친구 배열
+  updateValue: (selected: MyFriendListResponse[]) => void;
+  onShowFriendListSheet: () => void;
 }
 
 /**
- * TODO: 친구 목록 불러오기
  * @param 친구 목록, 선택된 친구 배열, 친구 선택시 핸들러 함수
  * @returns 친구 목록 중 최대 3명 선택할 수 있는 컴포넌트
  */
-export default function FriendSelector({ friends, selected, updateValue }: FriendSelectorProps) {
+export default function FriendSelector({ selected, updateValue, onShowFriendListSheet }: FriendSelectorProps) {
+  const [friends, setFriends] = useState<MyFriendListResponse[]>([]);
+
   const [selectedMap, setSelectedMap] = useState<Record<number, boolean>>(
     Object.fromEntries(selected.map(f => [f.userId, true])),
   );
@@ -36,6 +38,17 @@ export default function FriendSelector({ friends, selected, updateValue }: Frien
     updateValue(updatedFriends);
   };
 
+  useEffect(()=>{
+    getMyFriendsList().then(res => {
+      setFriends(res.result);
+    })
+  }, [])
+
+  useEffect(() => {
+    const newSelectedMap = Object.fromEntries(selected.map(f => [f.userId, true]));
+    setSelectedMap(newSelectedMap);
+  }, [selected]);
+
   return (
     <View style={style.container}>
       <View style={style.topContainer}>
@@ -47,7 +60,7 @@ export default function FriendSelector({ friends, selected, updateValue }: Frien
       </View>
       <FlatList
         horizontal
-        showsHorizontalScrollIndicator={false} // 스크롤바 숨김
+        showsHorizontalScrollIndicator={false}
         data={friends}
         keyExtractor={item => item.userId.toString()}
         contentContainerStyle={style.list}
@@ -55,6 +68,9 @@ export default function FriendSelector({ friends, selected, updateValue }: Frien
           <FriendProfile friend={item} isSelected={!!selectedMap[item.userId]} onSelect={toggle} />
         )}
       />
+       <TouchableOpacity onPress={onShowFriendListSheet} style={style.bottomText}>
+          <Text style={style.showAllText}>모두보기</Text>
+        </TouchableOpacity>
     </View>
   );
 }
@@ -92,10 +108,26 @@ const style = StyleSheet.create({
     fontWeight: '500',
   },
   list: {
-    marginTop: 20,
-    marginLeft: 41,
+    marginTop: 30,
+    padding: 20,
     gap: 16,
     rowGap: 20,
-    height: 70,
+    width: '100%',
+    height: 'auto',
+    backgroundColor: '#FBFBFB',
+    borderRadius: 20,
   },
+  showAllText: { 
+    color: MCOLORS.grayscale.gray50,
+    fontSize: 14,
+    fontWeight: '500',
+    textDecorationLine: 'underline',
+  },
+  bottomText: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'flex-end',
+    marginTop: 8,
+    paddingRight: 4,
+  }
 });
