@@ -1,4 +1,5 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import fontStyles from '@/constants/fonts';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 /**
  * 이모지 선택 컴포넌트에 전달되는 props 타입
@@ -7,12 +8,14 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-nati
 export interface EmojiSelectorProps<T extends string> {
   /** 선택자 앞에 붙는 라벨 텍스트 */
   label: string;
-  /** 선택 가능한 이모지 목록 */
+  /** 선택 가능한 값 목록 */
   options: T[];
-  /** 현재 선택된 이모지 */
+  /** 현재 선택된 값 */
   selected: T;
-  /** 이모지를 선택했을 때 호출되는 콜백 */
+  /** 선택 시 호출되는 콜백 */
   onSelect: (val: T) => void;
+  /** 문자열 ↔ 이미지 매핑 */
+  imageMap: Record<T, any>;
 }
 
 /**
@@ -25,15 +28,12 @@ export default function EmojiSelector<T extends string>({
   options,
   selected,
   onSelect,
+  imageMap,
 }: EmojiSelectorProps<T>) {
   return (
     <View style={styles.selector}>
       <Text style={styles.label}>{label}</Text>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.emojiRow}
-      >
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row}>
         {options.map(opt => {
           const isSelected = selected === opt;
           const isNone = opt === ('없음' as T);
@@ -42,20 +42,14 @@ export default function EmojiSelector<T extends string>({
             <TouchableOpacity
               key={opt}
               onPress={() => onSelect(opt)}
-              style={[
-                styles.emojiWrapper,
-                isSelected ? styles.selectedWrapper : styles.unselectedWrapper,
-              ]}
+              activeOpacity={1} // 눌렀을 때 추가로 흐려지지 않게
+              style={[styles.wrapper, isSelected ? styles.selected : styles.unselected]}
             >
-              <Text
-                style={[
-                  styles.emoji,
-                  isNone ? styles.noneEmoji : styles.normalEmoji,
-                  !isSelected && styles.unselectedEmoji,
-                ]}
-              >
-                {opt}
-              </Text>
+              {isNone ? (
+                <Text style={styles.noneText}>없음</Text>
+              ) : (
+                <Image source={imageMap[opt]} style={styles.icon} resizeMode="contain" />
+              )}
             </TouchableOpacity>
           );
         })}
@@ -70,7 +64,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 15,
     alignItems: 'center',
-    backgroundColor: '#fff',
     paddingVertical: 11,
     paddingHorizontal: 20,
   },
@@ -80,39 +73,26 @@ const styles = StyleSheet.create({
     color: '#4A4A4A',
     width: 36,
   },
-  emojiRow: {
+  row: {
     flexDirection: 'row',
     gap: 12,
     alignItems: 'center',
   },
-  emojiWrapper: {
+  wrapper: {
     width: 44,
     height: 44,
-    borderRadius: 25,
-    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  selectedWrapper: {
-    borderColor: '#E5E5E5',
-    backgroundColor: '#F5F5F5',
-    opacity: 1,
+  selected: { opacity: 1 },
+  unselected: { opacity: 0.2 },
+
+  icon: {
+    width: 44,
+    height: 44,
   },
-  unselectedWrapper: {
-    borderColor: 'transparent',
-    opacity: 0.7,
-  },
-  emoji: {
-    textAlign: 'center',
-  },
-  normalEmoji: {
-    fontSize: 24,
-  },
-  noneEmoji: {
-    fontSize: 13,
-    color: '#666',
-  },
-  unselectedEmoji: {
-    opacity: 0.7,
+  noneText: {
+    color: '#313131',
+    ...fontStyles.medium13,
   },
 });

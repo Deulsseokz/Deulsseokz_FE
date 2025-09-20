@@ -131,6 +131,8 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: '30',
   },
   optionBox: {
     flexDirection: 'column',
@@ -139,7 +141,8 @@ const styles = StyleSheet.create({
   },
   optionList: {
     flexDirection: 'row',
-    gap: 30,
+    width: '100%',
+    gap: 10,
   },
   label: {
     width: '100%',

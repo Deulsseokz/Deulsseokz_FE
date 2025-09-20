@@ -1,7 +1,8 @@
+import { feelingImageMap, weatherImageMap } from '@/components/album/_utli';
 import EmojiSelector from '@/components/album/EmojiSelector';
 import { PrimaryButton } from '@/components/common/Button/PrimaryButton';
 import { TopBar } from '@/components/common/TopBar';
-import { ButtonVariant } from "@/constants/buttonTypes";
+import { ButtonVariant } from '@/constants/buttonTypes';
 import { FeelingType } from '@/types/feeling';
 import { WeatherType } from '@/types/weather';
 import React from 'react';
@@ -36,8 +37,8 @@ interface AlbumEditTemplateProps {
  * @param onChangeDesc - 인풋 텍스트 변경 핸들러
  * @param onSave - 저장 버튼 핸들러
  * @param onCancel - 취소 버튼 핸들러
- * 
- * 
+ *
+ *
  */
 export default function AlbumEditTemplate({
   isSaveEnabled,
@@ -64,12 +65,14 @@ export default function AlbumEditTemplate({
             options={feelings}
             selected={selectedFeeling}
             onSelect={onChangeFeeling}
+            imageMap={feelingImageMap}
           />
           <EmojiSelector<WeatherType>
             label="날씨"
             options={weathers}
             selected={selectedWeather}
             onSelect={onChangeWeather}
+            imageMap={weatherImageMap}
           />
           <TextInput
             style={styles.input}
@@ -81,7 +84,11 @@ export default function AlbumEditTemplate({
         </View>
         <View style={styles.buttonContainer}>
           <PrimaryButton variant={ButtonVariant.Subtle} text="취소" onPress={onCancel} />
-          <PrimaryButton variant={ isSaveEnabled ? ButtonVariant.Primary : ButtonVariant.Disable} text="저장" onPress={onSave} />
+          <PrimaryButton
+            variant={isSaveEnabled ? ButtonVariant.Primary : ButtonVariant.Disable}
+            text="저장"
+            onPress={onSave}
+          />
         </View>
       </View>
     </View>

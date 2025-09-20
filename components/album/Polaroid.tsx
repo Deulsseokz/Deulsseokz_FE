@@ -2,6 +2,7 @@ import { formatDate } from '@/utils/formatDate';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { PolaroidProps } from './_type';
+import { feelingImageMap, weatherImageMap } from './_utli';
 
 /**
  * 기본 폴라로이드 컴포넌트
@@ -9,14 +10,19 @@ import { PolaroidProps } from './_type';
 export default function Polaroid({ photo }: PolaroidProps) {
   const { image, additional, date, loc } = photo;
 
+  const feelingIcon = feelingImageMap[additional.feeling];
+  const weatherIcon = weatherImageMap[additional.weather];
+
   return (
     <View style={styles.polaroid}>
       <Image source={image} style={styles.image} />
 
       <View>
-        <Text style={styles.emoji}>
-          {additional.feeling} {additional.weather}
-        </Text>
+        <View style={styles.metaRow}>
+          {feelingIcon && <Image source={feelingIcon} style={styles.metaIcon} />}
+          {weatherIcon && <Image source={weatherIcon} style={styles.metaIcon} />}
+          {!feelingIcon && !weatherIcon && <Text style={styles.metaFallback}>없음</Text>}
+        </View>
 
         <Text style={styles.desc} numberOfLines={2}>
           {additional.desc}
@@ -30,6 +36,7 @@ export default function Polaroid({ photo }: PolaroidProps) {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   polaroid: {
     padding: 10,
@@ -47,9 +54,20 @@ const styles = StyleSheet.create({
     height: 225,
     resizeMode: 'cover',
   },
-  emoji: {
-    fontSize: 15,
+  metaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
     marginBottom: 3.75,
+  },
+  metaIcon: {
+    width: 18,
+    height: 18,
+    resizeMode: 'contain',
+  },
+  metaFallback: {
+    fontSize: 12,
+    color: '#999',
   },
   desc: {
     fontSize: 9.75,
