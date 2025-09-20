@@ -17,7 +17,9 @@ export default function FriendProfile({ friend, isSelected, onSelect }: FriendPr
   return (
     <TouchableOpacity style={style.container} onPress={() => onSelect(friend.userId)}>
       <Icon width={40} height={40} />
-      <Text style={style.name}>{friend.userName}</Text>
+      <Text style={style.name} numberOfLines={1} ellipsizeMode="tail">
+        {friend.userName}
+      </Text>
     </TouchableOpacity>
   );
 }

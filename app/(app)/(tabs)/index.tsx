@@ -1,4 +1,4 @@
-import { fetchChallengeInfo } from "@/api/challengeDTO";
+import { fetchChallengeInfo } from '@/api/challengeDTO';
 import SearchLocationBtn from '@/components/map/SearchLocationBtn';
 import BottomSheetTemplate from '@/components/template/map/BottomSheetTemplate';
 import MapTemplate from '@/components/template/MapTemplate';
@@ -6,7 +6,7 @@ import { useStepManager } from '@/hooks/useStepManager';
 import { useUserLocation } from '@/hooks/useUserLocation';
 import { useChallengeListStore } from '@/store/useChallengeListStore';
 import { ChallengeInformation, Coord } from '@/types/challenge';
-import { convertRawChallengeInfo } from "@/utils/convertRawChallengeData";
+import { convertRawChallengeInfo } from '@/utils/convertRawChallengeData';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
@@ -26,7 +26,6 @@ const MountainMapScreen = () => {
 
   // 바텀시트의 step과 param을 관리하는 state/ 함수들
   const { step, stepPayloads, updateValue, backStep, nextStep, resetStep } = useStepManager();
-  
 
   // 지역 검색 화면에서 이동한 경우, initialCoord 값을 넣어 카메라 위치 이동 처리
   const { latitude, longitude } = useLocalSearchParams();
@@ -45,12 +44,12 @@ const MountainMapScreen = () => {
   /**
    * 폴리곤 클릭 이벤트 처리 핸들러
    * @description 클릭한 폴리곤의 id, 챌린지 달성 여부를 받아 챌린지 상세 정보를 받아옵니다.
-   * @param challengeId 
-   * @param isChallenged 
+   * @param challengeId
+   * @param isChallenged
    */
-  const handleClickPolygon = async (challengeId: number, isChallenged:boolean) => {
+  const handleClickPolygon = async (challengeId: number, isChallenged: boolean) => {
     try {
-      setIsFetching(true); 
+      setIsFetching(true);
       const response = await fetchChallengeInfo(challengeId);
       if (response.result.length > 0) {
         const parsedResult = convertRawChallengeInfo(response.result[0], challengeId, isChallenged);
@@ -66,7 +65,7 @@ const MountainMapScreen = () => {
     }
   };
 
-    // 바텀시트 종료
+  // 바텀시트 종료
   const exitSheet = () => {
     resetStep();
     setSelectedChallengeInfo(null);

@@ -2,14 +2,14 @@ import { sendFcmToken } from '@/api/fcmToken';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import notifee, { EventType } from '@notifee/react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   AuthorizationStatus,
-  FirebaseMessagingTypes,
+  getInitialNotification,
   getMessaging,
   getToken,
   onMessage,
   onNotificationOpenedApp,
-  onTokenRefresh,
   requestPermission,
 } from '@react-native-firebase/messaging';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
@@ -61,25 +61,47 @@ export default function RootLayout() {
     }
 
     // 앱 실행 중에 토큰 갱신 시 서버에 전송
-    onTokenRefresh(messaging, token => {
-      console.log('Token refreshed:', token);
-      sendFcmToken({ 'fcm-token': token });
-    });
+    // onTokenRefresh(messaging, token => {
+    //   console.log('Token refreshed:', token);
+    //   sendFcmToken({ 'fcm-token': token });
+    // });
   };
 
-  useEffect(() => {
-    setUpFcm();
-  }, []);
+  const handleNotificationNavigation = async (data: { attemptId: string; type: string } | undefined) => {
+    if (data) {
+      const { attemptId, type } = data;
+      if (attemptId && type === 'challenge_result') {
+        try {
+          const placeName = await AsyncStorage.getItem('placeName');
+          const condition1 = await AsyncStorage.getItem('condition1');
+          const condition2 = await AsyncStorage.getItem('condition2');
+          const condition3 = await AsyncStorage.getItem('condition3');
+          const point = await AsyncStorage.getItem('point');
+          const image = await AsyncStorage.getItem('image');
 
-  const handleNotificationNavigation = (notification: FirebaseMessagingTypes.RemoteMessage) => {
-    const { attemptId, type } = notification.data as { attemptId: string; type: string };
-    if (attemptId && type === 'challenge_result') {
-      router.push(`/map/${attemptId}/result`);
+          router.push({
+            pathname: '/map/[id]/result',
+            params: {
+              id: attemptId,
+              placeName: placeName,
+              condition1: condition1,
+              condition2: condition2,
+              condition3: condition3,
+              point: point,
+              image: image,
+            },
+          });
+        } catch (error) {
+          console.error('Error navigating to challenge result:', error);
+        }
+      }
     }
   };
 
   useEffect(() => {
-    const unsubscribe = onMessage(getMessaging(), async remoteMessage => {
+    setUpFcm();
+
+    const unsubscribeOnMessage = onMessage(getMessaging(), async remoteMessage => {
       console.log('Notification received:', remoteMessage);
       await notifee.displayNotification({
         title: remoteMessage.notification?.title,
@@ -94,22 +116,26 @@ export default function RootLayout() {
       });
     });
 
-    onNotificationOpenedApp(getMessaging(), remoteMessage => {
+    const unsubscribeNotificationOpenedApp = onNotificationOpenedApp(getMessaging(), remoteMessage => {
       console.log('Notification opened:', remoteMessage);
-      handleNotificationNavigation(remoteMessage);
+      handleNotificationNavigation(remoteMessage.data as { attemptId: string; type: string });
     });
 
-    // quit 상태도 처리해야 함
+    getInitialNotification(getMessaging()).then(remoteMessage => {
+      console.log('Initial notification:', remoteMessage);
+      handleNotificationNavigation(remoteMessage?.data as { attemptId: string; type: string });
+    });
 
     const unSubscribeNotifee = notifee.onForegroundEvent(async ({ type, detail }) => {
       console.log('Notifee background event:', type, detail);
       if (type === EventType.PRESS) {
-        handleNotificationNavigation(detail.notification?.data as unknown as FirebaseMessagingTypes.RemoteMessage);
+        handleNotificationNavigation(detail.notification?.data as unknown as { attemptId: string; type: string });
       }
     });
 
     return () => {
-      unsubscribe();
+      unsubscribeOnMessage();
+      unsubscribeNotificationOpenedApp();
       unSubscribeNotifee();
     };
   }, []);

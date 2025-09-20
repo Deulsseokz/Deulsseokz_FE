@@ -1,4 +1,4 @@
-import { ButtonVariant } from "@/constants/buttonTypes";
+import { ButtonVariant } from '@/constants/buttonTypes';
 import { MCOLORS } from '@/constants/colors';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
@@ -18,7 +18,7 @@ dayjs.extend(timezone);
 export default function ChallengeDetailTemplate({
   id,
   image,
-  place,
+  placeName,
   content,
   point,
   condition1,
@@ -30,7 +30,7 @@ export default function ChallengeDetailTemplate({
 }: {
   id: number;
   image: string;
-  place: string;
+  placeName: string;
   content: string;
   point: string;
   condition1: string;
@@ -47,7 +47,7 @@ export default function ChallengeDetailTemplate({
         <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
-              <ChallengeInfo placeName={place} content={content} point={Number(point)} />
+              <ChallengeInfo placeName={placeName} content={content} point={Number(point)} />
               <ChallengeCondition condition1={condition1} condition2={condition2} condition3={condition3} />
             </View>
           </View>
@@ -66,7 +66,6 @@ export default function ChallengeDetailTemplate({
         <View style={styles.imageContainer}>
           <Image source={{ uri: image }} style={{ width: '100%', height: '100%' }} />
         </View>
-        <Text style={styles.text}>도전 횟수 (1/3)</Text>
         <View style={styles.buttonContainer}>
           <PrimaryButton
             variant={ButtonVariant.Subtle}

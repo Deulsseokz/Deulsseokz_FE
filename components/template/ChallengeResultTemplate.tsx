@@ -1,5 +1,6 @@
-import { ButtonVariant } from "@/constants/buttonTypes";
-import { MCOLORS } from "@/constants/colors";
+import { patchPointHistory } from '@/api/myPageDTO';
+import { ButtonVariant } from '@/constants/buttonTypes';
+import { MCOLORS } from '@/constants/colors';
 import { ModalType } from '@/enums/modalTypes';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
@@ -8,7 +9,6 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { PrimaryButton } from '../common/Button/PrimaryButton';
 import ModalManager from '../common/Modal/ModalManager';
 import ConditionCheckBox from '../map/ConditionCheckBox';
-
 export default function ChallengeOutputTemplate({
   isSuccess,
   isSuccessCondition1,
@@ -18,9 +18,11 @@ export default function ChallengeOutputTemplate({
   condition2,
   condition3,
   image,
-  id,
+  placeName,
+  point,
 }: {
-  id: number;
+  placeName: string;
+  point: string;
   isSuccess: boolean;
   isSuccessCondition1: boolean;
   isSuccessCondition2: boolean;
@@ -35,11 +37,16 @@ export default function ChallengeOutputTemplate({
   const modalProps = isSuccess
     ? {
         title: '축하합니다!',
-        desc: '20 포인트를 획득했어요',
+        desc: `${point} 포인트를 획득했어요`,
         buttons: {
           text: '확인',
           onPress: () => {
             router.replace('/album');
+            patchPointHistory({
+              pointEarned: Number(point),
+              pointUsed: 0,
+              content: `${placeName} 챌린지 성공`,
+            });
           },
         },
         children: (
@@ -62,7 +69,7 @@ export default function ChallengeOutputTemplate({
           {
             text: '닫기',
             onPress: () => {
-              router.replace('/(tabs)');
+              router.replace('/(app)/(tabs)');
             },
             types: ButtonVariant.Subtle,
           },
@@ -101,7 +108,7 @@ export default function ChallengeOutputTemplate({
             variant={ButtonVariant.Subtle}
             text={isSuccess ? '닫기' : '취소'}
             onPress={() => {
-              router.replace('/(tabs)');
+              router.replace('/(app)/(tabs)');
             }}
           />
           <PrimaryButton

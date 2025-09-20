@@ -1,3 +1,4 @@
+import { getMyFriendsList } from '@/api/myPageDTO';
 import { PrimaryButton } from '@/components/common/Button/PrimaryButton';
 import { SheetStep, StepParamMap } from '@/components/map/_type';
 import { StepButtonMap } from '@/components/map/_util';
@@ -7,10 +8,10 @@ import ChallengeInfo from '@/components/map/ChallengeInfo';
 import FriendSelector from '@/components/map/FriendSelector';
 import SheetHeader from '@/components/map/SheetHeader';
 import WithWhomSelector from '@/components/map/WithWhomSelector';
-import { ButtonVariant } from "@/constants/buttonTypes";
-import { MOCK_FRIENDS } from '@/constants/map/friends';
+import { ButtonVariant } from '@/constants/buttonTypes';
 import { ChallengeInformation } from '@/types/challenge';
-import React, { useEffect, useRef } from 'react';
+import { Friend } from '@/types/friend';
+import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, Platform, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -42,6 +43,7 @@ export default function BottomSheetTemplate({
   const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
   const insets = useSafeAreaInsets();
   const sheetHeight = SCREEN_HEIGHT * 0.5;
+  const [friends, setFriends] = useState<Friend[]>([]);
 
   // 바텀시트 올라오기 애니메이션
   useEffect(() => {
@@ -51,6 +53,17 @@ export default function BottomSheetTemplate({
       useNativeDriver: true,
     }).start();
   }, [visible]);
+
+  useEffect(() => {
+    getMyFriendsList().then(res => {
+      setFriends(
+        res.result.map(friend => ({
+          userId: friend.userId,
+          userName: friend.friendsName,
+        })),
+      );
+    });
+  }, []);
 
   // 각 스텝별 중심 콘텐츠를 렌더합니다.
   const renderStepContent = () => {
@@ -72,7 +85,7 @@ export default function BottomSheetTemplate({
       case SheetStep.SELECT_FRIEND:
         return (
           <FriendSelector
-            friends={MOCK_FRIENDS}
+            friends={friends}
             selected={stepPayloads[SheetStep.SELECT_FRIEND] ?? []}
             updateValue={v => updateValue(SheetStep.SELECT_FRIEND, v)}
           />
@@ -119,14 +132,17 @@ export default function BottomSheetTemplate({
         </View>
 
         {/* 하단 버튼 영역 */}
-         <View style={styles.btnContainer}>
-          {challengeInfo.isChallenged ? <PrimaryButton variant={ButtonVariant.Disable} text={"점령 완료"} onPress={() => {}} /> : <PrimaryButton
-           variant={getVariant(stepPayloads)}
-            text={text}
-            onPress={() => nextStep(challengeInfo, stepPayloads)}
-          />}
+        <View style={styles.btnContainer}>
+          {challengeInfo.isChallenged ? (
+            <PrimaryButton variant={ButtonVariant.Disable} text={'점령 완료'} onPress={() => {}} />
+          ) : (
+            <PrimaryButton
+              variant={getVariant(stepPayloads)}
+              text={text}
+              onPress={() => nextStep(challengeInfo, stepPayloads)}
+            />
+          )}
         </View>
-       
       </Animated.View>
     </View>
   );
