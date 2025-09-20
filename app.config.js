@@ -12,6 +12,7 @@ export default {
     userInterfaceStyle: 'automatic',
     newArchEnabled: true,
     ios: {
+      googleServicesFile: './GoogleService-Info.plist',
       bundleIdentifier: 'com.mellog.deulseokzz',
       supportsTablet: false,
       infoPlist: {
@@ -25,8 +26,12 @@ export default {
       config: {
         usesNonExemptEncryption: false,
       },
+      entitlements: {
+        'aps-environment': 'production',
+      },
     },
     android: {
+      googleServicesFile: './google-services.json',
       package: 'com.mellog.deulseokzz',
       adaptiveIcon: {
         foregroundImage: './assets/images/adaptive-icon.png',
@@ -58,6 +63,8 @@ export default {
       'expo-router',
       'expo-secure-store',
       'expo-apple-authentication',
+      '@react-native-firebase/app',
+      '@react-native-firebase/messaging',
       [
         '@mj-studio/react-native-naver-map',
         {
@@ -89,6 +96,7 @@ export default {
           },
           ios: {
             queries: ['instagram', 'instagram-stories'],
+            useFrameworks: 'static',
           },
         },
       ],

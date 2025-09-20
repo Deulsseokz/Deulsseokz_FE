@@ -105,8 +105,8 @@ export interface ChallengeListItem {
   placeName: string;
   isChallenged: boolean;
   challengePhoto: string | null;
-  location: number[]; // [lat, lng] 
-};
+  location: number[]; // [lat, lng]
+}
 
 /** 상세 응답 아이템 (서버 원본) */
 export interface ChallengeInfoItem {
@@ -143,14 +143,14 @@ export type PlaceAreaResponse = LocationItem[];
  * @property {number} conquerRate - 해당 지역의 정복률 (0~100)
  */
 export interface RegionConquerRateResponse {
-  [regionName: string] : number;
+  [regionName: string]: number;
 }
 
 /** 지역 정복 여부 */
 export interface RegionConquerStatusItem {
-  regionName: string;                 // 서버에서 영문 regionName 줌
-  challenges: Record<string, boolean>;    // 장소별 정복 여부
-};
+  regionName: string; // 서버에서 영문 regionName 줌
+  challenges: Record<string, boolean>; // 장소별 정복 여부
+}
 
 /**
  * @typedef RegionConquerStatusResponse
@@ -159,8 +159,8 @@ export interface RegionConquerStatusItem {
  * @property {RegionConquerStatus} challenges - 해당 지역의 챌린지별 정복 여부
  */
 export interface RegionConquerStatusResponse {
-   regionName: string;
-   challenges: RegionConquerStatusItem[];
+  regionName: string;
+  challenges: RegionConquerStatusItem[];
 }
 
 /**************************************************************/
@@ -319,3 +319,27 @@ export type PatchCloseFriendRequest =
   | {
       subtract: number;
     };
+
+/**
+ * @typedef FcmTokenRequest
+ * @description FCM 토큰 전송 요청 형식
+ * @property {string} fcm-token - FCM 토큰
+ */
+export interface FcmTokenRequest {
+  'fcm-token': string;
+}
+
+/**
+ * @typedef ChallengeResultItem
+ * @description 챌린지 결과 응답 형식
+ * @property {string} placeName - 장소 이름
+ * @property {number} point - 포인트
+ * @property {string} image - 이미지 URL
+ */
+export interface ChallengeResultItem {
+  attemptResult: boolean;
+  attempt: number;
+  condition1: boolean;
+  condition2: boolean;
+  condition3: boolean;
+}

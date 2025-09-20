@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "29684752726",
+    "project_id": "mellog-9a948",
+    "storage_bucket": "mellog-9a948.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:29684752726:android:ec6b9eef478a8ebf77b6f7",
+        "android_client_info": {
+          "package_name": "com.mellog.deulseokzz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCb8-Mf5MUw9uJ48BzeegBNmjI-MMy0n0w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

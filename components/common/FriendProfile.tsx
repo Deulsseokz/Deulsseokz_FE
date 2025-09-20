@@ -27,7 +27,8 @@ function FriendProfile({ friend, isSelected, onSelect }: FriendProfileProps) {
   const onPress = onSelect ? onSelect : () => {};
 
   return (
-    <TouchableOpacity style={style.container} onPress={() => onPress(friend.userId)}>
+
+  <TouchableOpacity style={style.container} onPress={() => onPress(friend.userId)}>
       <View style={containerStyle}>
         {friend.profileImage ? (
           <Image source={{ uri: friend.profileImage }} style={style.profileImg} />

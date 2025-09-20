@@ -1,3 +1,4 @@
+
 import { MyFriendListResponse } from "@/api/type";
 import { PrimaryButton } from '@/components/common/Button/PrimaryButton';
 import { SheetStep, StepParamMap } from '@/components/map/_type';
@@ -47,6 +48,7 @@ export default function BottomSheetTemplate({
   const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
   const insets = useSafeAreaInsets();
   const sheetHeight = SCREEN_HEIGHT * 0.5;
+
   const router = useRouter();
 
   // 바텀시트 올라오기 애니메이션
@@ -57,6 +59,17 @@ export default function BottomSheetTemplate({
       useNativeDriver: true,
     }).start();
   }, [visible]);
+
+  useEffect(() => {
+    getMyFriendsList().then(res => {
+      setFriends(
+        res.result.map(friend => ({
+          userId: friend.userId,
+          userName: friend.friendsName,
+        })),
+      );
+    });
+  }, []);
 
   // 각 스텝별 중심 콘텐츠를 렌더합니다.
   const renderStepContent = () => {
@@ -132,6 +145,7 @@ export default function BottomSheetTemplate({
         </View>
 
         {/* 하단 버튼 영역 */}
+
          <View style={styles.btnContainer}>
           {challengeInfo.isChallenged ? <PrimaryButton variant={ButtonVariant.Primary} text={"사진 보기"} onPress={()=>router.push(`/album/${challengeInfo.placeName}`)} /> : <PrimaryButton
            variant={getVariant(stepPayloads)}
@@ -139,7 +153,6 @@ export default function BottomSheetTemplate({
             onPress={() => nextStep(challengeInfo, stepPayloads)}
           />}
         </View>
-       
       </Animated.View>
     </View>
   );

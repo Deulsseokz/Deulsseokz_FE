@@ -28,3 +28,15 @@ export type ChallengeLocation = {
   // 챌린지 도전 여부
   isChallenged: boolean;
 };
+
+export type RemoteMessage = {
+  to?: string | undefined;
+  notification?: {
+    title: string;
+    body: string;
+  };
+  data: {
+    attemptId: string;
+    type: string;
+  };
+};

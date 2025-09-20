@@ -6,8 +6,8 @@
  * @see {@link api/common} 공통 요청 함수/타입
  */
 
-import { CommonResponse, getRequest } from "./common";
-import { ChallengeInfoItem, ChallengeListItem } from "./type";
+import { CommonResponse, getRequest } from './common';
+import { ChallengeInfoItem, ChallengeListItem, ChallengeResultItem } from './type';
 
 /* =========================
  * API 함수
@@ -19,8 +19,8 @@ import { ChallengeInfoItem, ChallengeListItem } from "./type";
  * @returns {Promise<ChallengeListItem[]>}
  */
 export async function fetchChallengeList(): Promise<CommonResponse<ChallengeListItem[]>> {
-    return await getRequest<ChallengeListItem[]>('/challenge/list/');
-};
+  return await getRequest<ChallengeListItem[]>('/challenge/list/');
+}
 
 /**
  * @function fetchChallengeInfo
@@ -28,9 +28,7 @@ export async function fetchChallengeList(): Promise<CommonResponse<ChallengeList
  * @param {number} challengeId - 챌린지 구분 id (서버 쿼리: placeId)
  * @returns {Promise<ChallengeInfoItem>}
  */
-export const fetchChallengeInfo = (
-  challengeId: number
-): Promise<CommonResponse<ChallengeInfoItem[]>> => {
+export const fetchChallengeInfo = (challengeId: number): Promise<CommonResponse<ChallengeInfoItem[]>> => {
   return getRequest<ChallengeInfoItem[]>('/challenge/info/', {
     params: { placeId: challengeId },
   });
@@ -41,7 +39,15 @@ export const fetchChallengeInfo = (
  * @description 추천 장소 리스트를 서버 타입으로 가져옵니다.
  * @returns {Promise<string[]>} // 따로 감싸지 않고 result에 바로 string[] 배열이 옴
  */
-export const fetchRecommendPlaces = (
-): Promise<CommonResponse<string[]>> => {
+export const fetchRecommendPlaces = (): Promise<CommonResponse<string[]>> => {
   return getRequest<string[]>('/place/recommend');
-}
+};
+
+/**
+ * @function fetchChallengeResult
+ * @description 챌린지 결과를 서버 타입으로 가져옵니다.
+ * @returns {Promise<ChallengeResultItem>}
+ */
+export const fetchChallengeResult = (id: number): Promise<CommonResponse<ChallengeResultItem>> => {
+  return getRequest<ChallengeResultItem>(`/challenge/result/${id}/`);
+};
