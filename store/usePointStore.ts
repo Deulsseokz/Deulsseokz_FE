@@ -1,4 +1,4 @@
-import { getMyPointHistory, patchPointHistory } from '@/api/mypage';
+import { getMyPointHistory, patchPointHistory } from '@/api/myPageDTO';
 import { MyPointHistoryItem, MyPointHistoryRequest } from '@/api/type';
 import { create } from 'zustand';
 
