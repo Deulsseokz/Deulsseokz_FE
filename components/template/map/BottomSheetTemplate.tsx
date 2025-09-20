@@ -9,6 +9,7 @@ import SheetHeader from '@/components/map/SheetHeader';
 import WithWhomSelector from '@/components/map/WithWhomSelector';
 import { ButtonVariant } from "@/constants/buttonTypes";
 import { ChallengeInformation } from '@/types/challenge';
+import { useRouter } from "expo-router";
 import React, { useEffect, useRef } from 'react';
 import { Animated, Dimensions, Platform, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -43,6 +44,7 @@ export default function BottomSheetTemplate({
   const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
   const insets = useSafeAreaInsets();
   const sheetHeight = SCREEN_HEIGHT * 0.5;
+  const router = useRouter();
 
   // 바텀시트 올라오기 애니메이션
   useEffect(() => {
@@ -121,7 +123,7 @@ export default function BottomSheetTemplate({
 
         {/* 하단 버튼 영역 */}
          <View style={styles.btnContainer}>
-          {challengeInfo.isChallenged ? <PrimaryButton variant={ButtonVariant.Disable} text={"점령 완료"} onPress={() => {}} /> : <PrimaryButton
+          {challengeInfo.isChallenged ? <PrimaryButton variant={ButtonVariant.Primary} text={"사진 보기"} onPress={()=>router.push(`/album/${challengeInfo.placeName}`)} /> : <PrimaryButton
            variant={getVariant(stepPayloads)}
             text={text}
             onPress={() => nextStep(challengeInfo, stepPayloads)}
