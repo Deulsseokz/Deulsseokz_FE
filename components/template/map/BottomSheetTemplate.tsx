@@ -8,7 +8,6 @@ import FriendSelector from '@/components/map/FriendSelector';
 import SheetHeader from '@/components/map/SheetHeader';
 import WithWhomSelector from '@/components/map/WithWhomSelector';
 import { ButtonVariant } from "@/constants/buttonTypes";
-import { MOCK_FRIENDS } from '@/constants/map/friends';
 import { ChallengeInformation } from '@/types/challenge';
 import React, { useEffect, useRef } from 'react';
 import { Animated, Dimensions, Platform, StyleSheet, View } from 'react-native';
@@ -72,7 +71,6 @@ export default function BottomSheetTemplate({
       case SheetStep.SELECT_FRIEND:
         return (
           <FriendSelector
-            friends={MOCK_FRIENDS}
             selected={stepPayloads[SheetStep.SELECT_FRIEND] ?? []}
             updateValue={v => updateValue(SheetStep.SELECT_FRIEND, v)}
           />

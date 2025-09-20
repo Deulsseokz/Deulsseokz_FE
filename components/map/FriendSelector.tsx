@@ -1,13 +1,13 @@
+import { getMyFriendsList } from "@/api/myPageDTO";
+import { MyFriendListResponse } from "@/api/type";
 import { MCOLORS } from '@/constants/colors';
-import { Friend } from '@/types/friend';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
 import FriendProfile from '../common/FriendProfile';
 
 interface FriendSelectorProps {
-  friends: Friend[]; // 친구 목록 배열
-  selected: Friend[]; // 선택된 친구 배열
-  updateValue: (selected: Friend[]) => void;
+  selected: MyFriendListResponse[]; // 선택된 친구 배열
+  updateValue: (selected: MyFriendListResponse[]) => void;
 }
 
 /**
@@ -15,7 +15,9 @@ interface FriendSelectorProps {
  * @param 친구 목록, 선택된 친구 배열, 친구 선택시 핸들러 함수
  * @returns 친구 목록 중 최대 3명 선택할 수 있는 컴포넌트
  */
-export default function FriendSelector({ friends, selected, updateValue }: FriendSelectorProps) {
+export default function FriendSelector({ selected, updateValue }: FriendSelectorProps) {
+  const [friends, setFriends] = useState<MyFriendListResponse[]>([]);
+
   const [selectedMap, setSelectedMap] = useState<Record<number, boolean>>(
     Object.fromEntries(selected.map(f => [f.userId, true])),
   );
@@ -35,6 +37,12 @@ export default function FriendSelector({ friends, selected, updateValue }: Frien
     const updatedFriends = friends.filter(f => next[f.userId]);
     updateValue(updatedFriends);
   };
+
+  useEffect(()=>{
+    getMyFriendsList().then(res => {
+      setFriends(res.result);
+    })
+  }, [])
 
   return (
     <View style={style.container}>
@@ -92,10 +100,13 @@ const style = StyleSheet.create({
     fontWeight: '500',
   },
   list: {
-    marginTop: 20,
-    marginLeft: 41,
+    marginTop: 30,
+    padding: 20,
     gap: 16,
     rowGap: 20,
-    height: 70,
+    width: '100%',
+    height: 'auto',
+    backgroundColor: '#FBFBFB',
+    borderRadius: 20,
   },
 });
