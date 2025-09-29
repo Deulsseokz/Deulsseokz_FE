@@ -12,8 +12,8 @@ import { useUserLocation } from '@/hooks/useUserLocation';
 import { useChallengeListStore } from '@/store/useChallengeListStore';
 import { ChallengeInformation, Coord } from '@/types/challenge';
 import { convertRawChallengeInfo } from "@/utils/convertRawChallengeData";
-import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
-import React, { useCallback, useEffect, useState } from 'react';
+import { router, useLocalSearchParams } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -47,14 +47,10 @@ const MountainMapScreen = () => {
   const initialCoord: Coord | undefined =
     !isNaN(parsedLat) && !isNaN(parsedLng) ? { latitude: parsedLat, longitude: parsedLng } : undefined;
 
-  // 챌린지 리스트 데이터 fetch
-   useFocusEffect(
-    useCallback(() => {
-      refetchData();
-
-      console.log('refetch challenge data on focus');
-    }, [refetchData])
-  );
+  // 챌린지 리스트 최초 1회 데이터 fetch
+   useEffect(()=> {
+    fetchData();
+   }, [])
 
    useEffect(() => {
     // 부모에서 친구 목록 fetch
