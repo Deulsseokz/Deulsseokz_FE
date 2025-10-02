@@ -91,7 +91,10 @@ export default {
         'expo-build-properties',
         {
           android: {
-            extraMavenRepos: ['https://repository.map.naver.com/archive/maven'],
+            extraMavenRepos: [
+              'https://repository.map.naver.com/archive/maven',
+              '../../node_modules/@notifee/react-native/android/libs',
+            ],
             package: 'com.instagram.android',
           },
           ios: {

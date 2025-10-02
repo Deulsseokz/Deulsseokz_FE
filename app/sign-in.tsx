@@ -17,7 +17,7 @@ export default function SignIn() {
 
       await signIn(res.data.access, res.data.refresh);
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
