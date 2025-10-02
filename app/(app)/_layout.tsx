@@ -49,10 +49,8 @@ export default function RootLayout() {
 
     try {
       const token = await getToken(messaging);
-      console.log('Token:', token);
       if (token) {
-        const response = await sendFcmToken({ 'fcm-token': token });
-        console.log('Token sent to server:', response);
+        await sendFcmToken({ 'fcm-token': token });
       } else {
         console.log('토큰 서버 전송 중 에러 발생');
       }
