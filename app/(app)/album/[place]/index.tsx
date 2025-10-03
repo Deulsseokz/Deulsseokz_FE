@@ -9,6 +9,7 @@ import ModalManager from '@/components/common/Modal/ModalManager';
 import AlbumIdTemplate from '@/components/template/AlbumIdTemplate';
 import { ModalType } from '@/enums/modalTypes';
 import useModal from '@/hooks/useModal';
+import useSortedPhotos from '@/hooks/useSortedPhotos';
 import { FeelingType } from '@/types/feeling';
 import { WeatherType } from '@/types/weather';
 import { Image } from 'expo-image';
@@ -27,17 +28,12 @@ export default function AlbumIdScreen() {
   const [photos, setPhotos] = useState<PolaroidPhoto[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  /** variable */
-  const selectedPhoto = photos[activeIndex];
-
   /** hooks */
-  const {
-    isShowing: isModalVisible,
-    modalType,
-    modalProps,
-    show: showModal,
-    hide: hideModal,
-  } = useModal();
+  const { isShowing: isModalVisible, modalType, modalProps, show: showModal, hide: hideModal } = useModal();
+  const sortedPhotos = useSortedPhotos(photos);
+
+  /** variable */
+  const selectedPhoto = sortedPhotos[activeIndex];
 
   /** API util */
   const transformPhoto = useCallback(
@@ -52,13 +48,12 @@ export default function AlbumIdScreen() {
           photo.people?.map(p => ({
             id: p.id,
             name: p.name,
-            avatar: p.uri
-              ? { uri: p.uri }
-              : require('@/assets/images/album/black-profile-small.png'),
+            avatar: p.uri ? { uri: p.uri } : require('@/assets/images/album/black-profile-small.png'),
           })) || [],
       },
       date: photo.date ?? '',
       loc: placeParam ?? '',
+      isFavorite: photo.isFavorite,
     }),
     [placeParam],
   );
@@ -124,10 +119,7 @@ export default function AlbumIdScreen() {
       showModal(ModalType.DEFAULT, {
         title: '대표 사진을 변경했어요',
         children: (
-          <Image
-            source={require('@/assets/images/modal/icon-picture.png')}
-            style={{ width: 80, height: 82 }}
-          />
+          <Image source={require('@/assets/images/modal/icon-picture.png')} style={{ width: 80, height: 82 }} />
         ),
         buttons: {
           text: '확인',
@@ -182,7 +174,7 @@ export default function AlbumIdScreen() {
   return (
     <>
       <AlbumIdTemplate
-        photos={photos}
+        photos={sortedPhotos}
         activeIndex={activeIndex}
         setActiveIndex={setActiveIndex}
         albumTitle={placeParam || ''}
@@ -197,12 +189,7 @@ export default function AlbumIdScreen() {
           { label: '사진 삭제', onPress: handleDelete },
         ]}
       />
-      <ModalManager
-        isShowing={isModalVisible}
-        modalType={modalType}
-        modalProps={modalProps}
-        onClose={hideModal}
-      />
+      <ModalManager isShowing={isModalVisible} modalType={modalType} modalProps={modalProps} onClose={hideModal} />
     </>
   );
 }
