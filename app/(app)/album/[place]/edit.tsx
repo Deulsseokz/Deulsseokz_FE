@@ -57,7 +57,7 @@ export default function AlbumEditScreen() {
     return undefined;
   }, [parsedPhoto, newImageUri]);
 
-  const isSaveEnabled = desc.trim().length > 0;
+  const isSaveEnabled = true;
 
   /** handler function */
   const handleSave = async () => {
