@@ -1,6 +1,6 @@
 import { PolaroidPhoto } from '@/components/album/_type';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import PhotoItem, { PhotoType } from './PhotoItem';
 
 interface PhotoSelectorProps {
@@ -20,44 +20,41 @@ interface PhotoSelectorProps {
  * - 최대 선택 가능한 사진 개수 제한
  */
 export default function PhotoSelector({ photos, selectedPhotos, onSelectPhoto, maxSelectCnt }: PhotoSelectorProps) {
+  const renderPhotoItem = ({ item: photo }: { item: PolaroidPhoto }) => {
+    let type: PhotoType = 'normal';
+    const isSelected = selectedPhotos.some(p => p.id === photo.id);
+
+    if (photo.isFavorite) {
+      type = 'dimmed'; // 대표 사진은 항상 비활성화
+    } else if (isSelected) {
+      type = 'selected';
+    } else if (selectedPhotos.length >= maxSelectCnt) {
+      type = 'dimmed';
+    }
+
+    return (
+      <View style={styles.itemWrapper}>
+        <PhotoItem image={photo.image} type={type} isFavorite={photo.isFavorite} onPress={() => onSelectPhoto(photo)} />
+      </View>
+    );
+  };
+
   return (
-    <View style={styles.grid}>
-      {photos.map((photo, index) => {
-        let type: PhotoType = 'normal';
-        const isSelected = selectedPhotos.some(p => p.id === photo.id);
-
-        if (photo.isFavorite) {
-          type = 'dimmed'; // 대표 사진은 항상 비활성화
-        } else if (isSelected) {
-          type = 'selected';
-        } else if (selectedPhotos.length >= maxSelectCnt) {
-          type = 'dimmed';
-        }
-
-        return (
-          <View key={index} style={styles.itemWrapper}>
-            <PhotoItem
-              image={photo.image}
-              type={type}
-              isFavorite={photo.isFavorite}
-              onPress={() => onSelectPhoto(photo)}
-            />
-          </View>
-        );
-      })}
-    </View>
+    <FlatList
+      data={photos}
+      renderItem={renderPhotoItem}
+      keyExtractor={item => item.id.toString()}
+      numColumns={3}
+      style={styles.grid}
+    />
   );
 }
 
 const styles = StyleSheet.create({
   grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
     width: '100%',
   },
   itemWrapper: {
-    width: '31%',
-    marginBottom: 10,
+    flex: 1 / 3,
   },
 });
