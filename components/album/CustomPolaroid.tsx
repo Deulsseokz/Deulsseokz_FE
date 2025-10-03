@@ -38,7 +38,6 @@ export default function CustomPolaroid({ photo, frame, badge }: PolaroidProps & 
             <View style={styles.metaRow}>
               {feelingIcon && <Image source={feelingIcon} style={styles.metaIcon} />}
               {weatherIcon && <Image source={weatherIcon} style={styles.metaIcon} />}
-              {!feelingIcon && !weatherIcon && <Text style={[styles.metaFallback, textColor]}>없음</Text>}
             </View>
 
             <Text style={[styles.desc, textColor]} numberOfLines={2}>

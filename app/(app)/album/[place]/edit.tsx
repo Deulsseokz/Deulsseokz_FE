@@ -66,8 +66,8 @@ export default function AlbumEditScreen() {
         // --- 수정 모드 (PATCH) ---
         const requestBody = {
           photoId: Number(parsedPhoto.id),
-          feelings: selectedFeeling === '없음' ? undefined : selectedFeeling,
-          weather: selectedWeather === '없음' ? undefined : selectedWeather,
+          feelings: selectedFeeling === '없음' ? '' : selectedFeeling,
+          weather: selectedWeather === '없음' ? '' : selectedWeather,
           photoContent: desc,
           date: new Date(parsedPhoto.date).toISOString().split('T')[0],
         };
@@ -81,9 +81,9 @@ export default function AlbumEditScreen() {
         formData.append('photo', { uri: newImageUri, name: filename, type } as any);
         formData.append('place', placeParam);
         formData.append('date', new Date().toISOString().split('T')[0]);
-        selectedFeeling !== '없음' && formData.append('feelings', selectedFeeling);
-        selectedWeather !== '없음' && formData.append('weather', selectedWeather);
-        desc && formData.append('photoContent', desc);
+        formData.append('feelings', selectedFeeling === '없음' ? '' : selectedFeeling);
+        formData.append('weather', selectedWeather === '없음' ? '' : selectedWeather);
+        formData.append('photoContent', desc);
 
         const res = await postPhotoDataToAlbum(formData);
         if (!res.isSuccess) throw new Error(res.message);
@@ -126,9 +126,12 @@ export default function AlbumEditScreen() {
   /** lifecycle */
   useEffect(() => {
     if (parsedPhoto) {
-      setSelectedFeeling((parsedPhoto.additional.feeling as FeelingType) ?? '없음');
-      setSelectedWeather((parsedPhoto.additional.weather as WeatherType) ?? '없음');
-      setDesc(parsedPhoto.additional.desc ?? '');
+      const feelingFromServer = parsedPhoto.additional?.feeling;
+      const weatherFromServer = parsedPhoto.additional?.weather;
+
+      setSelectedFeeling((feelingFromServer as FeelingType) || '없음');
+      setSelectedWeather((weatherFromServer as WeatherType) || '없음');
+      setDesc(parsedPhoto.additional?.desc ?? '');
     }
   }, [parsedPhoto]);
 
