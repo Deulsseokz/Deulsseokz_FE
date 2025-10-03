@@ -5,19 +5,8 @@ import { TopBar } from '@/components/common/TopBar';
 import { ButtonVariant } from '@/constants/buttonTypes';
 import { FeelingType } from '@/types/feeling';
 import { WeatherType } from '@/types/weather';
-import React from 'react';
-import {
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
-
+import React, { useRef } from 'react';
+import { Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 interface AlbumEditTemplateProps {
   isSaveEnabled?: boolean;
   imageSource: any;
@@ -64,11 +53,13 @@ export default function AlbumEditTemplate({
   onSave,
   onCancel,
 }: AlbumEditTemplateProps) {
+  const scrollViewRef = useRef<ScrollView>(null);
+
   return (
-    <SafeAreaView style={styles.page}>
+    <View style={styles.page}>
       <TopBar title="" />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+        <ScrollView ref={scrollViewRef} contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
           <Image source={imageSource} style={styles.mainImage} />
           <View style={styles.input_container}>
             <EmojiSelector<FeelingType>
@@ -93,6 +84,11 @@ export default function AlbumEditTemplate({
                 value={desc}
                 onChangeText={onChangeDesc}
                 maxLength={100}
+                onFocus={() => {
+                  setTimeout(() => {
+                    scrollViewRef.current?.scrollToEnd({ animated: true });
+                  }, 200);
+                }}
               />
               <Text style={styles.charCounter}>{`${desc.length} / 100`}</Text>
             </View>
@@ -107,10 +103,9 @@ export default function AlbumEditTemplate({
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }
-
 const styles = StyleSheet.create({
   page: {
     flex: 1,
