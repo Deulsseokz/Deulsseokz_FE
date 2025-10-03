@@ -21,7 +21,6 @@ export default function Polaroid({ photo }: PolaroidProps) {
         <View style={styles.metaRow}>
           {feelingIcon && <Image source={feelingIcon} style={styles.metaIcon} />}
           {weatherIcon && <Image source={weatherIcon} style={styles.metaIcon} />}
-          {!feelingIcon && !weatherIcon && <Text style={styles.metaFallback}>없음</Text>}
         </View>
 
         <Text style={styles.desc} numberOfLines={2}>
