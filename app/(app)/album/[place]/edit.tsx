@@ -1,5 +1,6 @@
 import { patchPhotoToAlbum, postPhotoDataToAlbum } from '@/api/album';
 import { PolaroidPhoto } from '@/components/album/_type';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 import ModalManager from '@/components/common/Modal/ModalManager';
 import AlbumEditTemplate from '@/components/template/AlbumEditTemplate';
 import { ButtonVariant } from '@/constants/buttonTypes';
@@ -35,6 +36,7 @@ export default function AlbumEditScreen() {
   const [selectedFeeling, setSelectedFeeling] = useState<FeelingType>('없음');
   const [selectedWeather, setSelectedWeather] = useState<WeatherType>('없음');
   const [desc, setDesc] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   /** hooks */
   const { show: showSaveModal, hide: hideSaveModal, ...saveModal } = useModal();
@@ -57,10 +59,14 @@ export default function AlbumEditScreen() {
     return undefined;
   }, [parsedPhoto, newImageUri]);
 
-  const isSaveEnabled = true;
+  const isSaveEnabled = !isLoading;
 
   /** handler function */
   const handleSave = async () => {
+    if (isLoading) return;
+
+    setIsLoading(true);
+
     try {
       if (parsedPhoto) {
         // --- 수정 모드 (PATCH) ---
@@ -101,6 +107,7 @@ export default function AlbumEditScreen() {
           text: '확인',
           onPress: () => {
             hideSaveModal();
+            setIsLoading(false);
             router.back();
           },
         },
@@ -108,6 +115,7 @@ export default function AlbumEditScreen() {
     } catch (e: any) {
       console.error('저장 실패:', e);
       Alert.alert('저장 실패', e.message || '오류가 발생했습니다.');
+      setIsLoading(false);
     }
   };
 
@@ -163,6 +171,7 @@ export default function AlbumEditScreen() {
         modalProps={cancelModal.modalProps}
         onClose={hideCancelModal}
       />
+      <LoadingSpinner isVisible={isLoading} />
     </>
   );
 }
