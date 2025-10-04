@@ -64,8 +64,8 @@ export default function AlbumIdScreen() {
       const res = await getAlbumByPlace(placeParam);
       if (res.isSuccess) {
         const transformed = res.result.map(transformPhoto);
-        setActiveIndex(0); //캐러셀 맨 앞 카드로
         setPhotos(transformed);
+        setActiveIndex(0);
       }
     } catch (e) {
       console.error('API 호출 실패', e);
@@ -174,6 +174,7 @@ export default function AlbumIdScreen() {
   return (
     <>
       <AlbumIdTemplate
+        key={photos.length > 0 ? photos.map(p => p.id).join('-') : 'initial'}
         photos={sortedPhotos}
         activeIndex={activeIndex}
         setActiveIndex={setActiveIndex}
