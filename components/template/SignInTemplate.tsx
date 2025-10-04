@@ -15,7 +15,7 @@ export default function SignInTemplate({
       <RadialGradientBg />
       <View style={{ flex: 1, alignItems: 'center', paddingTop: '60%' }}>
         <Image source={require('@/assets/images/auth/login-image.png')} style={{ width: 200, height: 220 }} />
-        <View style={{ gap: 10, marginTop: 180 }}>
+        <View style={{ gap: 15, marginTop: 180 }}>
           <Pressable onPress={googleSignIn}>
             <GoogleLoginButton />
           </Pressable>
