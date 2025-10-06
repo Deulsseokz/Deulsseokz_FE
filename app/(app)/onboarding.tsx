@@ -43,7 +43,7 @@ export default function Onboarding() {
 
   const handleNext = () => {
     if (currentIndex === 2) {
-      setIsNew(true);
+      setIsNew(false);
       router.replace('/(app)/(tabs)');
       return;
     }
