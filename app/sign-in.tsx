@@ -5,7 +5,7 @@ import axios from 'axios';
 import * as AppleAuthentication from 'expo-apple-authentication';
 
 export default function SignIn() {
-  const { signIn } = useAuthenticationStore();
+  const { signIn, setIsNew } = useAuthenticationStore();
 
   const googleSignIn = async () => {
     try {
@@ -14,6 +14,9 @@ export default function SignIn() {
       const res = await axios.post(`${process.env.EXPO_PUBLIC_BASE_URL}/auth/google`, {
         idToken: userInfo.data!.idToken,
       });
+      if (res.data.isNew) {
+        setIsNew(true);
+      }
 
       await signIn(res.data.access, res.data.refresh);
     } catch (error) {
@@ -33,6 +36,10 @@ export default function SignIn() {
       const res = await axios.post(`${process.env.EXPO_PUBLIC_BASE_URL}/auth/apple`, {
         identityToken: credential.identityToken,
       });
+
+      if (res.data.isNew) {
+        setIsNew(true);
+      }
 
       await signIn(res.data.access, res.data.refresh);
     } catch (error) {

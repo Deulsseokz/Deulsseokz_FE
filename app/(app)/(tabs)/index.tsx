@@ -1,16 +1,17 @@
-import { fetchChallengeInfo } from "@/api/challengeDTO";
-import { getMyFriendsList } from "@/api/myPageDTO";
+import { fetchChallengeInfo } from '@/api/challengeDTO';
+import { getMyFriendsList } from '@/api/myPageDTO';
 import { MyFriendListResponse } from '@/api/type';
 
 import SearchLocationBtn from '@/components/map/SearchLocationBtn';
 import BottomSheetTemplate from '@/components/template/map/BottomSheetTemplate';
 import MapTemplate from '@/components/template/MapTemplate';
 import { useUserLocation } from '@/hooks/useUserLocation';
+import { useAuthenticationStore } from '@/store/useAuthenticationStore';
 import { useChallengeListStore } from '@/store/useChallengeListStore';
 import { ChallengeInformation, Coord } from '@/types/challenge';
-import { convertRawChallengeInfo } from "@/utils/convertRawChallengeData";
+import { convertRawChallengeInfo } from '@/utils/convertRawChallengeData';
 import { router, useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -22,11 +23,11 @@ const MountainMapScreen = () => {
   // 유저의 위치 관리
   const [location, isLoadingLocation] = useUserLocation();
   // 모달 시트 종류 관리
-   const [sheetOpen, setSheetOpen] = useState<boolean>(false);
+  const [sheetOpen, setSheetOpen] = useState<boolean>(false);
   // fetching 상태 관리
   const [isFetching, setIsFetching] = useState(false);
-
-    // 모든 친구 목록
+  const { isNew } = useAuthenticationStore();
+  // 모든 친구 목록
   const [allFriends, setAllFriends] = useState<MyFriendListResponse[]>([]);
 
   // 지역 검색 화면에서 이동한 경우, initialCoord 값을 넣어 카메라 위치 이동 처리
@@ -39,11 +40,17 @@ const MountainMapScreen = () => {
     !isNaN(parsedLat) && !isNaN(parsedLng) ? { latitude: parsedLat, longitude: parsedLng } : undefined;
 
   // 챌린지 리스트 최초 1회 데이터 fetch
-   useEffect(()=> {
+  useEffect(() => {
     fetchData();
-   }, [])
+  }, []);
+  // 새로운 유저이면 온보딩 화면으로 이동
+  useLayoutEffect(() => {
+    if (isNew) {
+      router.replace('/onboarding');
+    }
+  }, [isNew]);
 
-   useEffect(() => {
+  useEffect(() => {
     // 부모에서 친구 목록 fetch
     getMyFriendsList().then(res => {
       setAllFriends(res.result);
