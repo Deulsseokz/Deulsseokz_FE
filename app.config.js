@@ -21,6 +21,7 @@ export default {
         NSLocationAlwaysUsageDescription: '항상 위치 권한을 요청하는 이유를 설명합니다. (필요한 경우에만 사용)',
         NSCameraUsageDescription: '사진을 촬영하려면 카메라 접근이 필요합니다.',
         NSPhotoLibraryUsageDescription: '사진을 선택하려면 앨범 접근이 필요합니다.',
+        LSApplicationQueriesSchemes: ['instagram-stories'],
       },
       useAppleSignIn: true,
       config: {
@@ -33,6 +34,11 @@ export default {
     android: {
       googleServicesFile: './google-services.json',
       package: 'com.mellog.deulseokzz',
+      queries: [
+        {
+          package: 'com.instagram.android',
+        },
+      ],
       adaptiveIcon: {
         foregroundImage: './assets/images/adaptive-icon.png',
         backgroundColor: '#ffffff',

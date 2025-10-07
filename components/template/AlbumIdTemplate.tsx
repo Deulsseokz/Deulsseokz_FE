@@ -35,14 +35,7 @@ interface Props {
 /**
  * 앨범 상세 보기 템플릿
  */
-export default function AlbumIdTemplate({
-  photos,
-  activeIndex,
-  setActiveIndex,
-  albumTitle,
-  actions,
-  menu,
-}: Props) {
+export default function AlbumIdTemplate({ photos, activeIndex, setActiveIndex, albumTitle, actions, menu }: Props) {
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const openMenu = () => setDropdownVisible(true);
@@ -59,6 +52,7 @@ export default function AlbumIdTemplate({
         <TopBar title={albumTitle} rightButton={<IcnMore />} onRightPress={openMenu} />
         <View style={styles.container}>
           <PhotoSetCarousel
+            key={photos.length > 0 ? photos.map(p => p.id).join('-') : 'initial'}
             photos={photos}
             activeIndex={activeIndex}
             setActiveIndex={setActiveIndex}

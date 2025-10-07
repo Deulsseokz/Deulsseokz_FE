@@ -5,9 +5,8 @@ import { TopBar } from '@/components/common/TopBar';
 import { ButtonVariant } from '@/constants/buttonTypes';
 import { FeelingType } from '@/types/feeling';
 import { WeatherType } from '@/types/weather';
-import React from 'react';
-import { Image, StyleSheet, TextInput, View } from 'react-native';
-
+import React, { useRef } from 'react';
+import { Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 interface AlbumEditTemplateProps {
   isSaveEnabled?: boolean;
   imageSource: any;
@@ -54,64 +53,72 @@ export default function AlbumEditTemplate({
   onSave,
   onCancel,
 }: AlbumEditTemplateProps) {
+  const scrollViewRef = useRef<ScrollView>(null);
+
   return (
     <View style={styles.page}>
       <TopBar title="" />
-      <View style={styles.container}>
-        <Image source={imageSource} style={styles.mainImage} />
-        <View style={styles.input_container}>
-          <EmojiSelector<FeelingType>
-            label="기분"
-            options={feelings}
-            selected={selectedFeeling}
-            onSelect={onChangeFeeling}
-            imageMap={feelingImageMap}
-          />
-          <EmojiSelector<WeatherType>
-            label="날씨"
-            options={weathers}
-            selected={selectedWeather}
-            onSelect={onChangeWeather}
-            imageMap={weatherImageMap}
-          />
-          <TextInput
-            style={styles.input}
-            multiline
-            placeholder="오늘은 무슨 일이 있었나요?"
-            value={desc}
-            onChangeText={onChangeDesc}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton variant={ButtonVariant.Subtle} text="취소" onPress={onCancel} />
-          <PrimaryButton
-            variant={isSaveEnabled ? ButtonVariant.Primary : ButtonVariant.Disable}
-            text="저장"
-            onPress={onSave}
-          />
-        </View>
-      </View>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+        <ScrollView ref={scrollViewRef} contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+          <Image source={imageSource} style={styles.mainImage} />
+          <View style={styles.input_container}>
+            <EmojiSelector<FeelingType>
+              label="기분"
+              options={feelings}
+              selected={selectedFeeling}
+              onSelect={onChangeFeeling}
+              imageMap={feelingImageMap}
+            />
+            <EmojiSelector<WeatherType>
+              label="날씨"
+              options={weathers}
+              selected={selectedWeather}
+              onSelect={onChangeWeather}
+              imageMap={weatherImageMap}
+            />
+            <View>
+              <TextInput
+                style={styles.input}
+                multiline
+                placeholder="오늘은 무슨 일이 있었나요?"
+                value={desc}
+                onChangeText={onChangeDesc}
+                maxLength={100}
+                onFocus={() => {
+                  setTimeout(() => {
+                    scrollViewRef.current?.scrollToEnd({ animated: true });
+                  }, 200);
+                }}
+              />
+              <Text style={styles.charCounter}>{`${desc.length} / 100`}</Text>
+            </View>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton variant={ButtonVariant.Subtle} text="취소" onPress={onCancel} />
+            <PrimaryButton
+              variant={isSaveEnabled ? ButtonVariant.Primary : ButtonVariant.Disable}
+              text="저장"
+              onPress={onSave}
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   page: {
     flex: 1,
     backgroundColor: '#fff',
   },
   container: {
-    flex: 1,
-    flexDirection: 'column',
+    flexGrow: 1,
     paddingHorizontal: 20,
     paddingBottom: 20,
-    gap: 30,
-    width: '100%',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    justifyContent: 'space-evenly',
   },
   input_container: {
-    flex: 1,
     flexDirection: 'column',
     width: '100%',
     gap: 15,
@@ -125,14 +132,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9F9F9',
     borderRadius: 20,
     height: 200,
+    paddingBottom: 30,
     padding: 20,
     fontSize: 15,
     lineHeight: 20,
     color: '#333',
+    textAlignVertical: 'top',
   },
   buttonContainer: {
     display: 'flex',
     flexDirection: 'row',
     gap: 18,
+    marginTop: 10,
+    width: '100%',
+    justifyContent: 'center',
+  },
+  charCounter: {
+    position: 'absolute',
+    bottom: 10,
+    right: 15,
+    color: '#999',
+    fontSize: 12,
   },
 });

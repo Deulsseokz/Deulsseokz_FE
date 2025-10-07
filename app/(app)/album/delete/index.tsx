@@ -6,6 +6,7 @@ import AlbumDeleteTemplate from '@/components/template/AlbumDeleteTemplate';
 import { ButtonVariant } from '@/constants/buttonTypes';
 import { ModalType } from '@/enums/modalTypes';
 import useModal from '@/hooks/useModal';
+import useSortedPhotos from '@/hooks/useSortedPhotos';
 import { FeelingType } from '@/types/feeling';
 import { WeatherType } from '@/types/weather';
 import { showCustomToast } from '@/utils/toastManager';
@@ -25,6 +26,7 @@ export default function AlbumDeleteScreen() {
 
   /** hooks */
   const { isShowing: isModalVisible, modalType, modalProps, show: showModal, hide: hideModal } = useModal();
+  const sortedPhotos = useSortedPhotos(photos);
 
   /** API util */
   const transformPhoto = (photo: PhotoItem): PolaroidPhoto => ({
@@ -112,7 +114,7 @@ export default function AlbumDeleteScreen() {
       <AlbumDeleteTemplate
         albumTitle={placeParam || ''}
         selectedPhotos={selectedPhotos}
-        photos={photos}
+        photos={sortedPhotos}
         onSelectPhoto={handleSelect}
         onPressDelete={handleDeletePress}
       />
