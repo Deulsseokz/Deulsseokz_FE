@@ -29,13 +29,9 @@ function BadgeComp({
   selected,
   label,
   onPress,
-  isRepresent,
 }: BadgeProps) {
   const activeSrc = badgeIconsMypage[type].active;
   const inactiveSrc = badgeIconsMypage[type].inactive;
-
-  // 대표 배지일 때만 오버레이 아이콘 로드
-  const editableSrc = isRepresent ? require("@/assets/images/editable.png") : undefined;
 
   // 텍스트 컬러: selected/active 조합 반영
   const textColor = useMemo(() => {
@@ -62,9 +58,6 @@ function BadgeComp({
           style={[styles.image, { opacity: active ? 1 : 0 }]}
           resizeMode="contain"
         />
-        {editableSrc && (
-          <Image source={editableSrc} style={styles.editable} resizeMode="contain" />
-        )}
       </View>
       {label && <Text style={[styles.text, { color: textColor }]}>{label}</Text>}
     </Pressable>
