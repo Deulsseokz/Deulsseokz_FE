@@ -3,6 +3,11 @@ import * as ImagePicker from 'expo-image-picker';
 import { Alert, Linking } from 'react-native';
 import { SheetHeaderConfig, SheetStep, StepButtonProps, StepParamMap, WithWhom } from './_type';
 
+import AloneActive from '@/assets/images/map/options/alone-active.svg';
+import AloneInactive from '@/assets/images/map/options/alone-inactive.svg';
+import FriendsActive from '@/assets/images/map/options/friends-active.svg';
+import FriendsInactive from '@/assets/images/map/options/friends-inactive.svg';
+
 // SheetHeader 설정 매핑 레코드
 export const StepHeaderMap: Record<SheetStep, SheetHeaderConfig> = {
   [SheetStep.INFO]: { showFavorite: true, showPlace: false, showBackButton: false },
@@ -45,16 +50,16 @@ export const WITH_WHOM_OPTIONS: WithWhom[] = [
     whom: 'ALONE',
     label: '혼자',
     icon: {
-      active: require('@/assets/images/map/options/alone-active.png'),
-      inactive: require('@/assets/images/map/options/alone-inactive.png'),
+      active: AloneActive,
+      inactive: AloneInactive,
     },
   },
   {
     whom: 'FRIEND',
     label: '친구와 함께',
     icon: {
-      active: require('@/assets/images/map/options/friends-active.png'),
-      inactive: require('@/assets/images/map/options/friends-inactive.png'),
+      active: FriendsActive,
+      inactive: FriendsInactive,
     },
   },
 ];

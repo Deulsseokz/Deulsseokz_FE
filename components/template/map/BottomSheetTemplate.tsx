@@ -1,7 +1,7 @@
 
 import { MyFriendListResponse } from "@/api/type";
 import { PrimaryButton } from '@/components/common/Button/PrimaryButton';
-import { SheetStep, StepParamMap } from '@/components/map/_type';
+import { SheetStep } from '@/components/map/_type';
 import { StepButtonMap } from '@/components/map/_util';
 import ChallengeCondition from '@/components/map/ChallengeCondition';
 import ChallengeFriends from '@/components/map/ChallengeFriends';
@@ -10,6 +10,7 @@ import FriendSelector from '@/components/map/FriendSelector';
 import SheetHeader from '@/components/map/SheetHeader';
 import WithWhomSelector from '@/components/map/WithWhomSelector';
 import { ButtonVariant } from "@/constants/buttonTypes";
+import { useStepManager } from "@/hooks/useStepManager";
 import { ChallengeInformation } from '@/types/challenge';
 import { useRouter } from "expo-router";
 import React, { useEffect, useRef } from 'react';
@@ -18,15 +19,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface BottomSheetProps {
   visible: boolean; // 시트가 열려있는지
-  /** 선택된 값 변경 감지 */
-  updateValue: <S extends SheetStep>(step: S, value?: StepParamMap[S]) => void;
-  backStep: () => void; // 모달 내 뒤로가기 처리
   exitSheet: () => void; // 모달 나가기 처리
   /* 모달 내 버튼 클릭시 다음 스텝으로 넘어감 처리 */
-  nextStep: (challengeInfo: ChallengeInformation, stepPayloads: Partial<StepParamMap>) => void;
-  step: SheetStep; // 모달의 step 관리
   challengeInfo: ChallengeInformation; // 챌린지 정보 객체
-  stepPayloads: Partial<StepParamMap>; // 부모가 관리하는 파라미터 값
   allFriends: MyFriendListResponse[]; // 전체 친구 목록
   onShowFriendListSheet: () => void; // 친구 목록 시트 열기 함수
 }
@@ -35,13 +30,8 @@ const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export default function BottomSheetTemplate({
   visible,
-  updateValue,
-  backStep,
   exitSheet,
-  step,
-  stepPayloads,
   challengeInfo,
-  nextStep,
   allFriends,
   onShowFriendListSheet
 }: BottomSheetProps) {
@@ -50,6 +40,7 @@ export default function BottomSheetTemplate({
   const sheetHeight = SCREEN_HEIGHT * 0.5;
 
   const router = useRouter();
+    const { step, stepPayloads, updateValue, backStep, nextStep } = useStepManager();
 
   // 바텀시트 올라오기 애니메이션
   useEffect(() => {

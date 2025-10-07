@@ -1,6 +1,7 @@
 import { MyFriendListResponse } from "@/api/type";
 import { ButtonVariant } from "@/constants/buttonTypes";
-import { ImageSourcePropType } from 'react-native';
+import { FC } from "react";
+import { SvgProps } from "react-native-svg";
 
 // 바텀시트의 단계 정의
 export enum SheetStep {
@@ -44,7 +45,7 @@ export type WithWhom = {
   whom: ChallengeWith;
   label: string;
   icon: {
-    active: ImageSourcePropType;
-    inactive: ImageSourcePropType;
+    active: FC<SvgProps>;
+    inactive: FC<SvgProps>;
   };
 };

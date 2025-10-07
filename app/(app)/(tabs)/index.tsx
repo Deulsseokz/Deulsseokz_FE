@@ -120,13 +120,8 @@ const MountainMapScreen = () => {
       {selectedChallengeInfo && open && (
         <BottomSheetTemplate
           visible={open}
-          updateValue={updateValue}
-          backStep={backStep}
-          nextStep={nextStep}
           exitSheet={exitSheet}
-          step={step} // 실제 step
           challengeInfo={selectedChallengeInfo}
-          stepPayloads={stepPayloads}
           allFriends={allFriends}
           onShowFriendListSheet={showFriendListSheet}
         />
