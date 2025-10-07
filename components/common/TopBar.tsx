@@ -7,17 +7,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface TopBarProps {
   title: string | null;
+  onBack?: () => void;
   rightButton?: React.ReactNode;
   onRightPress?: () => void;
   containerStyle?: StyleProp<ViewStyle>; // 선택적 최상위 컨테이너 스타일
 }
 
-export function TopBar({ title, rightButton, onRightPress, containerStyle }: TopBarProps) {
+export function TopBar({ title, onBack, rightButton, onRightPress, containerStyle }: TopBarProps) {
   const insets = useSafeAreaInsets();
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }, containerStyle]}>
-      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+      <TouchableOpacity style={styles.backButton} onPress={onBack ? onBack : () => router.back()}>
         <BackIcon width={30} height={30} />
       </TouchableOpacity>
       <Text style={styles.title}>{title}</Text>

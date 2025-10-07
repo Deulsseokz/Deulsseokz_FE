@@ -6,6 +6,7 @@ import { StepButtonMap } from '@/components/map/_util';
 import ChallengeCondition from '@/components/map/ChallengeCondition';
 import ChallengeFriends from '@/components/map/ChallengeFriends';
 import ChallengeInfo from '@/components/map/ChallengeInfo';
+import FriendListSheet from "@/components/map/FriendListSheet";
 import FriendSelector from '@/components/map/FriendSelector';
 import SheetHeader from '@/components/map/SheetHeader';
 import WithWhomSelector from '@/components/map/WithWhomSelector';
@@ -13,8 +14,8 @@ import { ButtonVariant } from "@/constants/buttonTypes";
 import { useStepManager } from "@/hooks/useStepManager";
 import { ChallengeInformation } from '@/types/challenge';
 import { useRouter } from "expo-router";
-import React, { useEffect, useRef } from 'react';
-import { Animated, Dimensions, Platform, StyleSheet, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Animated, Dimensions, Modal, Platform, Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface BottomSheetProps {
@@ -23,24 +24,25 @@ interface BottomSheetProps {
   /* 모달 내 버튼 클릭시 다음 스텝으로 넘어감 처리 */
   challengeInfo: ChallengeInformation; // 챌린지 정보 객체
   allFriends: MyFriendListResponse[]; // 전체 친구 목록
-  onShowFriendListSheet: () => void; // 친구 목록 시트 열기 함수
 }
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
+
+type BottomSheetState = 'MAIN' | 'FRIEND_LIST' | null;
 
 export default function BottomSheetTemplate({
   visible,
   exitSheet,
   challengeInfo,
   allFriends,
-  onShowFriendListSheet
 }: BottomSheetProps) {
+  const { step, stepPayloads, updateValue, backStep, nextStep, resetStep } = useStepManager();
+  const [activeSheet, setActiveSheet] = useState<BottomSheetState>('MAIN');
+
   const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
   const insets = useSafeAreaInsets();
   const sheetHeight = SCREEN_HEIGHT * 0.5;
-
   const router = useRouter();
-    const { step, stepPayloads, updateValue, backStep, nextStep } = useStepManager();
 
   // 바텀시트 올라오기 애니메이션
   useEffect(() => {
@@ -73,7 +75,7 @@ export default function BottomSheetTemplate({
           <FriendSelector
             selected={stepPayloads[SheetStep.SELECT_FRIEND] ?? []}
             updateValue={v => updateValue(SheetStep.SELECT_FRIEND, v)}
-            onShowFriendListSheet={onShowFriendListSheet}
+            onShowFriendListSheet={() => setActiveSheet('FRIEND_LIST')}
           />
         );
       case SheetStep.SUBMIT:
@@ -93,14 +95,21 @@ export default function BottomSheetTemplate({
   if (!visible || !challengeInfo) return null;
 
   return (
-    <View style={styles.container}>
-      {/* 바텀 모달뷰 */}
-      <Animated.View
-        style={[
-          styles.sheet,
-          {
-            height: sheetHeight + (Platform.OS === 'ios' ? insets.bottom : 0), // iOS에서 safe area 보정
-            paddingBottom: 60 + (Platform.OS === 'ios' ? insets.bottom : 0),
+    <>
+     <Modal
+      visible={visible}
+      transparent={true}
+      onRequestClose={exitSheet}
+      animationType="fade"
+    >
+      <Pressable style={styles.overlay} onPress={exitSheet} />
+     {activeSheet === 'MAIN' && (
+        <Animated.View
+          style={[
+            styles.sheet,
+            {
+              height: sheetHeight + (Platform.OS === 'ios' ? insets.bottom : 0),
+              paddingBottom: 60 + (Platform.OS === 'ios' ? insets.bottom : 0),
             transform: [{ translateY }],
           },
         ]}
@@ -133,14 +142,26 @@ export default function BottomSheetTemplate({
             onPress={() => nextStep(challengeInfo, stepPayloads)}
           />}
         </View>
-      </Animated.View>
-    </View>
+      </Animated.View>)} 
+     {activeSheet === 'FRIEND_LIST' && (
+       <FriendListSheet
+         visible={activeSheet === 'FRIEND_LIST'}
+         onClose={() => setActiveSheet('MAIN')}
+         allFriends={allFriends}
+         selectedFriends={stepPayloads[SheetStep.SELECT_FRIEND] ?? []}
+         updateSelection={(newSelection) => {
+           updateValue(SheetStep.SELECT_FRIEND, newSelection);
+         }}
+       />)}
+    </Modal>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    width: '100%',
+   overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   contentContainer: {
     width: '100%',
