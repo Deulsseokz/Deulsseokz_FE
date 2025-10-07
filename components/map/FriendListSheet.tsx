@@ -80,6 +80,7 @@ export default function FriendListSheet({
         <View style={{paddingHorizontal: 10,}}>
             <Text style={styles.info}>친구 <Text style={styles.number}>{filteredFriends.length}</Text></Text>
         </View>
+        <View>
         <FlatList
           horizontal
           data={filteredFriends}
@@ -96,6 +97,7 @@ export default function FriendListSheet({
           )}
           ListEmptyComponent={<Text style={styles.emptyText}>검색 결과가 없습니다.</Text>}
         />
+        </View>
       </Animated.View>
     </View>
   );

@@ -58,16 +58,19 @@ export default function FriendSelector({ selected, updateValue, onShowFriendList
         </View>
         <Text style={style.limit}>최대 3명 가능</Text>
       </View>
-      <FlatList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        data={friends}
-        keyExtractor={item => item.userId.toString()}
-        contentContainerStyle={style.list}
-        renderItem={({ item }) => (
-          <FriendProfile friend={item} isSelected={!!selectedMap[item.userId]} onSelect={toggle} />
-        )}
-      />
+      <View style={style.list}>
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={friends}
+          contentContainerStyle={style.scrollList}
+          keyExtractor={item => item.userId.toString()}
+          renderItem={({ item }) => (
+            <FriendProfile friend={item} isSelected={!!selectedMap[item.userId]} onSelect={toggle} />
+          )}
+        />
+      </View>
+     
        <TouchableOpacity onPress={onShowFriendListSheet} style={style.bottomText}>
           <Text style={style.showAllText}>모두보기</Text>
         </TouchableOpacity>
@@ -116,6 +119,9 @@ const style = StyleSheet.create({
     height: 'auto',
     backgroundColor: '#FBFBFB',
     borderRadius: 20,
+  },
+  scrollList: {
+    marginLeft: 10,
   },
   showAllText: { 
     color: MCOLORS.grayscale.gray50,
