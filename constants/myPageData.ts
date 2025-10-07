@@ -12,5 +12,4 @@ export const myPageMenu = [
 export const myPageBtn = [
   {label: '로그아웃'},
    {label: '탈퇴하기'},
-   {label: '고객센터'},
 ]
