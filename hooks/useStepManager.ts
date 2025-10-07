@@ -9,7 +9,7 @@ import { useState } from 'react';
 // 바텀시트의 step을 관리
 export const useStepManager = () => {
   const [step, setStep] = useState<SheetStep>(SheetStep.INFO);
-  const [stepPayloads, updateStepPayloads] = useState<Partial<StepParamMap>>({});
+  const [stepPayloads, updateStepPayloads] = useState<Partial<Record<SheetStep, any>>>({});
 
   const { showActionSheetWithOptions } = useActionSheet();
   const options = ['사진 촬영하기', '사진 불러오기', '취소'];

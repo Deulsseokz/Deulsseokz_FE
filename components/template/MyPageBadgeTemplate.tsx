@@ -33,7 +33,7 @@ export default function MyPageBadgeTemplate({ badges, onEditRepresent, onModalOp
                     </Pressable>
                 </View>
                <View style={{...styles.content, ...styles.colorBackGround, ...styles.repBadgeContainer}}>
-                {repBadge ? <BadgeComponent type={repBadge.name} selected={true} active={true} label={repBadge.name} onPress={onEditRepresent} isRepresent={true}/> :<Text>아직 대표배지가 없어요!</Text> }
+                {repBadge ? <BadgeComponent type={repBadge.name} selected={true} active={true} label={repBadge.name} onPress={onEditRepresent}/> :<Text>아직 대표배지가 없어요!</Text> }
                 <Text style={styles.badgeDescription}>
                     {repBadge ? repBadge.description : "대표 배지를 설정해보세요!"}
                 </Text>

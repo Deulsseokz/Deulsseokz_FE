@@ -1,5 +1,6 @@
 import { MCOLORS } from '@/constants/colors';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ChallengeWith } from './_type';
 import { WITH_WHOM_OPTIONS } from './_util';
 
@@ -14,6 +15,10 @@ interface WhomSelectorProps {
  * @returns 혼자/함께 셀렉터
  */
 function WithWhomSelector({ selected, updateValue }: WhomSelectorProps) {
+  const handleToggle = (whom: ChallengeWith) => {
+    updateValue(whom); // 부모에 변경 전달
+  }
+
   const title = '누구와 함께 할까요?';
 
   return (
@@ -21,14 +26,11 @@ function WithWhomSelector({ selected, updateValue }: WhomSelectorProps) {
       <Text style={style.text}>{title}</Text>
       <View style={style.itemContainer}>
         {WITH_WHOM_OPTIONS.map(({ whom, label, icon }) => {
-          const isSelected = selected === whom;
+           const isSelected = selected === whom;
           return (
-            <TouchableOpacity key={whom} onPress={() => updateValue(whom)} style={style.item}>
-              <Image
-                source={isSelected ? icon.active : icon.inactive}
-                style={{ width: 34, height: 34, resizeMode: 'contain' }}
-              />
-              <Text style={{ ...style.label, color: !isSelected ? '#acacac' : MCOLORS.grayscale.gray80 }}>{label}</Text>
+            <TouchableOpacity key={whom} onPress={() => handleToggle(whom)} style={{...style.item, ...(isSelected ? style.itemSelected : {})}}>
+              {isSelected ? <icon.active width={34} height={34} /> : <icon.inactive width={34} height={34} />}
+              <Text style={{ ...style.label, color: !isSelected ? '#acacac' : MCOLORS.brand.secondary }}>{label}</Text>
             </TouchableOpacity>
           );
         })}
@@ -37,7 +39,7 @@ function WithWhomSelector({ selected, updateValue }: WhomSelectorProps) {
   );
 }
 
-export default WithWhomSelector;
+export default React.memo(WithWhomSelector);
 
 const style = StyleSheet.create({
   container: {

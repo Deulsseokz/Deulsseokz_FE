@@ -89,5 +89,6 @@ const modalStyles = StyleSheet.create({
   description: {
     color: MCOLORS.grayscale.gray50,
     ...fontStyles.medium13,
+    maxWidth: '60%',
   }
 })

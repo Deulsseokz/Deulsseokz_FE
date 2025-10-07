@@ -36,7 +36,7 @@ export default function MyMissionBox({
         <View style={styles.rowBox}>
           <Text style={styles.text}>정복률</Text>
           <View style={styles.textWrapper}>
-            <Text style={styles.pointColor}>{profile.conquer}</Text>
+           <Text style={styles.pointColor}>{(profile.conquer*100).toFixed(0)}</Text>
             <Text style={styles.general}>%</Text>
           </View>
         </View>
