@@ -1,5 +1,6 @@
 import DotIcon from '@/assets/icons/icon-dot.svg';
 import { MCOLORS } from '@/constants/colors';
+import fontStyles from '@/constants/fonts';
 import { StyleSheet, Text, View } from 'react-native';
 
 /**
@@ -23,10 +24,13 @@ export default function ChallengeCondition({ condition1, condition2, condition3 
         <DotIcon width={20} height={20} />
         <Text style={style.plainText}>{condition1}</Text>
       </View>
-      <View style={style.textContainer}>
-        <DotIcon width={20} height={20} />
-        <Text style={style.plainText}>{condition2}</Text>
-      </View>
+
+      {condition2 && (
+        <View style={style.textContainer}>
+          <DotIcon width={20} height={20} />
+          <Text style={style.plainText}>{condition2}</Text>
+        </View>
+      )}
 
       {condition3 && (
         <View style={style.textContainer}>
@@ -44,10 +48,9 @@ const style = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 15,
     flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
     borderRadius: 20,
     backgroundColor: '#f8f8f8',
+    gap: 10,
   },
   textContainer: {
     flexDirection: 'row',
@@ -57,14 +60,11 @@ const style = StyleSheet.create({
     paddingHorizontal: 5,
   },
   plainText: {
-    fontSize: 13,
-    fontWeight: 500,
-    color: MCOLORS.grayscale.gray70,
-    lineHeight: 20,
+    ...fontStyles.medium13,
+    color: MCOLORS.grayscale.gray100,
   },
   emphText: {
-    fontSize: 13,
-    fontWeight: 500,
+    ...fontStyles.medium13,
     color: MCOLORS.brand.secondary,
   },
 });

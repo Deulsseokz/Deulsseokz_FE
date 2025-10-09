@@ -1,4 +1,5 @@
 import { MCOLORS } from '@/constants/colors';
+import fontStyles from '@/constants/fonts';
 import { StyleSheet, Text, View } from 'react-native';
 
 /**
@@ -40,23 +41,18 @@ const style = StyleSheet.create({
   },
   place: {
     color: MCOLORS.grayscale.gray50,
-    fontSize: 15,
-    fontWeight: 500,
+    ...fontStyles.medium15,
   },
   content: {
     color: MCOLORS.grayscale.gray80,
-    fontSize: 15,
-    fontWeight: 700,
+    ...fontStyles.bold15,
   },
   bottomWrapper: {
     width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
   },
   point: {
     color: MCOLORS.brand.secondary,
-    fontSize: 15,
-    fontWeight: 700,
+    ...fontStyles.bold15,
+    textAlign: 'right',
   },
 });
