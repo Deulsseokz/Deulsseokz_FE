@@ -10,10 +10,9 @@ import { useAuthenticationStore } from '@/store/useAuthenticationStore';
 import { useChallengeListStore } from '@/store/useChallengeListStore';
 import { ChallengeInformation, Coord } from '@/types/challenge';
 import { convertRawChallengeInfo } from '@/utils/convertRawChallengeData';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Alert, BackHandler, SafeAreaView, StyleSheet, View } from 'react-native';
 
 const MountainMapScreen = () => {
   // 전역 챌린지 정보
@@ -49,6 +48,34 @@ const MountainMapScreen = () => {
       router.replace('/onboarding');
     }
   }, [isNew]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        Alert.alert(
+          '앱 종료', // 제목
+          '정말로 앱을 종료하시겠습니까?', // 내용
+          [
+            {
+              text: '아니오',
+              onPress: () => null, // 아무것도 하지 않음
+              style: 'cancel',
+            },
+            {
+              text: '예',
+              onPress: () => BackHandler.exitApp(), // 앱 종료
+            },
+          ],
+        );
+        // Alert를 띄웠으므로 기본 동작(앱 종료)을 막기 위해 true를 반환합니다.
+        return true;
+      };
+
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => backHandler.remove();
+    }, []),
+  );
 
   useEffect(() => {
     // 부모에서 친구 목록 fetch
