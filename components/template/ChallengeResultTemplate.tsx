@@ -108,7 +108,7 @@ export default function ChallengeOutputTemplate({
             variant={ButtonVariant.Subtle}
             text={isSuccess ? '닫기' : '취소'}
             onPress={() => {
-              router.replace('/(app)/(tabs)');
+              router.back();
             }}
           />
           <PrimaryButton

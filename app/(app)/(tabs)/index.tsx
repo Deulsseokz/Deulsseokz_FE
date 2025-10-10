@@ -11,7 +11,7 @@ import { useChallengeListStore } from '@/store/useChallengeListStore';
 import { ChallengeInformation, Coord } from '@/types/challenge';
 import { convertRawChallengeInfo } from '@/utils/convertRawChallengeData';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { Alert, BackHandler, SafeAreaView, StyleSheet, View } from 'react-native';
 
 const MountainMapScreen = () => {
@@ -50,7 +50,7 @@ const MountainMapScreen = () => {
   }, [isNew]);
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       const onBackPress = () => {
         Alert.alert(
           '앱 종료', // 제목

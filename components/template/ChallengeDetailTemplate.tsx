@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '90%',
+    width: '80%',
     marginTop: 40,
   },
 });

@@ -44,13 +44,13 @@ export default function ChallengeDetail() {
         AsyncStorage.setItem('point', point as string);
         AsyncStorage.setItem('image', image as string);
         AsyncStorage.setItem('attemptId', String(res.data.result.attemptId));
-        router.replace('/(app)/(tabs)');
       }
     } catch (error) {
       console.log('챌린지 도전 error', error);
     } finally {
       setIsLoading(false);
       Alert.alert('챌린지 심사 중', 'AI가 사진을 분석하고 있습니다. 분석이 끝나면 푸시 알림으로 알려드릴게요!');
+      router.back();
     }
   };
   return (
