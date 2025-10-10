@@ -110,8 +110,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '80%',
+    gap: 16,
     marginTop: 40,
   },
 });
