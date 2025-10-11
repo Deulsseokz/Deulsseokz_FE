@@ -1,16 +1,16 @@
 import { ButtonVariant } from '@/constants/buttonTypes';
 import { MCOLORS } from '@/constants/colors';
+import { ChallengeDetailTemplateProps } from '@/types/challenge';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Image, Modal, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Image, Modal, StyleSheet, Text, View } from 'react-native';
 import { PrimaryButton } from '../common/Button/PrimaryButton';
 import Loading from '../common/Loading';
 import { TopBar } from '../common/TopBar';
-import ChallengeCondition from '../map/ChallengeCondition';
-import ChallengeInfo from '../map/ChallengeInfo';
+import ChallengeDetailModal from '../map/ChallengeDetailModal';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -27,37 +27,25 @@ export default function ChallengeDetailTemplate({
   friends,
   handleSubmit,
   isLoading,
-}: {
-  id: number;
-  image: string;
-  placeName: string;
-  content: string;
-  point: string;
-  condition1: string;
-  condition2: string;
-  condition3: string;
-  friends: string;
-  handleSubmit: () => void;
-  isLoading: boolean;
-}) {
+}: ChallengeDetailTemplateProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   return (
     <View style={styles.page}>
-      <Modal transparent={true} animationType="fade" visible={isModalVisible}>
-        <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
-          <View style={styles.modalOverlay}>
-            <View style={styles.modalContent}>
-              <ChallengeInfo placeName={placeName} content={content} point={Number(point)} />
-              <ChallengeCondition condition1={condition1} condition2={condition2} condition3={condition3} />
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
+      <ChallengeDetailModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        placeName={placeName}
+        content={content}
+        point={Number(point)}
+        condition1={condition1}
+        condition2={condition2}
+        condition3={condition3}
+      />
       <Modal transparent={true} animationType="fade" visible={isLoading}>
         <Loading />
       </Modal>
       <TopBar
-        title="챌린지 입력"
+        title={placeName}
         rightButton={<Text style={styles.rightButtonText}>미션 보기</Text>}
         onRightPress={() => setIsModalVisible(true)}
       />
@@ -86,29 +74,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  modalContainer: {
-    flex: 1,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    paddingTop: 120,
-    alignItems: 'center',
-  },
-  modalContent: {
-    width: '80%',
-    padding: 15,
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    alignItems: 'center',
-  },
-  modalTitle: {
-    fontSize: 15,
-    lineHeight: 18,
-    fontWeight: '700',
-    fontFamily: 'Pretendard',
-    color: MCOLORS.brand.secondary,
-  },
   rightButtonText: {
     fontSize: 15,
     lineHeight: 18,
@@ -119,9 +84,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingBottom: 20,
-    paddingTop: 50,
-    paddingHorizontal: 40,
+    paddingBottom: '2%',
+    paddingTop: '12%',
+    paddingHorizontal: '10%',
   },
   title: {
     fontSize: 15,
@@ -132,7 +97,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   imageContainer: {
-    width: '88%',
+    width: '90%',
     height: 340,
     backgroundColor: '#000',
   },
@@ -145,9 +110,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 30,
-    width: '100%',
+    gap: 16,
     marginTop: 40,
   },
 });

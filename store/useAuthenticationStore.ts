@@ -11,14 +11,17 @@ import { create } from 'zustand';
 interface AuthenticationStore {
   isAuthenticated: boolean;
   isLoading: boolean;
+  isNew: boolean;
   checkAuthStatus: () => Promise<void>;
   signIn: (accessToken: string, refreshToken: string) => Promise<void>;
   signOut: () => Promise<void>;
+  setIsNew: (isNew: boolean) => void;
 }
 
 export const useAuthenticationStore = create<AuthenticationStore>(set => ({
   isAuthenticated: false,
   isLoading: true,
+  isNew: false,
 
   signIn: async (accessToken: string, refreshToken: string) => {
     await saveTokens(accessToken, refreshToken);
@@ -34,4 +37,6 @@ export const useAuthenticationStore = create<AuthenticationStore>(set => ({
     const { accessToken } = await getTokens();
     set(state => ({ ...state, isAuthenticated: !!accessToken, isLoading: false }));
   },
+
+  setIsNew: (isNew: boolean) => set({ isNew }),
 }));

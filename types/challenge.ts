@@ -40,3 +40,28 @@ export type RemoteMessage = {
     type: string;
   };
 };
+
+export interface ChallengeDetailTemplateProps {
+  id: number;
+  image: string;
+  placeName: string;
+  content: string;
+  point: string;
+  condition1: string;
+  condition2: string;
+  condition3: string;
+  friends: string;
+  handleSubmit: () => void;
+  isLoading: boolean;
+}
+
+export interface ChallengeDetailModalProps {
+  isModalVisible: boolean;
+  setIsModalVisible: (isModalVisible: boolean) => void;
+  placeName: string;
+  content: string;
+  point: number;
+  condition1: string;
+  condition2: string;
+  condition3: string;
+}

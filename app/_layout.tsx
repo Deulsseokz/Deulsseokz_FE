@@ -1,4 +1,5 @@
 import { toastConfig } from '@/components/common/Toast/ToastWrapper';
+import notifee, { AndroidImportance } from '@notifee/react-native';
 import { getMessaging, setBackgroundMessageHandler } from '@react-native-firebase/messaging';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Stack } from 'expo-router';
@@ -21,7 +22,16 @@ setBackgroundMessageHandler(getMessaging(), async remoteMessage => {
 });
 
 export default function Root() {
-  // Set up the auth context and render our layout inside of it.
+  async function createNotificationChannel() {
+    await notifee.createChannel({
+      id: 'default', // 앞으로 사용할 채널의 ID
+      name: 'Default Channel', // 사용자가 설정에서 볼 채널 이름
+      importance: AndroidImportance.HIGH,
+    });
+  }
+  useEffect(() => {
+    createNotificationChannel();
+  }, []);
 
   useEffect(() => {
     GoogleSignin.configure({

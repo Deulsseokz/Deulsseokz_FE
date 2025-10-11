@@ -69,7 +69,7 @@ export default function ChallengeOutputTemplate({
           {
             text: '닫기',
             onPress: () => {
-              router.replace('/(app)/(tabs)');
+              router.back();
             },
             types: ButtonVariant.Subtle,
           },
@@ -88,7 +88,9 @@ export default function ChallengeOutputTemplate({
         isShowing={isModalVisible}
         modalType={ModalType.DEFAULT}
         modalProps={modalProps}
-        onClose={() => {}}
+        onClose={() => {
+          router.back();
+        }}
       />
       <View style={styles.container}>
         <Text style={styles.title}>{title}</Text>
@@ -103,20 +105,17 @@ export default function ChallengeOutputTemplate({
         <View style={styles.imageContainer}>
           <Image source={{ uri: image }} style={{ width: '100%', height: '100%' }} />
         </View>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton
-            variant={ButtonVariant.Subtle}
-            text={isSuccess ? '닫기' : '취소'}
-            onPress={() => {
-              router.replace('/(app)/(tabs)');
-            }}
-          />
-          <PrimaryButton
-            variant={ButtonVariant.Primary}
-            text={isSuccess ? '앨범으로' : '다시 도전'}
-            onPress={() => setIsModalVisible(true)}
-          />
-        </View>
+        <PrimaryButton
+          variant={ButtonVariant.Primary}
+          text={isSuccess ? '확인' : '돌아가기'}
+          onPress={
+            isSuccess
+              ? () => setIsModalVisible(true)
+              : () => {
+                  router.back();
+                }
+          }
+        />
       </View>
     </LinearGradient>
   );
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     marginTop: 20,
-
+    marginBottom: '20%',
     width: '80%',
     height: 340,
     backgroundColor: '#000',

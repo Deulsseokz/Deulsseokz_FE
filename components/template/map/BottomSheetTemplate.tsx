@@ -1,19 +1,18 @@
-
-import { MyFriendListResponse } from "@/api/type";
+import { MyFriendListResponse } from '@/api/type';
 import { PrimaryButton } from '@/components/common/Button/PrimaryButton';
 import { SheetStep } from '@/components/map/_type';
 import { StepButtonMap } from '@/components/map/_util';
 import ChallengeCondition from '@/components/map/ChallengeCondition';
 import ChallengeFriends from '@/components/map/ChallengeFriends';
 import ChallengeInfo from '@/components/map/ChallengeInfo';
-import FriendListSheet from "@/components/map/FriendListSheet";
+import FriendListSheet from '@/components/map/FriendListSheet';
 import FriendSelector from '@/components/map/FriendSelector';
 import SheetHeader from '@/components/map/SheetHeader';
 import WithWhomSelector from '@/components/map/WithWhomSelector';
-import { ButtonVariant } from "@/constants/buttonTypes";
-import { useStepManager } from "@/hooks/useStepManager";
+import { ButtonVariant } from '@/constants/buttonTypes';
+import { useStepManager } from '@/hooks/useStepManager';
 import { ChallengeInformation } from '@/types/challenge';
-import { useRouter } from "expo-router";
+import { useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, Modal, Platform, Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -30,12 +29,7 @@ const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 type BottomSheetState = 'MAIN' | 'FRIEND_LIST' | null;
 
-export default function BottomSheetTemplate({
-  visible,
-  exitSheet,
-  challengeInfo,
-  allFriends,
-}: BottomSheetProps) {
+export default function BottomSheetTemplate({ visible, exitSheet, challengeInfo, allFriends }: BottomSheetProps) {
   const { step, stepPayloads, updateValue, backStep, nextStep, resetStep } = useStepManager();
   const [activeSheet, setActiveSheet] = useState<BottomSheetState>('MAIN');
 
@@ -96,70 +90,75 @@ export default function BottomSheetTemplate({
 
   return (
     <>
-     <Modal
-      visible={visible}
-      transparent={true}
-      onRequestClose={exitSheet}
-      animationType="fade"
-    >
-      <Pressable style={styles.overlay} onPress={exitSheet} />
-     {activeSheet === 'MAIN' && (
-        <Animated.View
-          style={[
-            styles.sheet,
-            {
-              height: sheetHeight + (Platform.OS === 'ios' ? insets.bottom : 0),
-              paddingBottom: 60 + (Platform.OS === 'ios' ? insets.bottom : 0),
-            transform: [{ translateY }],
-          },
-        ]}
-      >
-        {/* 상단 영역 */}
-        <View style={styles.contentContainer}>
-          {/* step에 따른 헤더*/}
-          <SheetHeader
-            placeName={challengeInfo.placeName}
-            isFavorite={challengeInfo.isFavorite}
-            backStep={backStep}
-            exitSheet={exitSheet}
-            step={step}
+      <Modal visible={visible} transparent={true} onRequestClose={exitSheet} animationType="fade">
+        <Pressable style={styles.overlay} onPress={exitSheet} />
+        {activeSheet === 'MAIN' && (
+          <Animated.View
+            style={[
+              styles.sheet,
+              {
+                height: sheetHeight + (Platform.OS === 'ios' ? insets.bottom : 0),
+                paddingBottom: 60 + (Platform.OS === 'ios' ? insets.bottom : 0),
+                transform: [{ translateY }],
+              },
+            ]}
+          >
+            {/* 상단 영역 */}
+            <View style={styles.contentContainer}>
+              {/* step에 따른 헤더*/}
+              <SheetHeader
+                placeName={challengeInfo.placeName}
+                isFavorite={challengeInfo.isFavorite}
+                backStep={backStep}
+                exitSheet={exitSheet}
+                step={step}
+              />
+              {renderStepContent()}
+              {/* TODO: 친구 객체를 한꺼번에 받아 렌더링 */}
+              {challengeInfo.isChallenged && challengeInfo.friends?.length !== 0 && (
+                <ChallengeFriends
+                  friends={allFriends.filter(friend => challengeInfo.friends?.includes(friend.userId))}
+                />
+              )}
+            </View>
+
+            {/* 하단 버튼 영역 */}
+
+            <View style={styles.btnContainer}>
+              {challengeInfo.isChallenged ? (
+                <PrimaryButton
+                  variant={ButtonVariant.Primary}
+                  text={'사진 보기'}
+                  onPress={() => router.push(`/album/${challengeInfo.placeName}`)}
+                />
+              ) : (
+                <PrimaryButton
+                  variant={getVariant(stepPayloads)}
+                  text={text}
+                  onPress={() => nextStep(challengeInfo, stepPayloads)}
+                />
+              )}
+            </View>
+          </Animated.View>
+        )}
+        {activeSheet === 'FRIEND_LIST' && (
+          <FriendListSheet
+            visible={activeSheet === 'FRIEND_LIST'}
+            onClose={() => setActiveSheet('MAIN')}
+            allFriends={allFriends}
+            selectedFriends={stepPayloads[SheetStep.SELECT_FRIEND] ?? []}
+            updateSelection={newSelection => {
+              updateValue(SheetStep.SELECT_FRIEND, newSelection);
+            }}
           />
-          {renderStepContent()}
-          {/* TODO: 친구 객체를 한꺼번에 받아 렌더링 */}
-          {challengeInfo.isChallenged && challengeInfo.friends?.length !== 0 && (
-            <ChallengeFriends
-              friends={allFriends.filter(friend => challengeInfo.friends?.includes(friend.userId))}
-            />
-          )}
-        </View>
-
-        {/* 하단 버튼 영역 */}
-
-         <View style={styles.btnContainer}>
-          {challengeInfo.isChallenged ? <PrimaryButton variant={ButtonVariant.Primary} text={"사진 보기"} onPress={()=>router.push(`/album/${challengeInfo.placeName}`)} /> : <PrimaryButton
-           variant={getVariant(stepPayloads)}
-            text={text}
-            onPress={() => nextStep(challengeInfo, stepPayloads)}
-          />}
-        </View>
-      </Animated.View>)} 
-     {activeSheet === 'FRIEND_LIST' && (
-       <FriendListSheet
-         visible={activeSheet === 'FRIEND_LIST'}
-         onClose={() => setActiveSheet('MAIN')}
-         allFriends={allFriends}
-         selectedFriends={stepPayloads[SheetStep.SELECT_FRIEND] ?? []}
-         updateSelection={(newSelection) => {
-           updateValue(SheetStep.SELECT_FRIEND, newSelection);
-         }}
-       />)}
-    </Modal>
+        )}
+      </Modal>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-   overlay: {
+  overlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
