@@ -65,7 +65,7 @@ export default function CustomPolaroid({ photo, frame, badge }: PolaroidProps & 
   );
 }
 
-const CARD_WIDTH = 145;
+const CARD_WIDTH = 146;
 
 const styles = StyleSheet.create({
   stage: {
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 
   polaroid: {
     width: CARD_WIDTH,
-    paddingTop: 30,
+    paddingTop: 31,
     paddingRight: 9,
     paddingBottom: 10,
     paddingLeft: 9,
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     left: 0,
     width: CARD_WIDTH,
     height: '100%',
-    resizeMode: 'contain',
+    resizeMode: 'stretch',
   },
 
   badge: {
