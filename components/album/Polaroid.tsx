@@ -17,15 +17,13 @@ export default function Polaroid({ photo }: PolaroidProps) {
     <View style={styles.polaroid}>
       <Image source={image} style={styles.image} />
 
-      <View>
+      <View style={styles.additional}>
         <View style={styles.metaRow}>
           {feelingIcon && <Image source={feelingIcon} style={styles.metaIcon} />}
           {weatherIcon && <Image source={weatherIcon} style={styles.metaIcon} />}
         </View>
 
-        <Text style={styles.desc} numberOfLines={2}>
-          {additional.desc}
-        </Text>
+        <Text style={styles.desc}>{additional.desc}</Text>
       </View>
 
       <View style={styles.footer}>
@@ -53,6 +51,8 @@ const styles = StyleSheet.create({
     height: 225,
     resizeMode: 'cover',
   },
+  additional: { minHeight: 80, display: 'flex', flexDirection: 'column', gap: 5 },
+
   metaRow: {
     flexDirection: 'row',
     alignItems: 'center',
