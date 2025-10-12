@@ -2,6 +2,7 @@ import { fetchChallengeInfo } from '@/api/challengeDTO';
 import { getMyFriendsList } from '@/api/myPageDTO';
 import { MyFriendListResponse } from '@/api/type';
 
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 import SearchLocationBtn from '@/components/map/SearchLocationBtn';
 import BottomSheetTemplate from '@/components/template/map/BottomSheetTemplate';
 import MapTemplate from '@/components/template/MapTemplate';
@@ -12,7 +13,7 @@ import { ChallengeInformation, Coord } from '@/types/challenge';
 import { convertRawChallengeInfo } from '@/utils/convertRawChallengeData';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
-import { Alert, BackHandler, SafeAreaView, StyleSheet, View } from 'react-native';
+import { Alert, BackHandler, StyleSheet, View } from 'react-native';
 
 const MountainMapScreen = () => {
   // 전역 챌린지 정보
@@ -114,12 +115,16 @@ const MountainMapScreen = () => {
     setSheetOpen(false);
   };
 
-  if (loading || isLoadingLocation || !location || !parsedChallengeData) {
-    return <SafeAreaView className="flex-1 bg-white" />; // 추후 스피너로 대체 & 로딩 상태 한번에 관리.
+  if (!location || !parsedChallengeData) {
+    return  (
+      <View style={styles.container}>
+        <LoadingSpinner isVisible={true} isOverlayVisible={false}/>
+      </View>
+    );
   }
 
   return (
-    <View style={styles.contianer}>
+    <View style={styles.container}>
       <SearchLocationBtn onPress={() => router.push('/map/location')} />
       <MapTemplate
         challengeLocationData={parsedChallengeData}
@@ -143,8 +148,9 @@ const MountainMapScreen = () => {
 export default MountainMapScreen;
 
 const styles = StyleSheet.create({
-  contianer: {
+  container: {
     flex: 1,
     position: 'relative',
+    backgroundColor: '#fff',
   },
 });
