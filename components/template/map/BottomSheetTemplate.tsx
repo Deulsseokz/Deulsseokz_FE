@@ -37,6 +37,8 @@ export default function BottomSheetTemplate({ visible, exitSheet, challengeInfo,
   const insets = useSafeAreaInsets();
   const sheetHeight = SCREEN_HEIGHT * 0.5;
   const router = useRouter();
+  
+  console.log(challengeInfo);
 
   // 바텀시트 올라오기 애니메이션
   useEffect(() => {
@@ -55,6 +57,7 @@ export default function BottomSheetTemplate({ visible, exitSheet, challengeInfo,
           <View style={{ ...styles.contentContainer, gap: 6 }}>
             <ChallengeInfo {...challengeInfo} />
             <ChallengeCondition {...challengeInfo} />
+            {<ChallengeFriends friends={allFriends.filter(friend => challengeInfo.friends?.includes(friend.userId))} />}
           </View>
         );
       case SheetStep.WITH_WHOM:
