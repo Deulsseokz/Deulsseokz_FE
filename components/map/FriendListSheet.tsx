@@ -27,6 +27,7 @@ export default function FriendListSheet({
 }: FriendListSheetProps) {
   const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
   const [searchQuery, setSearchQuery] = useState('');
+  const [selected, setSelected] = useState<MyFriendListResponse[]>(selectedFriends);
 
   useEffect(() => {
     Animated.timing(translateY, {
@@ -44,8 +45,8 @@ export default function FriendListSheet({
   }, [searchQuery, allFriends]);
 
   const selectedFriendIds = useMemo(() => 
-    new Set(selectedFriends.map(f => f.userId)), 
-    [selectedFriends]
+    new Set(selected.map(f => f.userId)), 
+    [selected]
   );
 
   const toggleSelection = (friend: MyFriendListResponse) => {
@@ -60,8 +61,13 @@ export default function FriendListSheet({
       }
       newSelection = [...selectedFriends, friend];
     }
-    updateSelection(newSelection);
+    setSelected(newSelection);
   };
+
+  const onConfirmChice = () => {
+    updateSelection(selected)
+    onClose();
+  }
   
   if (!visible) return null;
 
@@ -75,7 +81,7 @@ export default function FriendListSheet({
       <Pressable style={styles.overlay} onPress={onClose} />
 
       <Animated.View style={[styles.sheet, { transform: [{ translateY }] }]}>
-        <TopBar title="친구 목록" onBack={onClose} containerStyle={{ paddingTop: 0 }} rightButton={<CheckIcn width={30} height={30}/>} onRightPress={onClose} />
+        <TopBar title="친구 목록" onBack={onClose} containerStyle={{ paddingTop: 0 }} rightButton={<CheckIcn width={30} height={30}/>} onRightPress={onConfirmChice} />
         <SearchBar
           onSearch={setSearchQuery}
           placeholder="친구 이름을 검색하세요"
