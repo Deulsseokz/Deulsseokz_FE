@@ -35,11 +35,9 @@ export default function BottomSheetTemplate({ visible, exitSheet, challengeInfo,
 
   const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
   const insets = useSafeAreaInsets();
-  const sheetHeight = SCREEN_HEIGHT * 0.5;
+  const sheetHeight = SCREEN_HEIGHT * 0.52;
   const router = useRouter();
   
-  console.log(challengeInfo);
-
   // 바텀시트 올라오기 애니메이션
   useEffect(() => {
     Animated.timing(translateY, {
