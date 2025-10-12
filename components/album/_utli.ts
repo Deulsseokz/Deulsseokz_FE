@@ -91,6 +91,20 @@ export const feelingImageMap: Record<FeelingType, ImageSourcePropType | undefine
 };
 
 /**
+ * 기분 이미지 매핑 객체 (흰색 아이콘)
+ */
+export const feelingImageMapWhite: Record<FeelingType, ImageSourcePropType | undefined> = {
+  없음: undefined,
+  '😁': require('@/assets/images/album/feeling/face-smile-white.png'),
+  '😭': require('@/assets/images/album/feeling/face-crying-white.png'),
+  '🫢': require('@/assets/images/album/feeling/face-surprised-white.png'),
+  '🥰': require('@/assets/images/album/feeling/face-love-white.png'),
+  '😛': require('@/assets/images/album/feeling/face-lol-white.png'),
+  '🥳': require('@/assets/images/album/feeling/face-celebrate-white.png'),
+  '😎': require('@/assets/images/album/feeling/face-sunglasses-white.png'),
+};
+
+/**
  * 날씨 이미지 매핑 객체
  */
 export const weatherImageMap: Record<WeatherType, ImageSourcePropType | undefined> = {
@@ -101,4 +115,17 @@ export const weatherImageMap: Record<WeatherType, ImageSourcePropType | undefine
   '🌦️': require('@/assets/images/album/weather/weather-sunAndCloud.png'),
   '💨': require('@/assets/images/album/weather/weather-strom.png'),
   '⛈️': require('@/assets/images/album/weather/weather-lighting.png'),
+};
+
+/**
+ * 날씨 이미지 매핑 객체 (흰색 아이콘)
+ */
+export const weatherImageMapWhite: Record<WeatherType, ImageSourcePropType | undefined> = {
+  없음: undefined,
+  '☀️': require('@/assets/images/album/weather/weather-sunny-white.png'),
+  '☁️': require('@/assets/images/album/weather/weather-cloudy-white.png'),
+  '☔️': require('@/assets/images/album/weather/weather-rainy-white.png'),
+  '🌦️': require('@/assets/images/album/weather/weather-sunAndCloud-white.png'),
+  '💨': require('@/assets/images/album/weather/weather-strom-white.png'),
+  '⛈️': require('@/assets/images/album/weather/weather-lighting-white.png'),
 };

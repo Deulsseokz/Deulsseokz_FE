@@ -3,7 +3,14 @@ import { formatDate } from '@/utils/formatDate';
 import { Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { PolaroidProps } from './_type';
-import { badgeImageMap, feelingImageMap, frameImageMap, weatherImageMap } from './_utli';
+import {
+  badgeImageMap,
+  feelingImageMap,
+  feelingImageMapWhite,
+  frameImageMap,
+  weatherImageMap,
+  weatherImageMapWhite,
+} from './_utli';
 
 interface CustomPolaroidProps {
   /** 폴라로이드에 표시할 사진 정보 */
@@ -24,8 +31,11 @@ export default function CustomPolaroid({ photo, frame, badge }: PolaroidProps & 
   const isBlack = frame === FrameType.BLACK;
   const textColor = { color: isBlack ? '#E9E9E9' : '#4A4A4A' };
 
-  const feelingIcon = feelingImageMap[additional.feeling];
-  const weatherIcon = weatherImageMap[additional.weather];
+  const currentFeelingMap = isBlack ? feelingImageMapWhite : feelingImageMap;
+  const currentWeatherMap = isBlack ? weatherImageMapWhite : weatherImageMap;
+
+  const feelingIcon = currentFeelingMap[additional.feeling];
+  const weatherIcon = currentWeatherMap[additional.weather];
 
   return (
     <View style={styles.stage}>
