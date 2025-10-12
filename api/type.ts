@@ -347,3 +347,7 @@ export interface ChallengeResultItem {
 export interface InviteLinkResponse {
   url: string;
 }
+
+export interface AcceptInviteRequest {
+  code: string;
+}

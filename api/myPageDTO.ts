@@ -6,8 +6,9 @@
  */
 
 /**************************************************************/
-import { CommonResponse, deleteRequest, getRequest, patchRequest } from './common';
+import { CommonResponse, deleteRequest, getRequest, patchRequest, postRequest } from './common';
 import {
+  AcceptInviteRequest,
   FriendProfileResponse,
   InviteLinkResponse,
   MyFriendListResponse,
@@ -125,4 +126,14 @@ export async function patchCloseFriend(body: PatchCloseFriendRequest): Promise<C
  */
 export async function getInviteLink(): Promise<CommonResponse<InviteLinkResponse>> {
   return await getRequest<InviteLinkResponse>(`/friends/invite`);
+}
+
+/**
+ * @function postInviteCode
+ * @description 초대 링크 수락
+ * @param {string} inviteCode - 초대 코드
+ * @returns {Promise<CommonResponse<null>>} - API 응답 메시지
+ */
+export async function postInviteCode(body: AcceptInviteRequest): Promise<CommonResponse<string>> {
+  return await postRequest<string, AcceptInviteRequest>(`/friends/invite/open`, body);
 }
