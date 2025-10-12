@@ -1,7 +1,7 @@
 import fontStyles from '@/constants/fonts';
 import { formatDate } from '@/utils/formatDate';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 import { PolaroidPhoto } from './_type';
 import { feelingImageMap, weatherImageMap } from './_utli';
@@ -48,17 +48,17 @@ export default function PhotoSetCarousel({ photos, activeIndex, setActiveIndex }
           const feelingIcon = feelingImageMap[item.additional.feeling];
           const weatherIcon = weatherImageMap[item.additional.weather];
 
+          const handlePress = () => {
+            setExpandedIndex(expanded ? null : index);
+          };
+
           return (
-            <View style={styles.card}>
+            <Pressable onPress={handlePress} style={styles.card}>
               <View style={styles.polaroid}>
                 {/* 이미지 + 오버레이 */}
                 <View style={styles.imageBox}>
                   <Image source={item.image} style={styles.image} />
-                  <PeopleOverlay
-                    people={item.additional.people ?? []}
-                    expanded={expanded}
-                    onToggle={() => setExpandedIndex(expanded ? null : index)}
-                  />
+                  <PeopleOverlay people={item.additional.people ?? []} expanded={expanded} onToggle={handlePress} />
                 </View>
 
                 {/* 추가 정보 */}
@@ -71,7 +71,7 @@ export default function PhotoSetCarousel({ photos, activeIndex, setActiveIndex }
                   )}
 
                   {item.additional.desc?.length > 0 && (
-                    <Text style={styles.desc} numberOfLines={2}>
+                    <Text style={styles.desc} numberOfLines={expanded ? undefined : 2}>
                       {item.additional.desc}
                     </Text>
                   )}
@@ -82,7 +82,7 @@ export default function PhotoSetCarousel({ photos, activeIndex, setActiveIndex }
                   <Text style={styles.loc}>{item.loc}</Text>
                 </View>
               </View>
-            </View>
+            </Pressable>
           );
         }}
       />
