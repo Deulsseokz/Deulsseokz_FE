@@ -50,9 +50,7 @@ export default function CustomPolaroid({ photo, frame, badge }: PolaroidProps & 
               {weatherIcon && <Image source={weatherIcon} style={styles.metaIcon} />}
             </View>
 
-            <Text style={[styles.desc, textColor]} numberOfLines={2}>
-              {additional.desc}
-            </Text>
+            <Text style={[styles.desc, textColor]}>{additional.desc}</Text>
           </View>
 
           <View style={styles.footer}>
