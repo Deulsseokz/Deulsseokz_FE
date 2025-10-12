@@ -9,6 +9,7 @@
 import { CommonResponse, deleteRequest, getRequest, patchRequest } from './common';
 import {
   FriendProfileResponse,
+  InviteLinkResponse,
   MyFriendListResponse,
   MyPageFixRequest,
   MyPageItem,
@@ -16,7 +17,7 @@ import {
   MyPointHistoryResponse,
   PatchCloseFriendRequest,
   RegionConquerRateResponse,
-   RegionConquerStatusResponse
+  RegionConquerStatusResponse,
 } from './type';
 
 /**
@@ -64,9 +65,8 @@ export async function patchPointHistory(body: MyPointHistoryRequest): Promise<Co
  * @description 지역별 챌린지 정복률 조회
  * @returns {Promise<CommonResponse<RegionConquerRateResponse>>} 지역별 정복률 정보를 포함한 응답
  */
-export async function getChallengeLocal(
-) : Promise<CommonResponse<RegionConquerRateResponse>> {
-    return await getRequest<RegionConquerRateResponse>(`/challenge/local`);
+export async function getChallengeLocal(): Promise<CommonResponse<RegionConquerRateResponse>> {
+  return await getRequest<RegionConquerRateResponse>(`/challenge/local`);
 }
 
 /**
@@ -74,9 +74,8 @@ export async function getChallengeLocal(
  * @description 지역 내 장소별 챌린지 정복 여부 조회
  * @returns {Promise<CommonResponse<RegionConquerStatusResponse>>} 지역별 챌린지 정복 현황 정보를 포함한 응답
  */
-export async function getChallengeCompletion(
-): Promise<CommonResponse<RegionConquerStatusResponse>> {
-    return await getRequest<RegionConquerStatusResponse>(`/challenge/completion`);
+export async function getChallengeCompletion(): Promise<CommonResponse<RegionConquerStatusResponse>> {
+  return await getRequest<RegionConquerStatusResponse>(`/challenge/completion`);
 }
 
 /**
@@ -117,4 +116,13 @@ export async function deleteMyFriend(friendId: number): Promise<CommonResponse<n
 
 export async function patchCloseFriend(body: PatchCloseFriendRequest): Promise<CommonResponse<null>> {
   return await patchRequest<null, PatchCloseFriendRequest>(`/friends/close`, body);
+}
+
+/**
+ * @function getInviteLink
+ * @description 초대 링크 조회
+ * @returns {Promise<CommonResponse<InviteLinkResponse>>} - API 응답 메시지
+ */
+export async function getInviteLink(): Promise<CommonResponse<InviteLinkResponse>> {
+  return await getRequest<InviteLinkResponse>(`/friends/invite`);
 }

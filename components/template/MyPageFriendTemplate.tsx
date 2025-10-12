@@ -1,4 +1,4 @@
-import { deleteMyFriend, getFriendProfile } from "@/api/myPageDTO";
+import { deleteMyFriend, getFriendProfile } from '@/api/myPageDTO';
 import { FriendProfileResponse } from '@/api/type';
 import IconAddFriend from '@/assets/icons/icon-addFriend.svg';
 import { TopBar } from '@/components/common/TopBar';
@@ -26,7 +26,7 @@ export default function MyPageFriendTemplate({
   const handleOpenInviteModal = () => {
     onOpenInviteModal(ModalType.DEFAULT, {
       title: '친구 추가',
-      desc: '아래의 링크를 복사해 초대할 친구에게 보내주세요',
+      desc: '아래의 링크를 복사해 초대할 친구에게 전송하세요',
       options: [
         { variant: ButtonVariant.Subtle, text: '취소', onPress: onCloseInviteModal },
         { variant: ButtonVariant.Primary, text: '공유하기', onPress: shareLink },

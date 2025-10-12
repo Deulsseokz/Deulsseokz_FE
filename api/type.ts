@@ -343,3 +343,7 @@ export interface ChallengeResultItem {
   condition2: boolean;
   condition3: boolean;
 }
+
+export interface InviteLinkResponse {
+  url: string;
+}
