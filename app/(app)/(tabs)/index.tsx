@@ -11,11 +11,12 @@ import { useAuthenticationStore } from '@/store/useAuthenticationStore';
 import { useChallengeListStore } from '@/store/useChallengeListStore';
 import { ChallengeInformation, Coord } from '@/types/challenge';
 import { convertRawChallengeInfo } from '@/utils/convertRawChallengeData';
-import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { router, useFocusEffect, useLocalSearchParams, usePathname } from 'expo-router';
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { Alert, BackHandler, StyleSheet, View } from 'react-native';
 
 const MountainMapScreen = () => {
+  const pathname = usePathname();
   // 전역 챌린지 정보
   const { data: parsedChallengeData, fetchData, refetchData, loading } = useChallengeListStore();
   // 바텀시트에 전달되는 챌린지 정보
@@ -43,6 +44,7 @@ const MountainMapScreen = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  
   // 새로운 유저이면 온보딩 화면으로 이동
   useLayoutEffect(() => {
     if (isNew) {
@@ -84,6 +86,12 @@ const MountainMapScreen = () => {
       setAllFriends(res.result);
     });
   }, []);
+
+  useEffect(() => {
+    if (sheetOpen) {
+      exitSheet();
+    }
+  }, [pathname]);
 
   /**
    * 폴리곤 클릭 이벤트 처리 핸들러
