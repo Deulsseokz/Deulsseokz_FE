@@ -5,7 +5,7 @@
 
 import { MCOLORS } from '@/constants/colors';
 import navigateToCenterCoord from '@/utils/navigateToCenterCoord';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface ListItemProps {
   // 성공화면인지 실패화면인지 확인
@@ -21,23 +21,22 @@ export default function LocationListItem({ success, title, listItems }: ListItem
   const titleColor = !success ? MCOLORS.brand.secondary : MCOLORS.grayscale.gray70;
 
   return (
-    <ScrollView style={style.container} contentContainerStyle={{ paddingBottom: 40 }}>
+    <View style={style.container}>
       <Text style={{ ...style.title, color: titleColor }}>{title}</Text>
       <View style={style.itemContainer}>
-        {listItems.length != 0 &&
+        {listItems.length !== 0 &&
           listItems.map(item => (
             <TouchableOpacity key={item} onPress={() => navigateToCenterCoord(item)}>
               <Text style={{ ...style.item }}>{item}</Text>
             </TouchableOpacity>
           ))}
       </View>
-    </ScrollView>
+    </View>
   );
 }
 
 const style = StyleSheet.create({
   container: {
-    flex: 1,
     width: '100%',
     paddingHorizontal: 10,
     paddingTop: 20,
