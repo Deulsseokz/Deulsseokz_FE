@@ -3,7 +3,14 @@ import { formatDate } from '@/utils/formatDate';
 import { Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 import { PolaroidProps } from './_type';
-import { badgeImageMap, feelingImageMap, frameImageMap, weatherImageMap } from './_utli';
+import {
+  badgeImageMap,
+  feelingImageMap,
+  feelingImageMapWhite,
+  frameImageMap,
+  weatherImageMap,
+  weatherImageMapWhite,
+} from './_utli';
 
 interface CustomPolaroidProps {
   /** 폴라로이드에 표시할 사진 정보 */
@@ -24,8 +31,11 @@ export default function CustomPolaroid({ photo, frame, badge }: PolaroidProps & 
   const isBlack = frame === FrameType.BLACK;
   const textColor = { color: isBlack ? '#E9E9E9' : '#4A4A4A' };
 
-  const feelingIcon = feelingImageMap[additional.feeling];
-  const weatherIcon = weatherImageMap[additional.weather];
+  const currentFeelingMap = isBlack ? feelingImageMapWhite : feelingImageMap;
+  const currentWeatherMap = isBlack ? weatherImageMapWhite : weatherImageMap;
+
+  const feelingIcon = currentFeelingMap[additional.feeling];
+  const weatherIcon = currentWeatherMap[additional.weather];
 
   return (
     <View style={styles.stage}>
@@ -40,9 +50,7 @@ export default function CustomPolaroid({ photo, frame, badge }: PolaroidProps & 
               {weatherIcon && <Image source={weatherIcon} style={styles.metaIcon} />}
             </View>
 
-            <Text style={[styles.desc, textColor]} numberOfLines={2}>
-              {additional.desc}
-            </Text>
+            <Text style={[styles.desc, textColor]}>{additional.desc}</Text>
           </View>
 
           <View style={styles.footer}>
@@ -57,7 +65,7 @@ export default function CustomPolaroid({ photo, frame, badge }: PolaroidProps & 
   );
 }
 
-const CARD_WIDTH = 145;
+const CARD_WIDTH = 146;
 
 const styles = StyleSheet.create({
   stage: {
@@ -73,7 +81,7 @@ const styles = StyleSheet.create({
 
   polaroid: {
     width: CARD_WIDTH,
-    paddingTop: 30,
+    paddingTop: 31,
     paddingRight: 9,
     paddingBottom: 10,
     paddingLeft: 9,
@@ -91,7 +99,7 @@ const styles = StyleSheet.create({
     left: 0,
     width: CARD_WIDTH,
     height: '100%',
-    resizeMode: 'contain',
+    resizeMode: 'stretch',
   },
 
   badge: {
