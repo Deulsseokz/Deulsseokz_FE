@@ -1,6 +1,7 @@
 import { ButtonSize, ButtonVariant } from '@/constants/buttonTypes';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { PrimaryButton } from '../Button/PrimaryButton';
 
 interface DefaultModalProps {
@@ -31,43 +32,34 @@ interface DefaultModalProps {
 /**
  * 하단 버튼, 옵션을 제공하는 기본 모달 컴포넌트
  */
-export default function DefaultModal({
-  title,
-  desc,
-  children,
-  buttons,
-  options,
-}: DefaultModalProps) {
+export default function DefaultModal({ title, desc, children, buttons, options }: DefaultModalProps) {
   return (
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.title}>{title}</Text>
-        {desc && <Text style={styles.desc}>{desc}</Text>}
-      </View>
-      {children}
-
-      {buttons && (
-        <PrimaryButton
-          variant={ButtonVariant.Primary}
-          text={buttons.text}
-          onPress={buttons.onPress}
-        />
-      )}
-
-      {options && (
-        <View style={styles.optionsWrapper}>
-          {options.map((option, idx) => (
-            <PrimaryButton
-              key={idx}
-              variant={option.variant}
-              size={ButtonSize.Small}
-              text={option.text}
-              onPress={option.onPress}
-            />
-          ))}
+    <>
+      <View style={styles.container}>
+        <View>
+          <Text style={styles.title}>{title}</Text>
+          {desc && <Text style={styles.desc}>{desc}</Text>}
         </View>
-      )}
-    </View>
+        {children}
+
+        {buttons && <PrimaryButton variant={ButtonVariant.Primary} text={buttons.text} onPress={buttons.onPress} />}
+
+        {options && (
+          <View style={styles.optionsWrapper}>
+            {options.map((option, idx) => (
+              <PrimaryButton
+                key={idx}
+                variant={option.variant}
+                size={ButtonSize.Small}
+                text={option.text}
+                onPress={option.onPress}
+              />
+            ))}
+          </View>
+        )}
+      </View>
+      <Toast />
+    </>
   );
 }
 

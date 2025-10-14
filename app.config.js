@@ -30,6 +30,7 @@ export default {
       entitlements: {
         'aps-environment': 'production',
       },
+      associatedDomains: ['applinks:mellog.vercel.app'],
     },
     android: {
       googleServicesFile: './google-services.json',
@@ -52,8 +53,8 @@ export default {
           data: [
             {
               scheme: 'https',
-              host: 'deulsseokz.github.io',
-              pathPrefix: '/Mellog.github.io/',
+              host: 'mellog.vercel.app',
+              pathPrefix: '/invite',
             },
           ],
           category: ['BROWSABLE', 'DEFAULT'],
