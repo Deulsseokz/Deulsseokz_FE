@@ -2,6 +2,7 @@ import { fetchChallengeInfo } from '@/api/challengeDTO';
 import { getMyFriendsList } from '@/api/myPageDTO';
 import { MyFriendListResponse } from '@/api/type';
 
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 import SearchLocationBtn from '@/components/map/SearchLocationBtn';
 import BottomSheetTemplate from '@/components/template/map/BottomSheetTemplate';
 import MapTemplate from '@/components/template/MapTemplate';
@@ -10,11 +11,12 @@ import { useAuthenticationStore } from '@/store/useAuthenticationStore';
 import { useChallengeListStore } from '@/store/useChallengeListStore';
 import { ChallengeInformation, Coord } from '@/types/challenge';
 import { convertRawChallengeInfo } from '@/utils/convertRawChallengeData';
-import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { router, useFocusEffect, useLocalSearchParams, usePathname } from 'expo-router';
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
-import { Alert, BackHandler, SafeAreaView, StyleSheet, View } from 'react-native';
+import { Alert, BackHandler, StyleSheet, View } from 'react-native';
 
 const MountainMapScreen = () => {
+  const pathname = usePathname();
   // 전역 챌린지 정보
   const { data: parsedChallengeData, fetchData, refetchData, loading } = useChallengeListStore();
   // 바텀시트에 전달되는 챌린지 정보
@@ -42,6 +44,7 @@ const MountainMapScreen = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  
   // 새로운 유저이면 온보딩 화면으로 이동
   useLayoutEffect(() => {
     if (isNew) {
@@ -84,6 +87,12 @@ const MountainMapScreen = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (sheetOpen) {
+      exitSheet();
+    }
+  }, [pathname]);
+
   /**
    * 폴리곤 클릭 이벤트 처리 핸들러
    * @description 클릭한 폴리곤의 id, 챌린지 달성 여부를 받아 챌린지 상세 정보를 받아옵니다.
@@ -114,12 +123,16 @@ const MountainMapScreen = () => {
     setSheetOpen(false);
   };
 
-  if (loading || isLoadingLocation || !location || !parsedChallengeData) {
-    return <SafeAreaView className="flex-1 bg-white" />; // 추후 스피너로 대체 & 로딩 상태 한번에 관리.
+  if (!location || !parsedChallengeData) {
+    return  (
+      <View style={styles.container}>
+        <LoadingSpinner isVisible={true} isOverlayVisible={false}/>
+      </View>
+    );
   }
 
   return (
-    <View style={styles.contianer}>
+    <View style={styles.container}>
       <SearchLocationBtn onPress={() => router.push('/map/location')} />
       <MapTemplate
         challengeLocationData={parsedChallengeData}
@@ -143,8 +156,9 @@ const MountainMapScreen = () => {
 export default MountainMapScreen;
 
 const styles = StyleSheet.create({
-  contianer: {
+  container: {
     flex: 1,
     position: 'relative',
+    backgroundColor: '#fff',
   },
 });

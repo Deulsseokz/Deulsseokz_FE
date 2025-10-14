@@ -3,7 +3,7 @@ import {
   NaverMapMarkerOverlay,
   NaverMapView,
 } from '@mj-studio/react-native-naver-map';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 
 type ChallengeItem = ChallengeLocation & {
@@ -30,15 +30,18 @@ export default function MapTemplate({
   modalOpen,
 }: MapTemplateProps) {
   const mapRef = useRef<NaverMapView>(null);
+  const [isMoveCameraHappened, setIsMoveCameraHappened] = useState(false);
 
   // 초기 이동
   useEffect(() => {
-    if (initialCoord) {
+    if (initialCoord && !isMoveCameraHappened) {
+      // 초기 1번만 이동하도록
       mapRef.current?.animateCameraTo({
         ...initialCoord,
         zoom: 11,
         animation: 'easeIn',
       });
+      setIsMoveCameraHappened(true);
     }
   }, [initialCoord]);
 

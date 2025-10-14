@@ -35,9 +35,9 @@ export default function BottomSheetTemplate({ visible, exitSheet, challengeInfo,
 
   const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
   const insets = useSafeAreaInsets();
-  const sheetHeight = SCREEN_HEIGHT * 0.5;
+  const sheetHeight = SCREEN_HEIGHT * 0.52;
   const router = useRouter();
-
+  
   // 바텀시트 올라오기 애니메이션
   useEffect(() => {
     Animated.timing(translateY, {
@@ -55,6 +55,7 @@ export default function BottomSheetTemplate({ visible, exitSheet, challengeInfo,
           <View style={{ ...styles.contentContainer, gap: 6 }}>
             <ChallengeInfo {...challengeInfo} />
             <ChallengeCondition {...challengeInfo} />
+            {challengeInfo.isChallenged && <ChallengeFriends friends={allFriends.filter(friend => challengeInfo.friends?.includes(friend.userId))} />}
           </View>
         );
       case SheetStep.WITH_WHOM:

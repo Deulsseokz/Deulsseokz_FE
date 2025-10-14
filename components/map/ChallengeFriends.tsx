@@ -14,7 +14,7 @@ interface ChallengeFriendsProps {
 }
 
 function ChallengeFriends({ friends }: ChallengeFriendsProps) {
-  const alone = friends.length == 0;
+  const alone = friends.length === 0;
 
   const text = alone ? '혼자서' : '함께하는 친구';
 
@@ -42,7 +42,7 @@ const style = StyleSheet.create({
     width: '100%',
     backgroundColor: '#f8f8f8',
     borderRadius: 15,
-    paddingVertical: 20,
+    paddingVertical: 15,
     paddingHorizontal: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
