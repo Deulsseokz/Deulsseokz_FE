@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import withFileProvider from './plugins/with-fileprovider';
 import withProviderPaths from './plugins/with-provider-paths';
 import withQueries from './plugins/with-queries';
 
@@ -121,6 +122,7 @@ export default {
       ],
       [withQueries, { packages: ['com.instagram.android'] }],
       [withProviderPaths],
+      [withFileProvider],
     ],
     experiments: {
       typedRoutes: true,
