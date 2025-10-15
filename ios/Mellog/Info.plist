@@ -54,7 +54,6 @@
     <array>
       <string>instagram</string>
       <string>instagram-stories</string>
-      <string>instagramstories</string>
       <string>itms-apps</string>
     </array>
     <key>LSMinimumSystemVersion</key>
