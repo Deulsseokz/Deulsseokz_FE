@@ -1,4 +1,6 @@
 import 'dotenv/config';
+import withProviderPaths from './plugins/with-provider-paths';
+import withQueries from './plugins/with-queries';
 
 export default {
   expo: {
@@ -7,9 +9,19 @@ export default {
     version: '1.0.0',
     owner: 'patrickgong',
     orientation: 'portrait',
-    icon: './assets/images/icon.png',
+    icon: './assets/mellog/ios-light.png',
     scheme: 'mellog',
     userInterfaceStyle: 'automatic',
+    splash: {
+      image: './assets/mellog/splash-icon-light.png',
+      resizeMode: 'contain',
+      backgroundColor: '#ffffff',
+      dark: {
+        image: './assets/mellog/splash-icon-dark.png',
+        resizeMode: 'contain',
+        backgroundColor: '#000000',
+      },
+    },
     newArchEnabled: true,
     ios: {
       googleServicesFile: './GoogleService-Info.plist',
@@ -21,7 +33,7 @@ export default {
         NSLocationAlwaysUsageDescription: '항상 위치 권한을 요청하는 이유를 설명합니다. (필요한 경우에만 사용)',
         NSCameraUsageDescription: '사진을 촬영하려면 카메라 접근이 필요합니다.',
         NSPhotoLibraryUsageDescription: '사진을 선택하려면 앨범 접근이 필요합니다.',
-        LSApplicationQueriesSchemes: ['instagram-stories'],
+        LSApplicationQueriesSchemes: ['instagram', 'instagram-stories', 'itms-apps'],
       },
       useAppleSignIn: true,
       config: {
@@ -35,13 +47,13 @@ export default {
     android: {
       googleServicesFile: './google-services.json',
       package: 'com.mellog.deulseokzz',
-      queries: [
-        {
-          package: 'com.instagram.android',
-        },
-      ],
+      // queries: [
+      //   {
+      //     package: 'com.instagram.android',
+      //   },
+      // ],
       adaptiveIcon: {
-        foregroundImage: './assets/images/adaptive-icon.png',
+        foregroundImage: './assets/mellog/android-adaptive-icon.png',
         backgroundColor: '#ffffff',
       },
       edgeToEdgeEnabled: true,
@@ -85,15 +97,7 @@ export default {
           },
         },
       ],
-      [
-        'expo-splash-screen',
-        {
-          image: './assets/images/splash-icon.png',
-          imageWidth: 200,
-          resizeMode: 'contain',
-          backgroundColor: '#ffffff',
-        },
-      ],
+      'expo-splash-screen',
       [
         'expo-build-properties',
         {
@@ -102,7 +106,6 @@ export default {
               'https://repository.map.naver.com/archive/maven',
               '../../node_modules/@notifee/react-native/android/libs',
             ],
-            package: 'com.instagram.android',
           },
           ios: {
             queries: ['instagram', 'instagram-stories'],
@@ -116,6 +119,8 @@ export default {
           iosUrlScheme: 'com.googleusercontent.apps.711444441700-kvqpr2rvkmb0c80dfbrrer4tlto31j15',
         },
       ],
+      [withQueries, { packages: ['com.instagram.android'] }],
+      [withProviderPaths],
     ],
     experiments: {
       typedRoutes: true,
