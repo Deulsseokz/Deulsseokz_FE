@@ -3,7 +3,7 @@ import notifee, { AndroidImportance } from '@notifee/react-native';
 import analytics from '@react-native-firebase/analytics';
 import { getMessaging, setBackgroundMessageHandler } from '@react-native-firebase/messaging';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { Stack } from 'expo-router';
+import { Stack, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -64,10 +64,10 @@ function RootNavigator() {
   useEffect(() => {
     const logScreenView = async () => {
       if (pathname) {
-      await analytics().logEvent('screen_view', {
-        screen_name: pathname,
-        screen_class: pathname,
-      });
+        await analytics().logEvent('screen_view', {
+          screen_name: pathname,
+          screen_class: pathname,
+        });
       }
     };
 
