@@ -3,15 +3,17 @@ import notifee, { AndroidImportance } from '@notifee/react-native';
 import analytics from '@react-native-firebase/analytics';
 import { getMessaging, setBackgroundMessageHandler } from '@react-native-firebase/messaging';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { Stack, usePathname } from 'expo-router';
+import { Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { SplashScreenController } from '../components/auth/splash';
 import { useAuthenticationStore } from '../store/useAuthenticationStore';
 
-// @description 앱이 백그라운드나 종료된 상태에서 메시지를 받았을 때 실행되는 함수
+SplashScreen.preventAutoHideAsync();
 
+// @description 앱이 백그라운드나 종료된 상태에서 메시지를 받았을 때 실행되는 함수
 setBackgroundMessageHandler(getMessaging(), async remoteMessage => {
   const { isAuthenticated } = useAuthenticationStore.getState();
   if (!isAuthenticated) {
