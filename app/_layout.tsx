@@ -1,5 +1,6 @@
 import { toastConfig } from '@/components/common/Toast/ToastWrapper';
 import notifee, { AndroidImportance } from '@notifee/react-native';
+import analytics from '@react-native-firebase/analytics';
 import { getMessaging, setBackgroundMessageHandler } from '@react-native-firebase/messaging';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Stack } from 'expo-router';
@@ -53,10 +54,25 @@ export default function Root() {
 
 function RootNavigator() {
   const { isAuthenticated, checkAuthStatus } = useAuthenticationStore();
+  const pathname = usePathname();
 
   useEffect(() => {
     checkAuthStatus();
   }, [checkAuthStatus]);
+
+  // 화면 전환 시마다 화면 이름을 Firebase Analytics에 기록
+  useEffect(() => {
+    const logScreenView = async () => {
+      if (pathname) {
+      await analytics().logEvent('screen_view', {
+        screen_name: pathname,
+        screen_class: pathname,
+      });
+      }
+    };
+
+    logScreenView();
+  }, [pathname]);
 
   return (
     <Stack screenOptions={{ headerShown: false }}>

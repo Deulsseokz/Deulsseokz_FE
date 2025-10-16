@@ -37,7 +37,7 @@ export default function BottomSheetTemplate({ visible, exitSheet, challengeInfo,
   const insets = useSafeAreaInsets();
   const sheetHeight = SCREEN_HEIGHT * 0.52;
   const router = useRouter();
-  
+
   // 바텀시트 올라오기 애니메이션
   useEffect(() => {
     Animated.timing(translateY, {
