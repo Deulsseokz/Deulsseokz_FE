@@ -6,7 +6,6 @@ import LoadingSpinner from "@/components/common/LoadingSpinner";
 import SearchLocationBtn from '@/components/map/SearchLocationBtn';
 import BottomSheetTemplate from '@/components/template/map/BottomSheetTemplate';
 import MapTemplate from '@/components/template/MapTemplate';
-import { useUserLocation } from '@/hooks/useUserLocation';
 import { useAuthenticationStore } from '@/store/useAuthenticationStore';
 import { useChallengeListStore } from '@/store/useChallengeListStore';
 import { ChallengeInformation, Coord } from '@/types/challenge';
@@ -22,7 +21,6 @@ const MountainMapScreen = () => {
   // 바텀시트에 전달되는 챌린지 정보
   const [selectedChallengeInfo, setSelectedChallengeInfo] = useState<ChallengeInformation | null>(null);
   // 유저의 위치 관리
-  const [location, isLoadingLocation] = useUserLocation();
   // 모달 시트 종류 관리
   const [sheetOpen, setSheetOpen] = useState<boolean>(false);
   // fetching 상태 관리
@@ -137,7 +135,6 @@ const MountainMapScreen = () => {
       <MapTemplate
         challengeLocationData={parsedChallengeData}
         handleClickPolygon={handleClickPolygon}
-        userLocation={location}
         initialCoord={initialCoord}
         modalOpen={sheetOpen}
       />
