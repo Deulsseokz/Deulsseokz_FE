@@ -11,7 +11,7 @@
     "preview": {
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_BASE_URL": "https://mellog-api-git-main-patrickgong-projects.vercel.app"
+        "EXPO_PUBLIC_BASE_URL": "https://melog.store"
       }
     },
     "production": {
