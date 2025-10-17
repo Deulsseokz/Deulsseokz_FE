@@ -13,7 +13,6 @@ type ChallengeItem = ChallengeLocation & {
 interface MapTemplateProps {
   challengeLocationData: ChallengeItem[];
   handleClickPolygon: (challengeId: number, isChallenged: boolean) => void;
-  userLocation: Coord | null;
   initialCoord?: Coord;
   modalOpen: boolean;
 }
@@ -25,7 +24,6 @@ const IMG_DONE = require('../../assets/images/map/icon_done.png');
 export default function MapTemplate({
   challengeLocationData,
   handleClickPolygon,
-  userLocation,
   initialCoord,
   modalOpen,
 }: MapTemplateProps) {
