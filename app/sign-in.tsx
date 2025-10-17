@@ -3,6 +3,7 @@ import { useAuthenticationStore } from '@/store/useAuthenticationStore';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import axios from 'axios';
 import * as AppleAuthentication from 'expo-apple-authentication';
+import { Alert, Platform } from 'react-native';
 
 export default function SignIn() {
   const { signIn, setIsNew } = useAuthenticationStore();
@@ -25,25 +26,29 @@ export default function SignIn() {
   };
 
   const appleSignIn = async () => {
-    try {
-      const credential = await AppleAuthentication.signInAsync({
-        requestedScopes: [
-          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-          AppleAuthentication.AppleAuthenticationScope.EMAIL,
-        ],
-      });
+    if (Platform.OS === 'ios') {
+      try {
+        const credential = await AppleAuthentication.signInAsync({
+          requestedScopes: [
+            AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+            AppleAuthentication.AppleAuthenticationScope.EMAIL,
+          ],
+        });
 
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_BASE_URL}/auth/apple`, {
-        identityToken: credential.identityToken,
-      });
+        const res = await axios.post(`${process.env.EXPO_PUBLIC_BASE_URL}/auth/apple`, {
+          identityToken: credential.identityToken,
+        });
 
-      if (res.data.isNew) {
-        setIsNew(true);
+        if (res.data.isNew) {
+          setIsNew(true);
+        }
+
+        await signIn(res.data.access, res.data.refresh);
+      } catch (error) {
+        console.error(error);
       }
-
-      await signIn(res.data.access, res.data.refresh);
-    } catch (error) {
-      console.error(error);
+    } else {
+      Alert.alert('애플 로그인은 안드로이드에서만 가능합니다.');
     }
   };
 
