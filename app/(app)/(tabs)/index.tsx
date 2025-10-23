@@ -2,7 +2,7 @@ import { fetchChallengeInfo } from '@/api/challengeDTO';
 import { getMyFriendsList } from '@/api/myPageDTO';
 import { MyFriendListResponse } from '@/api/type';
 
-import LoadingSpinner from "@/components/common/LoadingSpinner";
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 import SearchLocationBtn from '@/components/map/SearchLocationBtn';
 import BottomSheetTemplate from '@/components/template/map/BottomSheetTemplate';
 import MapTemplate from '@/components/template/MapTemplate';
@@ -42,7 +42,7 @@ const MountainMapScreen = () => {
   useEffect(() => {
     fetchData();
   }, []);
-  
+
   // 새로운 유저이면 온보딩 화면으로 이동
   useLayoutEffect(() => {
     if (isNew) {
@@ -121,10 +121,10 @@ const MountainMapScreen = () => {
     setSheetOpen(false);
   };
 
-  if (!location || !parsedChallengeData) {
-    return  (
+  if (!parsedChallengeData) {
+    return (
       <View style={styles.container}>
-        <LoadingSpinner isVisible={true} isOverlayVisible={false}/>
+        <LoadingSpinner isVisible={true} isOverlayVisible={false} />
       </View>
     );
   }
