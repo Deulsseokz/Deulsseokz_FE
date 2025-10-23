@@ -79,6 +79,10 @@ export default {
       output: 'static',
       favicon: './assets/images/favicon.png',
     },
+    updates: {
+      url: 'https://u.expo.dev/0b8c439b-7629-447f-a13a-e3985fe9703f',
+    },
+    runtimeVersion: '1.0.0',
     plugins: [
       'expo-router',
       'expo-secure-store',

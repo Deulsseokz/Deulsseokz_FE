@@ -67,31 +67,31 @@ export default function RootLayout() {
   };
 
   // android location persmission 요청
-  useEffect(() => {
-    const requestLocationPermission = async () => {
-    if (Platform.OS === 'android') {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: "위치 정보 권한 요청",
-          message: "앱에서 사용자의 위치 정보에 접근하려고 합니다.",
-          buttonNeutral: "나중에 다시 확인",
-          buttonNegative: "거부",
-          buttonPositive: "허용"
-        }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("위치 정보 접근 권한이 허용되었습니다.");
-      } else {
-        console.log("위치 정보 접근 권한이 거부되었습니다.");
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  }}
-    requestLocationPermission();
-  }, []);
+  // useEffect(() => {
+  //   const requestLocationPermission = async () => {
+  //   if (Platform.OS === 'android') {
+  //   try {
+  //     const granted = await PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+  //       {
+  //         title: "위치 정보 권한 요청",
+  //         message: "앱에서 사용자의 위치 정보에 접근하려고 합니다.",
+  //         buttonNeutral: "나중에 다시 확인",
+  //         buttonNegative: "거부",
+  //         buttonPositive: "허용"
+  //       }
+  //     );
+  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //       console.log("위치 정보 접근 권한이 허용되었습니다.");
+  //     } else {
+  //       console.log("위치 정보 접근 권한이 거부되었습니다.");
+  //     }
+  //   } catch (err) {
+  //     console.warn(err);
+  //   }
+  // }}
+  //   requestLocationPermission();
+  // }, []);
 
   const handleNotificationNavigation = async (data: { attemptId: string; type: string } | undefined) => {
     if (data) {
