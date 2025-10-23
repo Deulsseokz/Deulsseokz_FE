@@ -73,6 +73,7 @@ export default {
           category: ['BROWSABLE', 'DEFAULT'],
         },
       ],
+      versionCode: 2,
     },
     web: {
       bundler: 'metro',
