@@ -1,4 +1,4 @@
-import { deleteMyFriend, getFriendProfile } from '@/api/myPageDTO';
+import { deleteMyFriend, getFriendProfile, getInviteLink } from '@/api/myPageDTO';
 import { FriendProfileResponse } from '@/api/type';
 import IconAddFriend from '@/assets/icons/icon-addFriend.svg';
 import { TopBar } from '@/components/common/TopBar';
@@ -9,7 +9,8 @@ import { MCOLORS } from '@/constants/colors';
 import { fontStyles } from '@/constants/fonts';
 import { ModalType } from '@/enums/modalTypes';
 import { FriendsList } from '@/types/friend';
-import React, { useState } from 'react';
+import { router } from 'expo-router';
+import React, { useLayoutEffect, useState } from 'react';
 import { Share, StyleSheet, Text, View } from 'react-native';
 import FriendProfileModal from '../mypage/FriendProfileModal';
 
@@ -22,6 +23,17 @@ export default function MyPageFriendTemplate({
   setIsProfileVisible,
 }: FriendsList) {
   const [friendProfileData, setFriendProfileData] = useState<FriendProfileResponse | null>(null);
+  const [inviteLink, setInviteLink] = useState<string>('');
+
+  useLayoutEffect(() => {
+    getInviteLink()
+      .then(res => {
+        setInviteLink(res.result.url);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }, []);
 
   const handleOpenInviteModal = () => {
     onOpenInviteModal(ModalType.DEFAULT, {
@@ -31,7 +43,7 @@ export default function MyPageFriendTemplate({
         { variant: ButtonVariant.Subtle, text: '취소', onPress: onCloseInviteModal },
         { variant: ButtonVariant.Primary, text: '공유하기', onPress: shareLink },
       ],
-      children: <LinkContainer />,
+      children: <LinkContainer inviteLink={inviteLink} />,
     });
   };
 
@@ -57,9 +69,8 @@ export default function MyPageFriendTemplate({
 
   const shareLink = async () => {
     try {
-      const inviteLink = 'https://www.melog.com/invite/123';
       await Share.share({
-        message: `${inviteLink} 초대 링크를 공유합니다.`,
+        message: `${inviteLink}\n당신을 멜로그로 초대합니다!`,
       });
     } catch (error) {
       console.error(error);
@@ -77,7 +88,12 @@ export default function MyPageFriendTemplate({
         />
       )}
       <View style={styles.page}>
-        <TopBar title="친구 관리" rightButton={<IconAddFriend />} onRightPress={handleOpenInviteModal} />
+        <TopBar
+          title="친구 관리"
+          rightButton={<IconAddFriend />}
+          onRightPress={handleOpenInviteModal}
+          onBack={() => router.replace('/mypage')}
+        />
         <View style={styles.viewContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>친구</Text>

@@ -1,24 +1,11 @@
-import { getInviteLink } from '@/api/myPageDTO';
 import IconCopy from '@/assets/icons/icon-copy.svg';
 import { MCOLORS } from '@/constants/colors';
 import { fontStyles } from '@/constants/fonts';
 import { showSuccessToast } from '@/utils/toastManager';
 import * as Clipboard from 'expo-clipboard';
-import { useLayoutEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-export default function LinkContainer() {
-  const [inviteLink, setInviteLink] = useState<string>('');
-  useLayoutEffect(() => {
-    getInviteLink()
-      .then(res => {
-        setInviteLink(res.result.url);
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  }, []);
-
+export default function LinkContainer({ inviteLink }: { inviteLink: string }) {
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(inviteLink);
     showSuccessToast('초대링크를 복사했어요.');
