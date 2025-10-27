@@ -12,13 +12,15 @@
       "distribution": "internal",
       "env": {
         "EXPO_PUBLIC_BASE_URL": "https://melog.store"
-      }
+      },
+      "channel": "preview"
     },
     "production": {
       "autoIncrement": true,
       "env": {
         "EXPO_PUBLIC_BASE_URL": "https://melog.store"
-      }
+      },
+      "channel": "production"
     }
   },
   "submit": {
