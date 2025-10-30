@@ -4,12 +4,14 @@ import PhotoSet from '@/components/album/Photoset';
 import { useRouter } from 'expo-router';
 import {
   ImageSourcePropType,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
   View,
   useWindowDimensions,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Props {
   title: string;
@@ -24,12 +26,15 @@ interface Props {
 export default function AlbumHomeTemplate({ title, albums }: Props) {
   const router = useRouter();
   const { width } = useWindowDimensions();
+  const { bottom } = useSafeAreaInsets();
   const isSmallScreen = width < 400;
+
+  const bottomPadding = Platform.OS === 'ios' ? bottom + 70 : bottom;
 
   const normalizeImages = (photo: string | string[] | null): ImageSourcePropType[] => {
     if (!photo) return [];
     if (Array.isArray(photo)) {
-      return photo.map((url) => ({ uri: url }));
+      return photo.map(url => ({ uri: url }));
     }
     return [{ uri: photo }];
   };
@@ -37,7 +42,7 @@ export default function AlbumHomeTemplate({ title, albums }: Props) {
   /** 앨범 없을 때 */
   if (!albums || albums.length === 0) {
     return (
-      <View style={styles.page}>
+      <View style={[styles.page, { paddingBottom: bottomPadding }]}>
         <Text style={styles.title}>{title}</Text>
         <View style={styles.emptyContainer}>
           <EmptyBox width={102} height={102} />
