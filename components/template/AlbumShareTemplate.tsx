@@ -183,15 +183,14 @@ export default AlbumShareTemplate;
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-    alignItems: 'center',
     backgroundColor: '#fff',
   },
   container: {
     flex: 1,
-    width: '100%',
+    paddingHorizontal: 20,
+    paddingBottom: 20,
     alignItems: 'center',
+    width: '100%',
     justifyContent: 'center',
     gap: '30',
   },
