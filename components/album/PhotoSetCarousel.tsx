@@ -1,14 +1,72 @@
 import fontStyles from '@/constants/fonts';
 import { formatDate } from '@/utils/formatDate';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 import { PolaroidPhoto } from './_type';
 import { feelingImageMap, weatherImageMap } from './_utli';
 import PeopleOverlay from './PeopleOverlay';
+
 const { width: windowWidth } = Dimensions.get('window');
 const CARD_WIDTH = windowWidth * 0.7;
 const CARD_HEIGHT = 514;
+
+/**
+ * 캐러셀 아이템을 렌더링하는 내부 컴포넌트
+ * - 이미지 로딩 상태를 자체적으로 관리하기 위함ㅇ
+ */
+interface CarouselItemProps {
+  item: PolaroidPhoto;
+  expanded: boolean;
+  onPress: () => void;
+}
+
+const CarouselItem = ({ item, expanded, onPress }: CarouselItemProps) => {
+  const [isLoading, setIsLoading] = useState(false); // 이미지 로딩 상태
+
+  const feelingIcon = feelingImageMap[item.additional.feeling];
+  const weatherIcon = weatherImageMap[item.additional.weather];
+
+  return (
+    <Pressable onPress={onPress} style={styles.card}>
+      <View style={styles.polaroid}>
+        {/* 이미지 + 오버레이 */}
+        <View style={styles.imageBox}>
+          <Image
+            source={item.image}
+            style={styles.image}
+            onLoadStart={() => setIsLoading(true)} // 로딩 시작
+            onLoadEnd={() => setIsLoading(false)} // 로딩 종료 (성공/실패 무관)
+          />
+          {/* 로딩 중일 때 인디케이터 표시 */}
+          {isLoading && <ActivityIndicator style={styles.loadingIndicator} size="large" color="#F76F8E" />}
+          <PeopleOverlay people={item.additional.people ?? []} expanded={expanded} onToggle={onPress} />
+        </View>
+
+        {/* 추가 정보 */}
+        <View style={styles.additional}>
+          {(feelingIcon || weatherIcon) && (
+            <View style={styles.emojiRow}>
+              {feelingIcon && <Image source={feelingIcon} style={styles.emojiIcon} resizeMode="contain" />}
+              {weatherIcon && <Image source={weatherIcon} style={styles.emojiIcon} resizeMode="contain" />}
+            </View>
+          )}
+
+          {item.additional.desc?.length > 0 && (
+            <Text style={styles.desc} numberOfLines={expanded ? undefined : 2}>
+              {item.additional.desc}
+            </Text>
+          )}
+        </View>
+
+        <View style={styles.footer}>
+          <Text style={styles.date}>{formatDate(item.date)}</Text>
+          <Text style={styles.loc}>{item.loc}</Text>
+        </View>
+      </View>
+    </Pressable>
+  );
+};
 
 interface PhotoSetCarouselProps {
   /** 폴라로이드 사진 리스트 */
@@ -45,45 +103,11 @@ export default function PhotoSetCarousel({ photos, activeIndex, setActiveIndex }
         renderItem={({ item, index }) => {
           const expanded = expandedIndex === index;
 
-          const feelingIcon = feelingImageMap[item.additional.feeling];
-          const weatherIcon = weatherImageMap[item.additional.weather];
-
           const handlePress = () => {
             setExpandedIndex(expanded ? null : index);
           };
 
-          return (
-            <Pressable onPress={handlePress} style={styles.card}>
-              <View style={styles.polaroid}>
-                {/* 이미지 + 오버레이 */}
-                <View style={styles.imageBox}>
-                  <Image source={item.image} style={styles.image} />
-                  <PeopleOverlay people={item.additional.people ?? []} expanded={expanded} onToggle={handlePress} />
-                </View>
-
-                {/* 추가 정보 */}
-                <View style={styles.additional}>
-                  {(feelingIcon || weatherIcon) && (
-                    <View style={styles.emojiRow}>
-                      {feelingIcon && <Image source={feelingIcon} style={styles.emojiIcon} resizeMode="contain" />}
-                      {weatherIcon && <Image source={weatherIcon} style={styles.emojiIcon} resizeMode="contain" />}
-                    </View>
-                  )}
-
-                  {item.additional.desc?.length > 0 && (
-                    <Text style={styles.desc} numberOfLines={expanded ? undefined : 2}>
-                      {item.additional.desc}
-                    </Text>
-                  )}
-                </View>
-
-                <View style={styles.footer}>
-                  <Text style={styles.date}>{formatDate(item.date)}</Text>
-                  <Text style={styles.loc}>{item.loc}</Text>
-                </View>
-              </View>
-            </Pressable>
-          );
+          return <CarouselItem item={item} expanded={expanded} onPress={handlePress} />;
         }}
       />
     </View>
@@ -111,6 +135,18 @@ const styles = StyleSheet.create({
   /** 이미지 + 오버레이 */
   imageBox: { position: 'relative', width: '100%', height: 300 },
   image: { width: '100%', height: '100%', resizeMode: 'cover' },
+
+  /** 로딩 인디케이터 스타일 */
+  loadingIndicator: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+  },
 
   /** 추가정보/푸터 */
   additional: { minHeight: 80, display: 'flex', flexDirection: 'column', gap: 5 },
