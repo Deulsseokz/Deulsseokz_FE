@@ -99,6 +99,7 @@ export default function MapTemplate({
           : { latitude: 37.5665, longitude: 126.978, zoom: 12 }
       }
       isExtentBoundedInKorea
+      isShowLocationButton={false}
     >
       <>
         {todoMarkers.map(m => (
