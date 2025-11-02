@@ -11,14 +11,16 @@
     "preview": {
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_BASE_URL": "https://melog.store"
+        "EXPO_PUBLIC_BASE_URL": "https://melog.store",
+        "EXPO_PUBLIC_META_APP_ID": "1441654617113010"
       },
       "channel": "preview"
     },
     "production": {
       "autoIncrement": true,
       "env": {
-        "EXPO_PUBLIC_BASE_URL": "https://melog.store"
+        "EXPO_PUBLIC_BASE_URL": "https://melog.store",
+        "EXPO_PUBLIC_META_APP_ID": "1441654617113010"
       },
       "channel": "production"
     }
