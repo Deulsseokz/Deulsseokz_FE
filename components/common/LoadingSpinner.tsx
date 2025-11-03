@@ -33,6 +33,6 @@ const styles = StyleSheet.create({
     zIndex: 1000,
   },
   overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
 });
