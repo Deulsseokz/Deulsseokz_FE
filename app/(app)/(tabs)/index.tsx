@@ -12,7 +12,7 @@ import { ChallengeInformation, Coord } from '@/types/challenge';
 import { convertRawChallengeInfo } from '@/utils/convertRawChallengeData';
 import { router, useFocusEffect, useLocalSearchParams, usePathname } from 'expo-router';
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
-import { Alert, BackHandler, StyleSheet, View } from 'react-native';
+import { Alert, BackHandler, Modal, StyleSheet, View } from 'react-native';
 
 const MountainMapScreen = () => {
   const pathname = usePathname();
@@ -122,15 +122,15 @@ const MountainMapScreen = () => {
   };
 
   if (!parsedChallengeData) {
-    return (
-      <View style={styles.container}>
-        <LoadingSpinner isVisible={true} isOverlayVisible={false} />
-      </View>
-    );
+    return <LoadingSpinner isVisible={true} isOverlayVisible={false} />;
   }
 
   return (
     <View style={styles.container}>
+      <Modal visible={isFetching} transparent={true} animationType="none">
+        <LoadingSpinner isVisible={true} isOverlayVisible={true} />
+      </Modal>
+
       <SearchLocationBtn onPress={() => router.push('/map/location')} />
       <MapTemplate
         challengeLocationData={parsedChallengeData}
