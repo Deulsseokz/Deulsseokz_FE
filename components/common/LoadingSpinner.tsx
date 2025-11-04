@@ -19,7 +19,7 @@ export default function LoadingSpinner({ isVisible, color = '#F76F8E', isOverlay
   }
 
   return (
-    <View style={{...styles.container, ...(isOverlayVisible ? styles.overlay : {})}}>
+    <View style={{ ...styles.container, ...(isOverlayVisible ? styles.overlay : {}) }}>
       <ActivityIndicator size="large" color={color} />
     </View>
   );
@@ -27,10 +27,10 @@ export default function LoadingSpinner({ isVisible, color = '#F76F8E', isOverlay
 
 const styles = StyleSheet.create({
   container: {
-  ...StyleSheet.absoluteFillObject,
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 1000,
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
   },
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.4)',

@@ -15,6 +15,8 @@
     "@expo/vector-icons": "^14.1.0",
     "@mj-studio/react-native-naver-map": "^2.5.2",
     "@notifee/react-native": "^9.1.8",
+    "@react-native-async-storage/async-storage": "2.1.2",
+    "@react-native-firebase/analytics": "23.3.1",
     "@react-native-firebase/app": "^23.3.1",
     "@react-native-firebase/messaging": "^23.3.1",
     "@react-native-google-signin/google-signin": "^15.0.0",
@@ -23,6 +25,7 @@
     "@react-navigation/native": "^7.1.6",
     "axios": "^1.10.0",
     "babel-plugin-dotenv-import": "^3.0.1",
+    "babel-plugin-react-compiler": "^19.0.0-beta-af1b7da-20250417",
     "dayjs": "^1.11.13",
     "expo": "53.0.19",
     "expo-apple-authentication": "~7.2.4",
@@ -45,6 +48,7 @@
     "expo-status-bar": "~2.2.3",
     "expo-symbols": "~0.4.5",
     "expo-system-ui": "~5.0.10",
+    "expo-updates": "~0.28.17",
     "expo-web-browser": "~14.2.0",
     "lottie-react-native": "^5.1.6",
     "react": "19.0.0",
@@ -63,10 +67,7 @@
     "react-native-view-shot": "4.0.3",
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
-    "zustand": "^5.0.6",
-    "@react-native-async-storage/async-storage": "2.1.2",
-    "@react-native-firebase/analytics": "23.3.1",
-    "expo-updates": "~0.28.17"
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -75,6 +76,7 @@
     "@types/react": "~19.0.10",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~9.2.0",
+    "eslint-plugin-react-compiler": "^19.1.0-rc.2",
     "react-native-svg-transformer": "^1.5.1",
     "typescript": "~5.8.3"
   },
