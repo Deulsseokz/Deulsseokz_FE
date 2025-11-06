@@ -22,6 +22,7 @@ export default function SignIn() {
       await signIn(res.data.access, res.data.refresh);
     } catch (error) {
       console.log(error);
+      Alert.alert('구글 로그인 실패', 'owlcountry01@gmail.com으로 문의해주세요.');
     }
   };
 
@@ -46,6 +47,7 @@ export default function SignIn() {
         await signIn(res.data.access, res.data.refresh);
       } catch (error) {
         console.error(error);
+        Alert.alert('애플 로그인 실패', 'owlcountry01@gmail.com으로 문의해주세요.');
       }
     } else {
       Alert.alert('애플 로그인은 안드로이드에서만 가능합니다.');

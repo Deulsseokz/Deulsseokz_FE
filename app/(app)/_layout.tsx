@@ -36,6 +36,7 @@ export default function RootLayout() {
 
       if (!enabled) {
         console.log('Notification permission denied');
+        Alert.alert('알림 권한 설정', '알림 권한을 허용해야만 앱의 주요 기능을 사용할 수 있습니다.');
         return;
       }
     } else if (Platform.OS === 'android') {
@@ -43,7 +44,7 @@ export default function RootLayout() {
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log('Notification permission granted');
       } else {
-        Alert.alert('알림 권한 설정', '알림 권한을 허용해야만 앱의 기능을 사용할 수 있습니다.');
+        Alert.alert('알림 권한 설정', '알림 권한을 허용해야만 앱의 주요 기능을 사용할 수 있습니다.');
         return;
       }
     }
