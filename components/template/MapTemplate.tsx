@@ -3,7 +3,8 @@ import {
   NaverMapMarkerOverlay,
   NaverMapView,
 } from '@mj-studio/react-native-naver-map';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useIsFocused } from "@react-navigation/native";
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 
 type ChallengeItem = ChallengeLocation & {
@@ -27,6 +28,7 @@ export default function MapTemplate({
   initialCoord,
   modalOpen,
 }: MapTemplateProps) {
+  const isFocused = useIsFocused();
   const mapRef = useRef<NaverMapView>(null);
   const [isMoveCameraHappened, setIsMoveCameraHappened] = useState(false);
 
@@ -41,44 +43,30 @@ export default function MapTemplate({
       });
       setIsMoveCameraHappened(true);
     }
-  }, [initialCoord]);
+  }, [initialCoord, isMoveCameraHappened]);
 
-  // 좌표 헬퍼(사용자 데이터가 lat/lng 또는 latitude/longitude 모두 올 수 있어서 통일)
-  const toCoord = (c: ChallengeItem['center']): Coord => ({
+  const toCoord = useCallback((c: ChallengeItem['center']): Coord => ({
     latitude: c.latitude ?? c.lat ?? 0,
     longitude: c.longitude ?? c.lng ?? 0,
-  });
+  }), []);
 
-  // done / todo 분리
-  const { doneMarkers, todoMarkers } = useMemo(() => {
-    const done = [];
-    const todo = [];
-    for (const item of challengeLocationData) {
+  const allMarkers = useMemo(() => {
+    return challengeLocationData.map(item => {
       const coord = toCoord(item.center);
-      const base = {
+      const isDone = item.isChallenged;
+
+      return {
         identifier: String(item.challengeId),
         latitude: coord.latitude,
         longitude: coord.longitude,
+        isChallenged: isDone,
+        image: isDone ? IMG_DONE : IMG_TODO,
+        zIndex: isDone ? 2000 : 1000, 
+        width: 50,
+        height: 50,
       };
-
-      if (item.isChallenged) {
-        done.push({
-          ...base,
-          image: IMG_DONE,
-          width: 50,
-          height: 50,
-        });
-      } else {
-        todo.push({
-          ...base,
-          image: IMG_TODO,
-          width: 50,
-          height: 50,
-        });
-      }
-    }
-    return { doneMarkers: done, todoMarkers: todo };
-  }, [challengeLocationData]);
+    });
+  }, [challengeLocationData, toCoord]);
 
   return (
     <NaverMapView
@@ -101,39 +89,21 @@ export default function MapTemplate({
       isExtentBoundedInKorea
       isShowLocationButton={false}
     >
-      <>
-        {todoMarkers.map(m => (
-          <NaverMapMarkerOverlay
-            key={`todo-${m.identifier}`}
-            latitude={m.latitude}
-            longitude={m.longitude}
-            image={m.image}
-            width={50}
-            height={50}
-            onTap={() => {
-              const id = Number(m.identifier);
-              handleClickPolygon(id, false);
-            }}
-            zIndex={1000}
-          />
-        ))}
-
-        {doneMarkers.map(m => (
-          <NaverMapMarkerOverlay
-            key={`done-${m.identifier}`}
-            latitude={m.latitude}
-            longitude={m.longitude}
-            image={m.image}
-            width={50}
-            height={50}
-            onTap={() => {
-              const id = Number(m.identifier);
-              handleClickPolygon(id, true);
-            }}
-            zIndex={2000}
-          />
-        ))}
-      </>
+      {isFocused && allMarkers.map(m => (
+        <NaverMapMarkerOverlay
+          key={m.identifier}
+          latitude={m.latitude}
+          longitude={m.longitude}
+          image={m.image}
+          width={m.width}
+          height={m.height}
+          onTap={() => {
+            const id = Number(m.identifier);
+            handleClickPolygon(id, m.isChallenged);
+          }}
+          zIndex={m.zIndex}
+        />
+      ))}
     </NaverMapView>
   );
 }
