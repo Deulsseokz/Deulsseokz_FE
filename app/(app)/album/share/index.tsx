@@ -10,6 +10,10 @@ import ViewShot from 'react-native-view-shot';
 const frameOptions = [
   { type: FrameType.WHITE, label: '흰색' },
   { type: FrameType.BLACK, label: '검정색' },
+  { type: FrameType.CHRISTMAS, label: '크리스마스', price: 80 },
+  { type: FrameType.TREE, label: '트리', price: 80 },
+  { type: FrameType.RIBBON, label: '리본', price: 80 },
+  { type: FrameType.LINE, label: '줄무늬', price: 80 },
   { type: FrameType.RAINBOW, label: '레인보우', price: 20 },
   { type: FrameType.HANDWRITING, label: '손글씨', price: 80 },
   { type: FrameType.SHAPE, label: '손글씨', price: 80 },
