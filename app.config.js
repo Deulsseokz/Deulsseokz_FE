@@ -10,7 +10,7 @@ export default {
     version: '1.0.4',
     owner: 'patrickgong',
     orientation: 'portrait',
-    icon: './assets/mellog/ios-light.png',
+    icon: './assets/mellog/ios-light.jpg',
     scheme: 'mellog',
     userInterfaceStyle: 'automatic',
     splash: {
