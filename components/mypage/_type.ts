@@ -29,6 +29,8 @@ export type RegionConquerRateList = Record<RegionName, number>;
 export type ChallengeCompletionStatus = {
   regionName: Record<RegionName, Record<string, boolean>>;
 }
+
+/*
  * 친구 프로필 모달 props 타입
  */
 export interface FriendProfileModalProps {

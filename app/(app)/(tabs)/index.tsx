@@ -43,6 +43,13 @@ const MountainMapScreen = () => {
     fetchData();
   }, []);
 
+  // 챌린지 리스트 화면에서 돌아왔을 때 데이터 리패치
+  useFocusEffect(
+    useCallback(() => {
+      refetchData();
+    }, []),
+  );
+
   // 새로운 유저이면 온보딩 화면으로 이동
   useLayoutEffect(() => {
     if (isNew) {
