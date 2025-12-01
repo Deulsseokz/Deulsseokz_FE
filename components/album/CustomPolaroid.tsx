@@ -28,7 +28,7 @@ interface CustomPolaroidProps {
 export default function CustomPolaroid({ photo, frame, badge }: PolaroidProps & CustomPolaroidProps) {
   const { image, additional, date } = photo;
 
-  const isBlack = frame === FrameType.BLACK || FrameType.LINE;
+  const isBlack = frame === FrameType.BLACK || frame === FrameType.LINE;
   const textColor = { color: isBlack ? '#E9E9E9' : '#4A4A4A' };
 
   const currentFeelingMap = isBlack ? feelingImageMapWhite : feelingImageMap;
