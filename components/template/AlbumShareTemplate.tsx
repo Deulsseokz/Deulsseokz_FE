@@ -8,7 +8,7 @@ import { usePointStore } from '@/store/usePointStore';
 import { BadgeType, FrameType } from '@/types/shareType';
 import { showCustomToast } from '@/utils/toastManager';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import ViewShot from 'react-native-view-shot';
 import { PolaroidPhoto } from '../album/_type';
 
@@ -131,7 +131,12 @@ const AlbumShareTemplate = React.forwardRef<ViewShot, AlbumShareTemplateProps>(
           {step === 1 && (
             <View style={styles.optionBox}>
               <Text style={styles.label}>프레임</Text>
-              <View style={styles.optionList}>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.optionListContent}
+                style={styles.optionListWrapper}
+              >
                 {frameOptions &&
                   frameOptions.map(f => (
                     <OptionSelectionEl
@@ -143,14 +148,19 @@ const AlbumShareTemplate = React.forwardRef<ViewShot, AlbumShareTemplateProps>(
                       onPress={type => onChangeFrame(type as FrameType)}
                     />
                   ))}
-              </View>
+              </ScrollView>
             </View>
           )}
 
           {step === 2 && (
             <View style={styles.optionBox}>
               <Text style={styles.label}>뱃지</Text>
-              <View style={styles.optionList}>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.optionListContent}
+                style={styles.optionListWrapper}
+              >
                 {badgeOptions &&
                   badgeOptions.map(b => (
                     <OptionSelectionEl
@@ -162,7 +172,7 @@ const AlbumShareTemplate = React.forwardRef<ViewShot, AlbumShareTemplateProps>(
                       onPress={type => onChangeBadge(type as BadgeType)}
                     />
                   ))}
-              </View>
+              </ScrollView>
             </View>
           )}
 
@@ -198,12 +208,17 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     gap: 23,
     paddingVertical: 38,
-  },
-  optionList: {
-    flexDirection: 'row',
     width: '100%',
+  },
+
+  optionListWrapper: {
+    width: '100%',
+  },
+  optionListContent: {
+    flexDirection: 'row',
     gap: 10,
   },
+
   label: {
     width: '100%',
     textAlign: 'left',

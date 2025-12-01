@@ -10,6 +10,10 @@ import { ImageSourcePropType } from 'react-native';
 export const frameImageMap: Record<FrameType, ImageSourcePropType> = {
   [FrameType.WHITE]: require('@/assets/images/album/frames/white.png'),
   [FrameType.BLACK]: require('@/assets/images/album/frames/black.png'),
+  [FrameType.CHRISTMAS]: require('@/assets/images/album/frames/christmas.png'),
+  [FrameType.TREE]: require('@/assets/images/album/frames/tree.png'),
+  [FrameType.RIBBON]: require('@/assets/images/album/frames/ribbon.png'),
+  [FrameType.LINE]: require('@/assets/images/album/frames/line.png'),
   [FrameType.RAINBOW]: require('@/assets/images/album/frames/rainbow.png'),
   [FrameType.HANDWRITING]: require('@/assets/images/album/frames/handwriting.png'),
   [FrameType.SHAPE]: require('@/assets/images/album/frames/shape.png'),
@@ -27,6 +31,22 @@ export const frameIcons = {
   [FrameType.BLACK]: {
     active: require('@/assets/images/album/frameOptions/black-active.png'),
     inactive: require('@/assets/images/album/frameOptions/black-inactive.png'),
+  },
+  [FrameType.CHRISTMAS]: {
+    active: require('@/assets/images/album/frameOptions/christmas-active.png'),
+    inactive: require('@/assets/images/album/frameOptions/christmas-inactive.png'),
+  },
+  [FrameType.TREE]: {
+    active: require('@/assets/images/album/frameOptions/tree-active.png'),
+    inactive: require('@/assets/images/album/frameOptions/tree-inactive.png'),
+  },
+  [FrameType.RIBBON]: {
+    active: require('@/assets/images/album/frameOptions/ribbon-active.png'),
+    inactive: require('@/assets/images/album/frameOptions/ribbon-inactive.png'),
+  },
+  [FrameType.LINE]: {
+    active: require('@/assets/images/album/frameOptions/line-active.png'),
+    inactive: require('@/assets/images/album/frameOptions/line-inactive.png'),
   },
   [FrameType.RAINBOW]: {
     active: require('@/assets/images/album/frameOptions/rainbow-active.png'),

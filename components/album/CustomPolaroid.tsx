@@ -28,7 +28,7 @@ interface CustomPolaroidProps {
 export default function CustomPolaroid({ photo, frame, badge }: PolaroidProps & CustomPolaroidProps) {
   const { image, additional, date } = photo;
 
-  const isBlack = frame === FrameType.BLACK;
+  const isBlack = frame === FrameType.BLACK || frame === FrameType.LINE;
   const textColor = { color: isBlack ? '#E9E9E9' : '#4A4A4A' };
 
   const currentFeelingMap = isBlack ? feelingImageMapWhite : feelingImageMap;
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     width: CARD_WIDTH,
-    height: '100%',
+    height: 300,
     resizeMode: 'stretch',
   },
 
