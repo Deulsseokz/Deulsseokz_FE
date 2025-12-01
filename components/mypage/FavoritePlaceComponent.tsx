@@ -3,6 +3,7 @@ import { MCOLORS } from "@/constants/colors";
 import fontStyles from "@/constants/fonts";
 import { StyleSheet, Text, View } from "react-native";
 import FavoritePlaceBtn from "../common/FavoritePlaceBtn";
+import { Image } from "react-native";
 
 export default function FavoritePlaceComponent({place, placeImage, content, friends, friendsProfileImage}:FavoritePlace){
     return (
@@ -10,11 +11,11 @@ export default function FavoritePlaceComponent({place, placeImage, content, frie
         <View style={styles.aboluteBtnContainer}>
             <FavoritePlaceBtn placeName={place} isFavorite={true}/>
         </View>
-        {/* <Image source={require('./imgEx.png')} style={styles.image} resizeMode="cover"/> */}
+       {placeImage && <Image source={{uri: placeImage}} style={styles.image} resizeMode="cover"/>}
         {/* 이미지 컴포넌트 */}
         <View style={styles.contentContainer}>
             <Text style={styles.place}>{place}</Text>
-            <Text style={styles.challenge}>{content}</Text>
+            {content && <Text style={styles.challenge}>{content}</Text>}
             {/* 함께한 친구 프로필 */}
             <View style={styles.profileContainer}>
                 {/* 프로필 */}
@@ -52,7 +53,7 @@ const styles= StyleSheet.create({
         alignItems:'flex-end',
     },  
     image: {
-        height: '60%',
+        height: '65%',
         width: 'auto',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,

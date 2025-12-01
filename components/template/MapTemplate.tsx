@@ -84,7 +84,8 @@ export default function MapTemplate({
       camera={
         initialCoord
           ? undefined
-          : { latitude: 37.5665, longitude: 126.978, zoom: 12 }
+          : { latitude:  37.4955089688636,
+ longitude:126.957657917408, zoom: 14 }
       }
       isExtentBoundedInKorea
       isShowLocationButton={false}

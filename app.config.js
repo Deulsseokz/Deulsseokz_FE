@@ -7,7 +7,7 @@ export default {
   expo: {
     name: 'Mellog',
     slug: 'mellog',
-    version: '1.0.3',
+    version: '1.0.4',
     owner: 'patrickgong',
     orientation: 'portrait',
     icon: './assets/mellog/ios-light.png',
@@ -82,7 +82,7 @@ export default {
     updates: {
       url: 'https://u.expo.dev/0b8c439b-7629-447f-a13a-e3985fe9703f',
     },
-    runtimeVersion: '1.0.3',
+    runtimeVersion: '1.0.4',
     plugins: [
       'expo-router',
       'expo-secure-store',
