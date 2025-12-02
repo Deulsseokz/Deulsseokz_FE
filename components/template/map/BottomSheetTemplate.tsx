@@ -55,7 +55,7 @@ export default function BottomSheetTemplate({ visible, exitSheet, challengeInfo,
           <View style={{ ...styles.contentContainer, gap: 6 }}>
             <ChallengeInfo {...challengeInfo} />
             <ChallengeCondition {...challengeInfo} />
-            {challengeInfo.isChallenged && <ChallengeFriends friends={allFriends.filter(friend => challengeInfo.friends?.includes(friend.userId))} />}
+            {/* {challengeInfo.isChallenged && <ChallengeFriends friends={allFriends.filter(friend => challengeInfo.friends?.includes(friend.userId))} />} */}
           </View>
         );
       case SheetStep.WITH_WHOM:
